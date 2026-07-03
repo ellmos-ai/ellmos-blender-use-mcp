@@ -1,0 +1,76 @@
+# ellmos Blender Use MCP
+
+> Local-first, add-on-free MCP asset-QA tool for headless Blender FBX reimport verification and bounded background script runs.
+
+Canonical repository: https://github.com/ellmos-ai/ellmos-blender-use-mcp
+npm package: https://www.npmjs.com/package/ellmos-blender-use-mcp
+MCP registry name: io.github.ellmos-ai/ellmos-blender-use-mcp
+License: MIT
+Language: JavaScript (ESM)
+Runtime: Node.js >=18
+
+## Summary
+
+ellmos Blender Use MCP is an alpha-stage Model Context Protocol server built for game and 3D asset pipelines. Its core capability is `blender_verify_fbx_reimport`: it imports a given FBX into headless Blender and writes a deterministic JSON verification result with mesh count, material count, and any missing required naming prefixes, replacing a manual reimport-and-eyeball check. `blender_run_script` and `blender_locate` are the general-purpose primitives the verification tool is built on: running an arbitrary Python script in `blender --background` mode with a bounded, timeout-guarded output tail, and resolving the local Blender executable.
+
+It does not install a Blender add-on, does not open a TCP port for a running Blender instance, and does not keep Blender resident between calls — every call is a fresh, headless, stateless `blender --background` process with a bounded timeout. It does not download assets and does not collect telemetry.
+
+It is useful for CI-style, one-shot asset verification in an asset pipeline. It is not a live-GUI Blender controller; for interactive scene editing over a persistent connection, use a dedicated add-on-based Blender MCP server instead.
+
+## Tools
+
+- `blender_verify_fbx_reimport`: import an FBX in headless Blender and write/read a JSON verification result (mesh count, material count, missing required prefixes).
+- `blender_run_script`: run `blender --background --python <script.py>` with optional script arguments and a bounded stdout/stderr tail.
+- `blender_locate`: resolve the local Blender executable from an explicit path, `BLENDER_EXE`, a verified local default, or `PATH`.
+
+## Install
+
+```bash
+npx -y ellmos-blender-use-mcp
+```
+
+or install from source:
+
+```bash
+git clone https://github.com/ellmos-ai/ellmos-blender-use-mcp.git
+cd ellmos-blender-use-mcp
+npm install
+node src/index.js
+```
+
+## Audience
+
+- Technical artists and asset pipeline engineers who want an automated, deterministic pass/fail check for FBX reimport instead of manually reopening files in Blender
+- Game studios and 3D asset teams running CI checks on exported assets (mesh/material counts, required naming prefixes)
+- Developers who need a headless, add-on-free, no-open-port way to run bounded Blender Python scripts from an MCP client
+- AI assistants (Claude, Codex, Gemini) automating Blender-based asset QA steps in a build or delivery pipeline
+
+## Search Phrases
+
+```
+blender fbx reimport verification mcp
+headless blender asset qa mcp server
+blender mcp no add-on no tcp port
+blender background script mcp server
+mcp server fbx mesh material verification
+asset pipeline blender automation mcp
+ellmos blender use mcp
+ellmos-blender-use-mcp
+```
+
+## External Discovery Notes
+
+- Several other "Blender MCP" projects exist (e.g. `ahujasid/blender-mcp`, the official Blender Labs MCP server) and dominate generic "blender mcp" searches; they drive a live, running Blender GUI over a TCP/add-on bridge, which is a different use case and trust model than this headless asset-QA tool. Use the full package name or "fbx reimport verification" / "asset QA" phrasing to disambiguate.
+- npm and GitHub exact-repo/package-name discovery work for `ellmos-blender-use-mcp`.
+- Good listing context: headless Blender automation, FBX/asset verification, game-asset CI pipelines, add-on-free MCP servers.
+
+## Important Files
+
+- `README.md`: full English documentation.
+- `README_de.md`: German documentation.
+- `server.json`: MCP registry metadata.
+- `THIRD_PARTY_LICENSES.md`: dependency and prior-art license review.
+- `src/index.js`: MCP server entrypoint and tool definitions.
+- `test/privacy-hygiene.test.js`: regression test guarding against leaked local user-profile paths.
+
+## Last-checked: 2026-07-03

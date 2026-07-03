@@ -1,0 +1,12 @@
+node_modules/
+dist/
+*.log
+.env
+.env.*
+!.env.example
+tmp/
+__pycache__/
+*.pyc
+desktop.ini
+REVIEW_*.md
+LOCK*.txt
