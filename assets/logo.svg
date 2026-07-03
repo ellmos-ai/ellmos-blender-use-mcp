@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" width="900" height="900">
+  <defs>
+    <!-- Ränder im Münzen-Look -->
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f6d87c"/>
+      <stop offset="0.35" stop-color="#c9962e"/>
+      <stop offset="0.6" stop-color="#f2cf6b"/>
+      <stop offset="1" stop-color="#9a6d1c"/>
+    </linearGradient>
+    <linearGradient id="silver" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.4" stop-color="#b9c2cc"/>
+      <stop offset="0.65" stop-color="#eef2f6"/>
+      <stop offset="1" stop-color="#8d99a6"/>
+    </linearGradient>
+    <radialGradient id="fond" cx="0.5" cy="0.42" r="0.75">
+      <stop offset="0" stop-color="#144a6e"/>
+      <stop offset="0.55" stop-color="#0d2f4d"/>
+      <stop offset="1" stop-color="#081c31"/>
+    </radialGradient>
+    <linearGradient id="cubeTop" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe9a8"/>
+      <stop offset="1" stop-color="#e0a83c"/>
+    </linearGradient>
+    <linearGradient id="cubeLeft" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0f5f8a"/>
+      <stop offset="1" stop-color="#0a3d5c"/>
+    </linearGradient>
+    <linearGradient id="cubeRight" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2fb9e8"/>
+      <stop offset="1" stop-color="#1682b4"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#59d7ff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#59d7ff" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Textbögen -->
+    <path id="arcTop" d="M 450 450 m -318 0 a 318 318 0 1 1 636 0" fill="none"/>
+    <path id="arcBottom" d="M 450 450 m -318 0 a 318 318 0 1 0 636 0" fill="none"/>
+  </defs>
+
+  <!-- Münzringe -->
+  <circle cx="450" cy="450" r="446" fill="url(#gold)"/>
+  <circle cx="450" cy="450" r="420" fill="url(#silver)"/>
+  <circle cx="450" cy="450" r="380" fill="url(#gold)"/>
+  <circle cx="450" cy="450" r="368" fill="url(#fond)"/>
+  <circle cx="450" cy="450" r="368" fill="none" stroke="#59d7ff" stroke-opacity="0.18" stroke-width="2"/>
+
+  <!-- innerer Zierring -->
+  <circle cx="450" cy="450" r="258" fill="none" stroke="url(#gold)" stroke-width="4"/>
+  <circle cx="450" cy="450" r="250" fill="none" stroke="#59d7ff" stroke-opacity="0.35" stroke-width="1.5"/>
+
+  <!-- Sterne als Trenner -->
+  <g fill="#f2cf6b">
+    <path d="M 92 450 l 7 14 15 2 -11 11 3 15 -14 -7 -14 7 3 -15 -11 -11 15 -2 z"/>
+    <path d="M 808 450 l 7 14 15 2 -11 11 3 15 -14 -7 -14 7 3 -15 -11 -11 15 -2 z" />
+  </g>
+
+  <!-- Hintergrund: dezentes Gitternetz (Wireframe-Anklang) -->
+  <g stroke="#59d7ff" stroke-opacity="0.14" fill="none" stroke-width="1.5">
+    <ellipse cx="450" cy="430" rx="230" ry="90"/>
+    <ellipse cx="450" cy="430" rx="230" ry="90" transform="rotate(28 450 430)"/>
+    <ellipse cx="450" cy="430" rx="230" ry="90" transform="rotate(-28 450 430)"/>
+  </g>
+
+  <!-- Circuit-Linien links/rechts -->
+  <g stroke="#38c4f2" stroke-width="4" fill="none" stroke-linecap="round">
+    <path d="M 218 380 h 60 l 26 26"/>
+    <path d="M 210 470 h 76 l 20 -18"/>
+    <path d="M 682 380 h -60 l -26 26"/>
+    <path d="M 690 470 h -76 l -20 -18"/>
+  </g>
+  <g fill="#38c4f2">
+    <circle cx="218" cy="380" r="7"/>
+    <circle cx="210" cy="470" r="7"/>
+    <circle cx="682" cy="380" r="7"/>
+    <circle cx="690" cy="470" r="7"/>
+  </g>
+  <g fill="#f2cf6b" opacity="0.85" font-family="Consolas, 'Courier New', monospace" font-size="20">
+    <text x="196" y="342">0101</text>
+    <text x="640" y="342">1010</text>
+  </g>
+
+  <!-- Glühen hinter dem Würfel -->
+  <circle cx="450" cy="420" r="190" fill="url(#glow)"/>
+
+  <!-- Zentralmotiv: isometrischer Mesh-Würfel -->
+  <g>
+    <!-- Flächen -->
+    <polygon points="450,270 585,340 450,410 315,340" fill="url(#cubeTop)" stroke="#7a5a14" stroke-width="3"/>
+    <polygon points="315,340 450,410 450,570 315,500" fill="url(#cubeLeft)" stroke="#062a42" stroke-width="3"/>
+    <polygon points="585,340 450,410 450,570 585,500" fill="url(#cubeRight)" stroke="#0a4a6e" stroke-width="3"/>
+    <!-- Wireframe-Unterteilung -->
+    <g stroke="#0d2f4d" stroke-opacity="0.55" stroke-width="2" fill="none">
+      <path d="M 382 305 L 517 375 M 517 305 L 382 375"/>
+      <path d="M 450 270 L 450 410 M 315 340 L 585 340" opacity="0.4"/>
+    </g>
+    <g stroke="#59d7ff" stroke-opacity="0.5" stroke-width="2" fill="none">
+      <path d="M 315 420 L 450 490 M 450 490 L 585 420"/>
+      <path d="M 382 375 L 382 535 M 517 375 L 517 535"/>
+    </g>
+    <!-- Eckknoten (Vertices) -->
+    <g fill="#ffe9a8" stroke="#7a5a14" stroke-width="2">
+      <circle cx="450" cy="270" r="9"/>
+      <circle cx="585" cy="340" r="9"/>
+      <circle cx="315" cy="340" r="9"/>
+      <circle cx="450" cy="410" r="9"/>
+      <circle cx="450" cy="570" r="9"/>
+      <circle cx="315" cy="500" r="9"/>
+      <circle cx="585" cy="500" r="9"/>
+    </g>
+  </g>
+
+  <!-- QA-Siegel: Häkchen-Plakette vor dem Würfel -->
+  <g transform="translate(450 505)">
+    <circle r="64" fill="#0d2f4d" stroke="url(#gold)" stroke-width="6"/>
+    <circle r="52" fill="none" stroke="#59d7ff" stroke-opacity="0.5" stroke-width="2"/>
+    <path d="M -28 2 L -8 24 L 34 -22" fill="none" stroke="#4ade80" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- FBX-Banner unter dem Siegel -->
+  <g>
+    <path d="M 282 606 L 618 606 L 640 630 L 618 654 L 282 654 L 260 630 Z" fill="url(#silver)" stroke="#5c6773" stroke-width="2"/>
+    <text x="450" y="639" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="25" fill="#12283c" letter-spacing="2">FBX REIMPORT CHECK</text>
+  </g>
+
+  <!-- EST-Zeile -->
+  <text x="450" y="692" text-anchor="middle" font-family="Georgia, serif" font-size="21" fill="#c8d6e2" letter-spacing="3">EST. 2026</text>
+
+  <!-- Titelbogen oben -->
+  <text font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="56" fill="#eef2f6" letter-spacing="4" stroke="#0d2f4d" stroke-width="1">
+    <textPath href="#arcTop" startOffset="50%" text-anchor="middle">ELLMOS BLENDER USE MCP</textPath>
+  </text>
+
+  <!-- Claim-Bogen unten -->
+  <text font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="46" fill="#f2cf6b" letter-spacing="4">
+    <textPath href="#arcBottom" startOffset="50%" text-anchor="middle">HEADLESS ASSET QA</textPath>
+  </text>
+</svg>
