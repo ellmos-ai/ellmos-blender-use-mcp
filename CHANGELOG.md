@@ -2,6 +2,12 @@
 
 All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
+## 0.1.0-alpha.2 - 2026-07-06
+
+### Changed
+- New round **seal emblem** (`assets/logo.jpg`) replacing the previous logo — matches the ellmos seal family (Suzanne wireframe, FBX/QA marks, Blender-orange accents).
+- README (EN/DE): added npm version/downloads, license and Node badges plus an explicit "View on npm" link.
+
 ## 0.1.0-alpha.1 - 2026-07-03
 
 ### Added
