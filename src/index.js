@@ -10,11 +10,14 @@ import { spawn, spawnSync } from "node:child_process";
 import updateNotifier from "update-notifier";
 import { createRequire } from "node:module";
 
+const require = createRequire(import.meta.url);
+const pkg = require("../package.json");
+
 const DEFAULT_WINDOWS_BLENDER = "C:\\_Local_DEV\\TOOLS\\Blender\\current\\blender.exe";
 
 const server = new McpServer({
-  name: "ellmos-blender-use-mcp",
-  version: "0.1.0-alpha.1"
+  name: pkg.name,
+  version: pkg.version
 });
 
 function fileExists(filePath) {
@@ -218,7 +221,7 @@ async function main() {
   // Update-Hinweis nur im interaktiven Terminal — niemals im stdio-/MCP-Betrieb (Protokoll-Schutz)
   if (process.stdout.isTTY) {
     try {
-      updateNotifier({ pkg: createRequire(import.meta.url)("../package.json") }).notify();
+      updateNotifier({ pkg }).notify();
     } catch { /* Update-Check darf den Start nie blockieren */ }
   }
   const transport = new StdioServerTransport();

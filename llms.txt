@@ -73,4 +73,4 @@ ellmos-blender-use-mcp
 - `src/index.js`: MCP server entrypoint and tool definitions.
 - `test/privacy-hygiene.test.js`: regression test guarding against leaked local user-profile paths.
 
-## Last-checked: 2026-07-03
+## Last-checked: 2026-07-06
