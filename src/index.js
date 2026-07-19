@@ -9,11 +9,13 @@ import * as path from "node:path";
 import { spawn, spawnSync } from "node:child_process";
 import updateNotifier from "update-notifier";
 import { createRequire } from "node:module";
+import { pathToFileURL } from "node:url";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
 
 const DEFAULT_WINDOWS_BLENDER = "C:\\_Local_DEV\\TOOLS\\Blender\\current\\blender.exe";
+const DEFAULT_OUTPUT_CAPTURE_CHARS = 65536;
 
 const server = new McpServer({
   name: pkg.name,
@@ -77,35 +79,49 @@ function boundedTail(text, maxChars) {
   return text.slice(text.length - maxChars);
 }
 
-async function runProcess(command, args, cwd, timeoutMs) {
+function appendBoundedOutput(output, chunk, maxChars) {
+  const combined = output + chunk;
+  return {
+    output: boundedTail(combined, maxChars),
+    truncated: combined.length > maxChars
+  };
+}
+
+export async function runProcess(command, args, cwd, timeoutMs, maxOutputChars = DEFAULT_OUTPUT_CAPTURE_CHARS) {
   const started = Date.now();
   return await new Promise((resolve) => {
     const child = spawn(command, args, { cwd, windowsHide: true });
     let output = "";
+    let outputTruncated = false;
     let settled = false;
     const timer = setTimeout(() => {
       if (settled) return;
       settled = true;
       killProcessTree(child);
-      resolve({ exitCode: null, timedOut: true, output, durationMs: Date.now() - started });
+      resolve({ exitCode: null, timedOut: true, output, outputTruncated, durationMs: Date.now() - started });
     }, timeoutMs);
     child.stdout.on("data", (chunk) => {
-      output += chunk.toString();
+      const captured = appendBoundedOutput(output, chunk.toString(), maxOutputChars);
+      output = captured.output;
+      outputTruncated ||= captured.truncated;
     });
     child.stderr.on("data", (chunk) => {
-      output += chunk.toString();
+      const captured = appendBoundedOutput(output, chunk.toString(), maxOutputChars);
+      output = captured.output;
+      outputTruncated ||= captured.truncated;
     });
     child.on("close", (code) => {
       if (settled) return;
       settled = true;
       clearTimeout(timer);
-      resolve({ exitCode: code, timedOut: false, output, durationMs: Date.now() - started });
+      resolve({ exitCode: code, timedOut: false, output, outputTruncated, durationMs: Date.now() - started });
     });
     child.on("error", (error) => {
       if (settled) return;
       settled = true;
       clearTimeout(timer);
-      resolve({ exitCode: 1, timedOut: false, output: `${output}\n${error.message}`, durationMs: Date.now() - started });
+      const captured = appendBoundedOutput(output, `\n${error.message}`, maxOutputChars);
+      resolve({ exitCode: 1, timedOut: false, output: captured.output, outputTruncated: outputTruncated || captured.truncated, durationMs: Date.now() - started });
     });
   });
 }
@@ -144,7 +160,7 @@ server.tool(
     const resolvedCwd = cwd ? path.resolve(cwd) : path.dirname(resolvedScript);
     const args = ["--background", "--python", resolvedScript];
     if (scriptArgs.length) args.push("--", ...scriptArgs);
-    const run = await runProcess(blender, args, resolvedCwd, timeoutMs);
+    const run = await runProcess(blender, args, resolvedCwd, timeoutMs, outputTailChars);
     return textResult({
       ok: run.exitCode === 0 && !run.timedOut,
       blender,
@@ -153,6 +169,7 @@ server.tool(
       exitCode: run.exitCode,
       timedOut: run.timedOut,
       durationMs: run.durationMs,
+      outputTruncated: run.outputTruncated,
       outputTail: boundedTail(run.output, outputTailChars)
     });
   }
@@ -195,7 +212,7 @@ if not result["ok"]:
     raise SystemExit(1)
 `;
     await fs.writeFile(tempScript, script, "utf-8");
-    const run = await runProcess(blender, ["--background", "--python", tempScript], path.dirname(resolvedFbx), timeoutMs);
+    const run = await runProcess(blender, ["--background", "--python", tempScript], path.dirname(resolvedFbx), timeoutMs, 8000);
     let verification = null;
     try {
       verification = JSON.parse(await fs.readFile(outPath, "utf-8"));
@@ -211,6 +228,7 @@ if not result["ok"]:
       exitCode: run.exitCode,
       timedOut: run.timedOut,
       durationMs: run.durationMs,
+      outputTruncated: run.outputTruncated,
       verification,
       outputTail: boundedTail(run.output, 8000)
     });
@@ -228,7 +246,9 @@ async function main() {
   await server.connect(transport);
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}

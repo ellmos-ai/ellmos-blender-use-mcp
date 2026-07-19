@@ -2,6 +2,14 @@
 
 All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
+## Unreleased
+
+### Fixed
+- Bound captured stdout/stderr to the returned output-tail size for Blender subprocesses. Responses now expose `outputTruncated` when earlier process output was discarded, preventing verbose scripts from accumulating unbounded MCP-process memory.
+
+### Tests
+- Added a regression check that runs a noisy child process and verifies bounded output capture.
+
 ## 0.1.0-alpha.2 - 2026-07-06
 
 ### Changed

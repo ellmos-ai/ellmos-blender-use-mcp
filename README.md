@@ -78,3 +78,4 @@ For a local checkout, point `command`/`args` at the cloned `src/index.js` instea
 
 - `BLENDER_EXE` — optional path to the Blender executable. Without it, tools try the explicit `blenderPath` argument, then `BLENDER_EXE`, then a verified local Windows default, then `PATH`.
 - Every tool also accepts an explicit `blenderPath` argument per call, which takes priority over `BLENDER_EXE`.
+- Process output is retained only as a tail: `blender_run_script` defaults to 8,000 characters (configurable up to 50,000); FBX verification keeps 8,000. The response marks `outputTruncated: true` when earlier output was discarded, so verbose Blender scripts cannot grow the MCP process memory without bound.

@@ -78,3 +78,4 @@ Bei einem lokalen Checkout `command`/`args` stattdessen auf das geklonte `src/in
 
 - `BLENDER_EXE` — optionaler Pfad zur Blender-Executable. Ohne diesen versuchen die Tools zuerst das explizite `blenderPath`-Argument, dann `BLENDER_EXE`, dann einen verifizierten lokalen Windows-Standard, dann PATH.
 - Jedes Tool akzeptiert zusätzlich ein explizites `blenderPath`-Argument pro Aufruf, das Vorrang vor `BLENDER_EXE` hat.
+- Prozessausgabe wird nur als Tail gehalten: `blender_run_script` nutzt standardmäßig 8.000 Zeichen (konfigurierbar bis 50.000), die FBX-Verifikation 8.000. `outputTruncated: true` zeigt an, dass frühere Ausgabe verworfen wurde. Auch sehr gesprächige Blender-Skripte können den MCP-Prozess dadurch nicht unbegrenzt mit Ausgabe im Speicher wachsen lassen.
