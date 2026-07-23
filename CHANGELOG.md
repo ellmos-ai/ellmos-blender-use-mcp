@@ -2,13 +2,19 @@
 
 All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
-## Unreleased
+## 0.1.0-alpha.3 - 2026-07-24
 
 ### Fixed
 - Bound captured stdout/stderr to the returned output-tail size for Blender subprocesses. Responses now expose `outputTruncated` when earlier process output was discarded, preventing verbose scripts from accumulating unbounded MCP-process memory.
 
 ### Tests
 - Added a regression check that runs a noisy child process and verifies bounded output capture.
+
+### Changed
+- Unified the ellmos-ai ecosystem section in README.md and README_de.md: full 9-server MCP family table with refreshed tool counts, AI infrastructure, and desktop software links.
+- Added `glama.json` for the Glama MCP directory listing.
+- Synced `server.json` version metadata.
+- Added a License section to both READMEs.
 
 ## 0.1.0-alpha.2 - 2026-07-06
 
