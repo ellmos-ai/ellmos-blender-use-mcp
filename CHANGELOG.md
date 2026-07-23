@@ -2,6 +2,11 @@
 
 All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
+## 0.1.0-alpha.4 - 2026-07-24
+
+### Fixed
+- Correct FileCommander (46) and CodeCommander (22) tool counts in the ecosystem family table; counts now verified against the live MCP `tools/list` surface.
+
 ## 0.1.0-alpha.3 - 2026-07-24
 
 ### Fixed

@@ -1,7 +1,7 @@
 {
   "$schema": "https://glama.ai/mcp/schemas/server.json",
   "name": "ellmos-blender-use-mcp",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.4",
   "description": "Local-first MCP server for headless Blender asset QA: background script runs and FBX reimport verification. No add-on, no TCP port.",
   "maintainers": [
     "lukisch"
