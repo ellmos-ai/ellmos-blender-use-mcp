@@ -11,3 +11,6 @@ desktop.ini
 REVIEW_*.md
 LOCK*.txt
 *-protocoll.txt
+
+# mcp-publisher login artifacts (credentials, never commit)
+.mcpregistry_*
