@@ -10,6 +10,7 @@
 
 [![npm version](https://img.shields.io/npm/v/ellmos-blender-use-mcp.svg)](https://www.npmjs.com/package/ellmos-blender-use-mcp)
 [![npm downloads](https://img.shields.io/npm/dt/ellmos-blender-use-mcp.svg)](https://www.npmjs.com/package/ellmos-blender-use-mcp)
+[![CI](https://github.com/ellmos-ai/ellmos-blender-use-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/ellmos-blender-use-mcp/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org/)
 
@@ -20,6 +21,9 @@ Ein Asset-QA-Werkzeug für Game- und 3D-Asset-Pipelines: prüft, ob eine exporti
 **Kein Add-on. Kein TCP-Port. Kein Hintergrund-Daemon.** Dieser Server installiert nichts in Blender, öffnet keinen Socket für eine laufende Blender-Instanz und hält Blender nicht dauerhaft im Speicher. Jeder Aufruf startet `blender --background --python <script.py>`, wartet auf ein zeitlich begrenztes, timeout-geschütztes Ende und gibt das Ergebnis zurück — headless und zustandslos per Design. Es werden keine Assets heruntergeladen und keine Telemetrie erfasst.
 
 **Abgrenzung zu anderen Blender-MCP-Servern.** Die meisten Blender-MCP-Projekte (z. B. `ahujasid/blender-mcp`, der offizielle Blender-Labs-MCP-Server) steuern eine *laufende* Blender-GUI live über eine TCP-/Add-on-Brücke für interaktive Szenenbearbeitung — ein anderer Anwendungsfall mit einem anderen Vertrauensmodell (ein offener Socket, ein installiertes Add-on, ein dauerhaft laufender Prozess). Dieser Server zielt stattdessen auf **CI-artige, einmalige Asset-Verifikation**: in einem Pipeline-Schritt ausführen, ein Pass/Fail-JSON erhalten, weitermachen. Wer live GUI-Kontrolle braucht, nutzt dafür separat ein geprüftes Blender-MCP-Add-on (siehe Sicherheit unten).
+
+> [!NOTE]
+> **KI / LLM Integration & Maschinenlesbarer Kontext**: KI-Assistenten (Claude, Codex, Gemini) können [llms.txt](llms.txt) für maschinenlesbaren Kontext, Suchphrasen und Werkzeug-Dokumentation auslesen. Regressions-Test-Suiten sichern Datenschutz-Hygiene und Laufzeit-Speichersicherheit.
 
 ## Tools
 

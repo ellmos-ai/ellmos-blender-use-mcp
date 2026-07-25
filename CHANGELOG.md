@@ -2,6 +2,15 @@
 
 All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
+## 0.1.0-alpha.5 - 2026-07-25
+
+### Added
+- GitHub Actions CI workflow (`.github/workflows/ci.yml`) testing Node.js 20, 22, and 24.
+- CI status badge and LLM integration note block in `README.md` and `README_de.md`.
+
+### Maintenance
+- Updated `llms.txt` header timestamp to `Last-checked: 2026-07-25`.
+
 ## 0.1.0-alpha.4 - 2026-07-24
 
 ### Fixed

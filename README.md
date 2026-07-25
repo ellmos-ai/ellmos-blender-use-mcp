@@ -10,6 +10,7 @@
 
 [![npm version](https://img.shields.io/npm/v/ellmos-blender-use-mcp.svg)](https://www.npmjs.com/package/ellmos-blender-use-mcp)
 [![npm downloads](https://img.shields.io/npm/dt/ellmos-blender-use-mcp.svg)](https://www.npmjs.com/package/ellmos-blender-use-mcp)
+[![CI](https://github.com/ellmos-ai/ellmos-blender-use-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/ellmos-blender-use-mcp/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org/)
 
@@ -20,6 +21,9 @@ An asset-QA tool for game and 3D asset pipelines: verify that an exported FBX ac
 **No add-on. No TCP port. No background daemon.** This server does not install anything into Blender, does not open a socket for a running Blender instance to connect to, and does not keep Blender resident. Each call spawns `blender --background --python <script.py>`, waits for a bounded, timeout-guarded exit, and returns the result — headless and stateless by design. It does not download assets and does not collect telemetry.
 
 **How this differs from other Blender MCP servers.** Most Blender MCP projects (e.g. `ahujasid/blender-mcp`, the official Blender Labs MCP server) drive a *live, running* Blender GUI over a TCP/add-on bridge for interactive scene editing — a different use case with a different trust model (an open socket, an installed add-on, a persistent process). This server instead targets **CI-style, one-shot asset verification**: run it in a pipeline step, get a pass/fail JSON, move on. If you need live GUI control, use a reviewed Blender MCP add-on separately (see Safety below).
+
+> [!NOTE]
+> **AI / LLM Integration & Machine-Readable Context**: AI assistants (Claude, Codex, Gemini) can read [llms.txt](llms.txt) for machine-readable context, search phrases, and tool documentation. Regression test suites guard privacy hygiene and runtime memory safety.
 
 ## Tools
 
