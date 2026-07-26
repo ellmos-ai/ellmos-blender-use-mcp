@@ -8,6 +8,8 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 - Sanitized local Windows path leaks in `push-protocoll.txt` to pass privacy hygiene test suite.
 - Updated `llms.txt` header timestamp to `Last-checked: 2026-07-26`.
 - Verified 100% test suite pass (`privacy-hygiene.test.js` & `runtime-safety.test.js`).
+- Ignore generated local `test_out.txt` so test transcripts cannot be committed accidentally.
+- Refreshed the lockfile to remove the high-severity `fast-uri` finding and the resolved Hono findings; two moderate `@hono/node-server` findings remain upstream of the stdio-only MCP transport.
 
 
 
