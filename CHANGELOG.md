@@ -4,6 +4,13 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## 0.1.0-alpha.5 - 2026-07-25
 
+### Maintenance (2026-07-26)
+- Sanitized local Windows path leaks in `push-protocoll.txt` to pass privacy hygiene test suite.
+- Updated `llms.txt` header timestamp to `Last-checked: 2026-07-26`.
+- Verified 100% test suite pass (`privacy-hygiene.test.js` & `runtime-safety.test.js`).
+
+
+
 ### Added
 - GitHub Actions CI workflow (`.github/workflows/ci.yml`) testing Node.js 20, 22, and 24.
 - CI status badge and LLM integration note block in `README.md` and `README_de.md`.
