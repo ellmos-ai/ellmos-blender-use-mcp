@@ -13,6 +13,9 @@
 [![CI](https://github.com/ellmos-ai/ellmos-blender-use-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/ellmos-blender-use-mcp/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org/)
+[![LLM-Ready](https://img.shields.io/badge/LLM--Ready-llms.txt-blue.svg)](llms.txt)
+[![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
+[![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
 
 📦 **[Auf npm ansehen →](https://www.npmjs.com/package/ellmos-blender-use-mcp)**
 
@@ -24,6 +27,51 @@ Ein Asset-QA-Werkzeug für Game- und 3D-Asset-Pipelines: prüft, ob eine exporti
 
 > [!NOTE]
 > **KI / LLM Integration & Maschinenlesbarer Kontext**: KI-Assistenten (Claude, Codex, Gemini) können [llms.txt](llms.txt) für maschinenlesbaren Kontext, Suchphrasen und Werkzeug-Dokumentation auslesen. Regressions-Test-Suiten sichern Datenschutz-Hygiene und Laufzeit-Speichersicherheit.
+
+> [!TIP]
+> **CI & Asset-Pipeline-Automatisierung**: Nutzen Sie `blender_verify_fbx_reimport` als automatisiertes Release-Gate vor dem Commit von 3D-Assets in die Versionsverwaltung. Es meldet fehlende Namenspräfixe (z. B. `SM_`, `M_`), unerwartete Mesh-Anzahlen oder fehlerhafte Materialzuweisungen ohne manuellen Eingriff.
+
+## Architektur & Workflow
+
+```mermaid
+graph TD
+    subgraph Client ["KI-Assistent & Client-Umgebung"]
+        AI["KI-Agent (Claude / Codex / Gemini)"]
+        Config["MCP-Konfiguration (npx / node)"]
+    end
+
+    subgraph Server ["ellmos Blender Use MCP Server"]
+        MCP["MCP-Protokoll-Server (src/index.js)"]
+        subgraph Tools ["Tool-Handler"]
+            T1["blender_verify_fbx_reimport"]
+            T2["blender_run_script"]
+            T3["blender_locate"]
+        end
+        Safety["Timeout & Tail-Puffer-Schutz (8k Zeichen)"]
+    end
+
+    subgraph Subprocess ["Headless Subprozess (Isoliert)"]
+        Exe["Blender Executable (blender --background)"]
+        Python["Temp Python Verifikations-Skript"]
+        FBX["Ziel FBX-Asset-Datei"]
+        JSONOut["Deterministisches JSON-Ergebnis"]
+    end
+
+    AI -->|JSON-RPC Anfrage| MCP
+    MCP --> Tools
+    T1 -->|Generiert Skript & startet| Exe
+    T2 -->|Führt beliebiges Python aus| Exe
+    T3 -->|Sucht Executable| Exe
+    Exe --> Python
+    Python --> FBX
+    FBX -->|Mesh / Material / Namens-QA| JSONOut
+    JSONOut --> Safety
+    Safety -->|Begrenzte Antwort| AI
+
+    style Client fill:#1e1e2e,stroke:#89b4fa,stroke-width:1px
+    style Server fill:#181825,stroke:#cba6f7,stroke-width:1px
+    style Subprocess fill:#11111b,stroke:#a6e3a1,stroke-width:1px
+```
 
 ## Tools
 

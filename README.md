@@ -13,6 +13,9 @@
 [![CI](https://github.com/ellmos-ai/ellmos-blender-use-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/ellmos-blender-use-mcp/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org/)
+[![LLM-Ready](https://img.shields.io/badge/LLM--Ready-llms.txt-blue.svg)](llms.txt)
+[![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
+[![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
 
 📦 **[View on npm →](https://www.npmjs.com/package/ellmos-blender-use-mcp)**
 
@@ -24,6 +27,51 @@ An asset-QA tool for game and 3D asset pipelines: verify that an exported FBX ac
 
 > [!NOTE]
 > **AI / LLM Integration & Machine-Readable Context**: AI assistants (Claude, Codex, Gemini) can read [llms.txt](llms.txt) for machine-readable context, search phrases, and tool documentation. Regression test suites guard privacy hygiene and runtime memory safety.
+
+> [!TIP]
+> **CI & Asset Pipeline Automation**: Use `blender_verify_fbx_reimport` as an automated gate before committing 3D assets to source control. It flags missing prefixes (e.g., `SM_`, `M_`), unexpected mesh counts, or broken material assignments without human intervention.
+
+## Architecture & Workflow
+
+```mermaid
+graph TD
+    subgraph Client ["AI Assistant & Client Environment"]
+        AI["AI Agent (Claude / Codex / Gemini)"]
+        Config["MCP Configuration (npx / node)"]
+    end
+
+    subgraph Server ["ellmos Blender Use MCP Server"]
+        MCP["MCP Protocol Server (src/index.js)"]
+        subgraph Tools ["Tool Handlers"]
+            T1["blender_verify_fbx_reimport"]
+            T2["blender_run_script"]
+            T3["blender_locate"]
+        end
+        Safety["Timeout & Tail Buffer Guard (8k chars)"]
+    end
+
+    subgraph Subprocess ["Headless Subprocess (Isolated)"]
+        Exe["Blender Executable (blender --background)"]
+        Python["Temp Python Verification Script"]
+        FBX["Target FBX Asset File"]
+        JSONOut["Deterministic JSON Result"]
+    end
+
+    AI -->|JSON-RPC Request| MCP
+    MCP --> Tools
+    T1 -->|Generates script & spawns| Exe
+    T2 -->|Executes arbitrary python| Exe
+    T3 -->|Locates binary| Exe
+    Exe --> Python
+    Python --> FBX
+    FBX -->|Mesh / Material / Naming QA| JSONOut
+    JSONOut --> Safety
+    Safety -->|Bounded Response| AI
+
+    style Client fill:#1e1e2e,stroke:#89b4fa,stroke-width:1px
+    style Server fill:#181825,stroke:#cba6f7,stroke-width:1px
+    style Subprocess fill:#11111b,stroke:#a6e3a1,stroke-width:1px
+```
 
 ## Tools
 
