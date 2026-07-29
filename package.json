@@ -16,6 +16,7 @@
     "THIRD_PARTY_LICENSES.md",
     "server.json",
     "smithery.yaml",
+    "glama.json",
     "llms.txt",
     "CHANGELOG.md"
   ],
@@ -38,7 +39,9 @@
     "reimport-check",
     "headless",
     "local-first",
-    "ellmos"
+    "ellmos",
+    "glama",
+    "smithery"
   ],
   "author": "Lukas Geiger",
   "license": "MIT",
