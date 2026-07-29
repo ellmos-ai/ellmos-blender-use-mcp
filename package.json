@@ -1,6 +1,6 @@
 {
   "name": "ellmos-blender-use-mcp",
-  "version": "0.1.0-alpha.4",
+  "version": "0.1.0-alpha.5",
   "mcpName": "io.github.ellmos-ai/ellmos-blender-use-mcp",
   "description": "Local-first, add-on-free MCP asset-QA tool for headless Blender FBX reimport verification and background script runs",
   "type": "module",
@@ -15,7 +15,6 @@
     "README_de.md",
     "THIRD_PARTY_LICENSES.md",
     "server.json",
-    "smithery.yaml",
     "glama.json",
     "llms.txt",
     "CHANGELOG.md"
@@ -40,8 +39,7 @@
     "headless",
     "local-first",
     "ellmos",
-    "glama",
-    "smithery"
+    "glama"
   ],
   "author": "Lukas Geiger",
   "license": "MIT",

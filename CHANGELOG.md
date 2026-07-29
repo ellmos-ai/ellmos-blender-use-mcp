@@ -5,10 +5,12 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 ## 0.1.0-alpha.5 - 2026-07-25
 
 ### Maintenance (2026-07-29)
-- Discoverability, SEO & README-Design Check (Path B): Added Glama.ai and Smithery.ai badges to `README.md` and `README_de.md`.
-- Added `glama.json` to `package.json` `files` array and added `glama`, `smithery` keywords.
+- Discoverability, SEO & README-Design Check (Path B): Added Glama.ai badges to `README.md` and `README_de.md`.
+- Added `glama.json` to `package.json` `files` array and added the `glama` keyword.
 - Updated `llms.txt` header timestamp to `Last-checked: 2026-07-29`.
 - Verified 100% test suite pass (`privacy-hygiene.test.js` & `runtime-safety.test.js`).
+- Removed the unverified legacy `smithery.yaml`; current Smithery publication for local stdio servers requires a validated MCPB bundle.
+- Synchronized 0.1.0-alpha.5 across package, lockfile, and registry manifests.
 
 ### Maintenance (2026-07-26)
 - Sanitized local Windows path leaks in `push-protocoll.txt` to pass privacy hygiene test suite.
