@@ -4,6 +4,11 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## 0.1.0-alpha.5 - 2026-07-25
 
+### Maintenance (2026-08-04)
+- Technical Hygiene & Maintenance Check (Pfad A): Updated `llms.txt` Last-checked timestamp to `2026-08-04`.
+- Verified 100% test suite pass (`privacy-hygiene.test.js` & `runtime-safety.test.js`).
+- Verified clean syntax build (`npm run build`).
+
 ### Maintenance (2026-07-29)
 - Discoverability, SEO & README-Design Check (Path B): Added Glama.ai badges to `README.md` and `README_de.md`.
 - Added `glama.json` to `package.json` `files` array and added the `glama` keyword.
