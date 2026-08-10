@@ -4,6 +4,9 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## 0.1.0-alpha.5 - 2026-07-25
 
+### Maintenance (2026-08-10)
+- Technical Hygiene Check: Updated `llms.txt` Last-checked timestamp to `2026-08-10` after passing `npm test`, `npm run build`, and package/lock version parity checks for `0.1.0-alpha.7`.
+
 ### Maintenance (2026-08-04)
 - Technical Hygiene & Maintenance Check (Pfad A): Updated `llms.txt` Last-checked timestamp to `2026-08-04`.
 - Verified 100% test suite pass (`privacy-hygiene.test.js` & `runtime-safety.test.js`).
