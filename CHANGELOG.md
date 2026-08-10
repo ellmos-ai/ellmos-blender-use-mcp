@@ -2,7 +2,10 @@
 
 All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
-## 0.1.0-alpha.5 - 2026-07-25
+## 0.1.0-alpha.7 - 2026-07-31
+
+### Security (2026-08-10)
+- Refreshed transitive `fast-uri` (3.1.4 to 3.1.5) and `hono` (4.12.32 to 4.13.1) dependencies; `npm audit` now reports zero vulnerabilities.
 
 ### Maintenance (2026-08-10)
 - Technical Hygiene Check: Updated `llms.txt` Last-checked timestamp to `2026-08-10` after passing `npm test`, `npm run build`, and package/lock version parity checks for `0.1.0-alpha.7`.
@@ -11,6 +14,8 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 - Technical Hygiene & Maintenance Check (Pfad A): Updated `llms.txt` Last-checked timestamp to `2026-08-04`.
 - Verified 100% test suite pass (`privacy-hygiene.test.js` & `runtime-safety.test.js`).
 - Verified clean syntax build (`npm run build`).
+
+## 0.1.0-alpha.5 - 2026-07-29
 
 ### Maintenance (2026-07-29)
 - Discoverability, SEO & README-Design Check (Path B): Added Glama.ai badges to `README.md` and `README_de.md`.
