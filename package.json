@@ -16,6 +16,7 @@
     "THIRD_PARTY_LICENSES.md",
     "server.json",
     "glama.json",
+    "smithery.yaml",
     "llms.txt",
     "CHANGELOG.md"
   ],
