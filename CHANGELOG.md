@@ -4,6 +4,12 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## 0.1.0-alpha.7 - 2026-07-31
 
+### Maintenance (2026-08-14)
+- Technical Hygiene & Maintenance Check (Pfad A): Added automated regression test `test/manifest-parity.test.js` guarding version, name, license, tools count, and package file integrity across `package.json`, `server.json`, `glama.json`, and filesystem.
+- Updated `package.json` test script to include manifest parity test.
+- Synchronized `llms.txt` Last-checked timestamp to `2026-08-14`.
+- Verified 100% test suite pass (privacy hygiene, runtime memory safety, manifest & file packaging parity) and clean syntax check (`npm run build`).
+
 ### Security (2026-08-10)
 - Refreshed transitive `fast-uri` (3.1.4 to 3.1.5) and `hono` (4.12.32 to 4.13.1) dependencies; `npm audit` now reports zero vulnerabilities.
 

@@ -72,5 +72,6 @@ ellmos-blender-use-mcp
 - `THIRD_PARTY_LICENSES.md`: dependency and prior-art license review.
 - `src/index.js`: MCP server entrypoint and tool definitions.
 - `test/privacy-hygiene.test.js`: regression test guarding against leaked local user-profile paths.
+- `test/manifest-parity.test.js`: automated regression test guarding manifest, file package, and metadata parity.
 
-## Last-checked: 2026-08-13
+## Last-checked: 2026-08-14
