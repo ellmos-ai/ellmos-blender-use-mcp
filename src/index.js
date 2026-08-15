@@ -14,7 +14,6 @@ import { pathToFileURL } from "node:url";
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
 
-const DEFAULT_WINDOWS_BLENDER = "C:\\_Local_DEV\\TOOLS\\Blender\\current\\blender.exe";
 const DEFAULT_OUTPUT_CAPTURE_CHARS = 65536;
 
 const server = new McpServer({
@@ -42,11 +41,46 @@ function findOnPath(command) {
   return null;
 }
 
+// Blender's Windows installer creates a per-version directory such as
+// "C:\Program Files\Blender Foundation\Blender 4.2\blender.exe", so there is no
+// single fixed path to probe. Discover the standard install roots at runtime and
+// return the newest version first. Returns an empty list off Windows.
+export function windowsBlenderCandidates() {
+  if (process.platform !== "win32") return [];
+  const roots = [
+    process.env.ProgramW6432,
+    process.env.ProgramFiles,
+    process.env["ProgramFiles(x86)"],
+    process.env.LOCALAPPDATA ? path.join(process.env.LOCALAPPDATA, "Programs") : null
+  ]
+    .filter(Boolean)
+    .map((root) => path.join(root, "Blender Foundation"));
+
+  const candidates = [];
+  for (const root of roots) {
+    let entries;
+    try {
+      entries = fsSync.readdirSync(root, { withFileTypes: true });
+    } catch {
+      continue; // Root does not exist on this machine.
+    }
+    const versionDirs = entries
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+      .sort((a, b) => b.localeCompare(a, "en", { numeric: true }));
+    for (const dir of versionDirs) {
+      const candidate = path.join(root, dir, "blender.exe");
+      if (!candidates.includes(candidate)) candidates.push(candidate);
+    }
+  }
+  return candidates;
+}
+
 function resolveBlender(explicit) {
   const candidates = [
     explicit,
     process.env.BLENDER_EXE,
-    DEFAULT_WINDOWS_BLENDER,
+    ...windowsBlenderCandidates(),
     findOnPath("blender")
   ].filter(Boolean);
   for (const candidate of candidates) {
@@ -56,21 +90,21 @@ function resolveBlender(explicit) {
 }
 
 function killProcessTree(child) {
-  // child.kill() beendet unter Windows nur den direkten Kindprozess; ein Blender,
-  // das selbst Subprozesse startet, kann verwaisen. Daher auf Windows den ganzen
-  // Prozessbaum per taskkill /T beenden, sonst SIGKILL.
+  // On Windows child.kill() only terminates the direct child; a Blender process
+  // that spawned children of its own would be orphaned. Kill the whole process
+  // tree via taskkill /T there, and fall back to SIGKILL everywhere else.
   if (process.platform === "win32" && child.pid) {
     try {
       spawnSync("taskkill", ["/pid", String(child.pid), "/T", "/F"], { windowsHide: true });
       return;
     } catch {
-      // Fallback auf den Standard-Kill, falls taskkill nicht verfuegbar ist.
+      // Fall through to the standard kill if taskkill is unavailable.
     }
   }
   try {
     child.kill("SIGKILL");
   } catch {
-    /* Prozess ist moeglicherweise schon beendet. */
+    /* The process may already have exited. */
   }
 }
 
@@ -236,11 +270,12 @@ if not result["ok"]:
 );
 
 async function main() {
-  // Update-Hinweis nur im interaktiven Terminal — niemals im stdio-/MCP-Betrieb (Protokoll-Schutz)
+  // Update notice only in an interactive terminal — never during stdio/MCP
+  // operation, where stray output would corrupt the protocol stream.
   if (process.stdout.isTTY) {
     try {
       updateNotifier({ pkg }).notify();
-    } catch { /* Update-Check darf den Start nie blockieren */ }
+    } catch { /* An update check must never block startup. */ }
   }
   const transport = new StdioServerTransport();
   await server.connect(transport);

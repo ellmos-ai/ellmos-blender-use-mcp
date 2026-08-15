@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "build": "node --check src/index.js",
-    "test": "node test/privacy-hygiene.test.js && node test/runtime-safety.test.js && node test/manifest-parity.test.js",
+    "test": "node test/privacy-hygiene.test.js && node test/runtime-safety.test.js && node test/manifest-parity.test.js && node test/blender-resolution.test.js",
     "start": "node src/index.js",
     "prepublishOnly": "npm run build"
   },
