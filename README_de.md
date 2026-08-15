@@ -80,7 +80,7 @@ graph TD
 |---|---|
 | `blender_verify_fbx_reimport` | Erzeugt ein temporäres Blender-Verifikationsskript, importiert eine FBX-Datei und schreibt ein JSON-Ergebnis mit Mesh-/Material-Anzahl und fehlenden Pflicht-Präfixen. |
 | `blender_run_script` | Führt `blender --background --python <script.py>` mit optionalen Argumenten und begrenztem stdout-Tail aus. |
-| `blender_locate` | Löst die Blender-Executable auf — aus einem expliziten Pfad, `BLENDER_EXE`, dem verifizierten lokalen Standard oder PATH. |
+| `blender_locate` | Löst die Blender-Executable auf — aus einem expliziten Pfad, `BLENDER_EXE`, den Standard-Installationsorten unter Windows oder PATH. |
 
 ## Sicherheit
 
@@ -129,7 +129,7 @@ Bei einem lokalen Checkout `command`/`args` stattdessen auf das geklonte `src/in
 
 ## Konfiguration
 
-- `BLENDER_EXE` — optionaler Pfad zur Blender-Executable. Ohne diesen versuchen die Tools zuerst das explizite `blenderPath`-Argument, dann `BLENDER_EXE`, dann einen verifizierten lokalen Windows-Standard, dann PATH.
+- `BLENDER_EXE` — optionaler Pfad zur Blender-Executable. Ohne diesen versuchen die Tools zuerst das explizite `blenderPath`-Argument, dann `BLENDER_EXE`, dann die Standard-Installationsorte von Blender unter Windows (`%ProgramFiles%\Blender Foundation\Blender <Version>\blender.exe` sowie die entsprechenden 32-Bit- und benutzereigenen Wurzeln, neueste Version zuerst), dann PATH. Unter Linux und macOS geht die Suche direkt von `BLENDER_EXE` zu PATH.
 - Jedes Tool akzeptiert zusätzlich ein explizites `blenderPath`-Argument pro Aufruf, das Vorrang vor `BLENDER_EXE` hat.
 - Prozessausgabe wird nur als Tail gehalten: `blender_run_script` nutzt standardmäßig 8.000 Zeichen (konfigurierbar bis 50.000), die FBX-Verifikation 8.000. `outputTruncated: true` zeigt an, dass frühere Ausgabe verworfen wurde. Auch sehr gesprächige Blender-Skripte können den MCP-Prozess dadurch nicht unbegrenzt mit Ausgabe im Speicher wachsen lassen.
 

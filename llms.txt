@@ -21,7 +21,7 @@ It is useful for CI-style, one-shot asset verification in an asset pipeline. It 
 
 - `blender_verify_fbx_reimport`: import an FBX in headless Blender and write/read a JSON verification result (mesh count, material count, missing required prefixes). Its stdout/stderr tail is capped at 8,000 characters and reports `outputTruncated` when earlier output was discarded.
 - `blender_run_script`: run `blender --background --python <script.py>` with optional script arguments and a bounded stdout/stderr tail (8,000 characters by default, configurable up to 50,000). It reports `outputTruncated` when earlier output was discarded.
-- `blender_locate`: resolve the local Blender executable from an explicit path, `BLENDER_EXE`, a verified local default, or `PATH`.
+- `blender_locate`: resolve the local Blender executable from an explicit path, `BLENDER_EXE`, the standard Blender install locations on Windows (newest installed version first), or `PATH`.
 
 ## Install
 
@@ -71,7 +71,8 @@ ellmos-blender-use-mcp
 - `server.json`: MCP registry metadata.
 - `THIRD_PARTY_LICENSES.md`: dependency and prior-art license review.
 - `src/index.js`: MCP server entrypoint and tool definitions.
-- `test/privacy-hygiene.test.js`: regression test guarding against leaked local user-profile paths.
+- `test/privacy-hygiene.test.js`: regression test guarding against leaked local user-profile paths and hardcoded private workspace roots.
 - `test/manifest-parity.test.js`: automated regression test guarding manifest, file package, and metadata parity.
+- `test/blender-resolution.test.js`: regression test guarding that the Blender executable lookup uses the standard install roots instead of a hardcoded path.
 
-## Last-checked: 2026-08-14
+## Last-checked: 2026-08-15

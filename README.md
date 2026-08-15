@@ -80,7 +80,7 @@ graph TD
 |---|---|
 | `blender_verify_fbx_reimport` | Generate a temporary Blender verification script, import an FBX, and write a JSON result with mesh/material counts and missing required prefixes. |
 | `blender_run_script` | Run `blender --background --python <script.py>` with optional arguments and bounded stdout tail. |
-| `blender_locate` | Resolve the Blender executable from an explicit path, `BLENDER_EXE`, the verified local default, or PATH. |
+| `blender_locate` | Resolve the Blender executable from an explicit path, `BLENDER_EXE`, the standard Windows install locations, or PATH. |
 
 ## Safety
 
@@ -129,7 +129,7 @@ For a local checkout, point `command`/`args` at the cloned `src/index.js` instea
 
 ## Configuration
 
-- `BLENDER_EXE` — optional path to the Blender executable. Without it, tools try the explicit `blenderPath` argument, then `BLENDER_EXE`, then a verified local Windows default, then `PATH`.
+- `BLENDER_EXE` — optional path to the Blender executable. Without it, tools try the explicit `blenderPath` argument, then `BLENDER_EXE`, then the standard Blender install locations on Windows (`%ProgramFiles%\Blender Foundation\Blender <version>\blender.exe` and the equivalent 32-bit and per-user roots, newest version first), then `PATH`. On Linux and macOS the lookup goes straight from `BLENDER_EXE` to `PATH`.
 - Every tool also accepts an explicit `blenderPath` argument per call, which takes priority over `BLENDER_EXE`.
 - Process output is retained only as a tail: `blender_run_script` defaults to 8,000 characters (configurable up to 50,000); FBX verification keeps 8,000. The response marks `outputTruncated: true` when earlier output was discarded, so verbose Blender scripts cannot grow the MCP process memory without bound.
 

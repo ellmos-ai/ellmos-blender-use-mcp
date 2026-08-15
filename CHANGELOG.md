@@ -4,6 +4,17 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## 0.1.0-alpha.7 - 2026-07-31
 
+### Fixed (2026-08-15)
+- `blender_locate` and every tool resolving Blender no longer fall back to a single hardcoded path that only existed on the maintainer's machine. The Windows lookup now discovers the standard install roots at runtime (`%ProgramFiles%\Blender Foundation\Blender <version>` plus the 32-bit and per-user equivalents, newest version first). A normal Windows installation without Blender on `PATH` was previously not found at all, despite the documentation promising a "verified local Windows default".
+- `README.md`, `README_de.md`, and `llms.txt` described that fallback as a "verified local default"; all three now state which locations are actually probed and that Linux and macOS go straight from `BLENDER_EXE` to `PATH`.
+
+### Added (2026-08-15)
+- `test/blender-resolution.test.js`: regression test asserting Blender candidates are derived from the standard install roots and never hardcoded again.
+- `test/privacy-hygiene.test.js` now also flags hardcoded private workspace roots. The previous pattern matched literal Windows user-profile paths only, so the leaked path above — which contains no username — passed every hygiene run since 2026-07-26 unnoticed.
+
+### Note (2026-08-15)
+- `smithery.yaml` is present again (re-added on 2026-08-14) after the 0.1.0-alpha.5 entry below recorded its removal. That entry is kept for history, but it no longer describes the current state; whether Smithery publication now works without a validated MCPB bundle has not been re-verified in this run.
+
 ### Maintenance (2026-08-14)
 - Technical Hygiene & Maintenance Check (Pfad A): Added automated regression test `test/manifest-parity.test.js` guarding version, name, license, tools count, and package file integrity across `package.json`, `server.json`, `glama.json`, and filesystem.
 - Updated `package.json` test script to include manifest parity test.
