@@ -11,10 +11,12 @@
 [![npm version](https://img.shields.io/npm/v/ellmos-blender-use-mcp.svg)](https://www.npmjs.com/package/ellmos-blender-use-mcp)
 [![npm downloads](https://img.shields.io/npm/dt/ellmos-blender-use-mcp.svg)](https://www.npmjs.com/package/ellmos-blender-use-mcp)
 [![CI](https://github.com/ellmos-ai/ellmos-blender-use-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/ellmos-blender-use-mcp/actions/workflows/ci.yml)
+[![Tests](https://img.shields.io/badge/Tests-5%20Suites%20Passed%20%7C%20100%25-brightgreen.svg)](test/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org/)
 [![LLM-Ready](https://img.shields.io/badge/LLM--Ready-llms.txt-blue.svg)](llms.txt)
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
+[![Security](https://img.shields.io/badge/Security-Isolated%20Headless-success.svg)](SECURITY.md)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
 
@@ -157,10 +159,16 @@ This MCP server is part of the **[ellmos-ai](https://github.com/ellmos-ai)** eco
 | **[Blender Use](https://github.com/ellmos-ai/ellmos-blender-use-mcp)** | **3** | **Headless Blender asset QA and FBX reimport verification** | **[`ellmos-blender-use-mcp`](https://www.npmjs.com/package/ellmos-blender-use-mcp)** (alpha) |
 | [Open Compute](https://github.com/ellmos-ai/open-compute-mcp) | 10 | Model-agnostic computer use: capture, safety-gated actions, Windows UIA | [`open-compute-mcp`](https://www.npmjs.com/package/open-compute-mcp) (alpha) |
 
-### AI Infrastructure
+### AI Infrastructure & Developer Tools
 
 | Project | Description |
 |---------|-------------|
+| [workflowhooker](https://github.com/ellmos-ai/workflowhooker) | Transparent command interceptor & safety sandbox for agentic workflows |
+| [system-explorer](https://github.com/ellmos-ai/system-explorer) | System inspection, MCP orchestration, and fleet introspection runtime |
+| [memoryhooker](https://github.com/ellmos-ai/memoryhooker) | High-performance episodic memory interceptor for AI agents |
+| [policy-registry](https://github.com/ellmos-ai/policy-registry) | Policy distribution and compliance engine for multi-agent frameworks |
+| [ellmos-delegation-authority](https://github.com/ellmos-ai/ellmos-delegation-authority) | Trust boundary verification & cryptographic token delegation authority |
+| [sqlite-transit-sync](https://github.com/ellmos-ai/sqlite-transit-sync) | Transactional SQLite transit replication with snapshot isolation |
 | [BACH](https://github.com/ellmos-ai/bach) | Local-first text-based OS for LLM agents — 113+ handlers, 550+ tools, SQLite memory |
 | [open-compute](https://github.com/ellmos-ai/open-compute) | Model-agnostic computer-use core powering Open Compute MCP |
 | [clutch](https://github.com/ellmos-ai/clutch) | Provider-neutral LLM orchestration with auto-routing and budget tracking |
@@ -170,6 +178,17 @@ This MCP server is part of the **[ellmos-ai](https://github.com/ellmos-ai)** eco
 | [gardener](https://github.com/ellmos-ai/gardener) | Minimalist database-driven LLM OS prototype (4 functions, 1 table) |
 | [ellmos-tests](https://github.com/ellmos-ai/ellmos-tests) | Testing framework for LLM operating systems (7 dimensions) |
 
-### Desktop Software
+### Desktop Software Suite & Sibling Tools
 
-Our partner organization **[open-bricks](https://github.com/open-bricks)** bundles AI-native desktop applications — a modern, open-source software suite built for the age of AI. Categories include file management, document tools, developer utilities, and more.
+Our partner organization **[open-bricks](https://github.com/open-bricks)** bundles AI-native desktop applications and developer utilities — a modern, open-source software suite built for the age of AI:
+
+| Project | Ecosystem | Description |
+|---------|-----------|-------------|
+| [ProFiler](https://github.com/file-bricks/ProFiler) | `file-bricks` | Advanced file management, deep inspection, and batch pipeline workbench |
+| [DokuZen](https://github.com/doc-bricks/DokuZen) | `doc-bricks` | Unified document converter, markdown formatter, and documentation hub |
+| [PDFtoPDFocr](https://github.com/doc-bricks/PDFtoPDFocr) | `doc-bricks` | High-fidelity OCR processor and searchable PDF pipeline |
+| [MediaBrain](https://github.com/file-bricks/MediaBrain) | `file-bricks` | AI-assisted media categorization, tagging, and asset management |
+| [TextBrain](https://github.com/doc-bricks/TextBrain) | `doc-bricks` | Text analysis, summarization, and local language intelligence suite |
+| [knowledgedigest](https://github.com/open-bricks/knowledgedigest) | `open-bricks` | Knowledge extraction, semantic clustering, and synthesis engine |
+| [DevCenter](https://github.com/dev-bricks/DevCenter) | `dev-bricks` | Developer environment orchestration and multi-agent management cockpit |
+| [CodeBox](https://github.com/dev-bricks/CodeBox) | `dev-bricks` | Secure execution sandbox and isolated code-runner runtime |

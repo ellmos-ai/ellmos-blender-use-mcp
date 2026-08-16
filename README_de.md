@@ -11,10 +11,12 @@
 [![npm version](https://img.shields.io/npm/v/ellmos-blender-use-mcp.svg)](https://www.npmjs.com/package/ellmos-blender-use-mcp)
 [![npm downloads](https://img.shields.io/npm/dt/ellmos-blender-use-mcp.svg)](https://www.npmjs.com/package/ellmos-blender-use-mcp)
 [![CI](https://github.com/ellmos-ai/ellmos-blender-use-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/ellmos-blender-use-mcp/actions/workflows/ci.yml)
+[![Tests](https://img.shields.io/badge/Tests-5%20Suites%20Passed%20%7C%20100%25-brightgreen.svg)](test/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org/)
 [![LLM-Ready](https://img.shields.io/badge/LLM--Ready-llms.txt-blue.svg)](llms.txt)
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
+[![Sicherheit](https://img.shields.io/badge/Sicherheit-Isoliert%20Headless-success.svg)](SECURITY.md)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
 
@@ -157,10 +159,16 @@ Dieser MCP-Server ist Teil des **[ellmos-ai](https://github.com/ellmos-ai)**-Ök
 | **[Blender Use](https://github.com/ellmos-ai/ellmos-blender-use-mcp)** | **3** | **Headless Blender-Asset-QA und FBX-Reimport-Verifikation** | **[`ellmos-blender-use-mcp`](https://www.npmjs.com/package/ellmos-blender-use-mcp)** (alpha) |
 | [Open Compute](https://github.com/ellmos-ai/open-compute-mcp) | 10 | Modell-agnostischer Computer-Use: Capture, safety-gated Aktionen, Windows-UIA | [`open-compute-mcp`](https://www.npmjs.com/package/open-compute-mcp) (alpha) |
 
-### KI-Infrastruktur
+### KI-Infrastruktur & Entwickler-Werkzeuge
 
 | Projekt | Beschreibung |
 |---------|-------------|
+| [workflowhooker](https://github.com/ellmos-ai/workflowhooker) | Transparenter Befehls-Interceptor & Sicherheits-Sandbox für Agenten-Workflows |
+| [system-explorer](https://github.com/ellmos-ai/system-explorer) | System-Inspektion, MCP-Orchestrierung und Flotten-Introspektion |
+| [memoryhooker](https://github.com/ellmos-ai/memoryhooker) | Hochperformanter episodischer Gedächtnis-Interceptor für KI-Agenten |
+| [policy-registry](https://github.com/ellmos-ai/policy-registry) | Richtlinien-Verteilung und Compliance-Engine für Multi-Agenten-Frameworks |
+| [ellmos-delegation-authority](https://github.com/ellmos-ai/ellmos-delegation-authority) | Vertrauensgrenzen-Verifikation & kryptografische Token-Delegierungsautorität |
+| [sqlite-transit-sync](https://github.com/ellmos-ai/sqlite-transit-sync) | Transaktionale SQLite-Transit-Replikation mit Snapshot-Isolation |
 | [BACH](https://github.com/ellmos-ai/bach) | Local-first textbasiertes OS für LLM-Agenten — 113+ Handler, 550+ Tools, SQLite-Memory |
 | [open-compute](https://github.com/ellmos-ai/open-compute) | Modell-agnostischer Computer-Use-Kern hinter Open Compute MCP |
 | [clutch](https://github.com/ellmos-ai/clutch) | Provider-neutrale LLM-Orchestrierung mit Auto-Routing und Budget-Tracking |
@@ -170,6 +178,17 @@ Dieser MCP-Server ist Teil des **[ellmos-ai](https://github.com/ellmos-ai)**-Ök
 | [gardener](https://github.com/ellmos-ai/gardener) | Minimalistischer datenbankgetriebener LLM-OS-Prototyp (4 Funktionen, 1 Tabelle) |
 | [ellmos-tests](https://github.com/ellmos-ai/ellmos-tests) | Testframework für LLM-Betriebssysteme (7 Dimensionen) |
 
-### Desktop-Software
+### Desktop-Softwaresuite & Geschwisterwerkzeuge
 
-Unsere Partnerorganisation **[open-bricks](https://github.com/open-bricks)** bündelt KI-native Desktop-Anwendungen: eine moderne Open-Source-Softwaresuite für Datei-, Dokumenten- und Entwicklerwerkzeuge.
+Unsere Partnerorganisation **[open-bricks](https://github.com/open-bricks)** bündelt KI-native Desktop-Anwendungen und Entwicklerwerkzeuge:
+
+| Projekt | Ökosystem | Beschreibung |
+|---------|-----------|-------------|
+| [ProFiler](https://github.com/file-bricks/ProFiler) | `file-bricks` | Erweiterte Dateiverwaltung, Tiefenprüfung und Batch-Pipeline-Workbench |
+| [DokuZen](https://github.com/doc-bricks/DokuZen) | `doc-bricks` | Einheitlicher Dokumentenkonverter, Markdown-Formatierer und Doku-Hub |
+| [PDFtoPDFocr](https://github.com/doc-bricks/PDFtoPDFocr) | `doc-bricks` | Hochpräzise OCR-Verarbeitung und durchsuchbare PDF-Pipeline |
+| [MediaBrain](https://github.com/file-bricks/MediaBrain) | `file-bricks` | KI-gestützte Medienkategorisierung, Verschlagwortung und Asset-Verwaltung |
+| [TextBrain](https://github.com/doc-bricks/TextBrain) | `doc-bricks` | Textanalyse, Zusammenfassungen und lokale Sprachintelligenz-Suite |
+| [knowledgedigest](https://github.com/open-bricks/knowledgedigest) | `open-bricks` | Wissensextraktion, semantisches Clustering und Synthese-Engine |
+| [DevCenter](https://github.com/dev-bricks/DevCenter) | `dev-bricks` | Entwicklungsumgebungs-Orchestrierung und Multi-Agenten-Cockpit |
+| [CodeBox](https://github.com/dev-bricks/CodeBox) | `dev-bricks` | Sichere Ausführungs-Sandbox und isolierte Code-Runner-Laufzeit |

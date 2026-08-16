@@ -4,6 +4,15 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## 0.1.0-alpha.7 - 2026-07-31
 
+### Maintenance (2026-08-16)
+- Discoverability, README-Design, Badges, Test Status & Metadata Parity Check (Pfad B): Synchronized badges in `README.md` and `README_de.md` (5 Test Suites passed, isolated headless security badge, ecosystem, and umbrella links).
+- Implemented `SECURITY.md` covering headless stateless execution model, process tree termination, tail buffer limits, trust boundaries, and private vulnerability disclosure policy.
+- Added automated regression test `test/tool-surface.test.js` validating process execution, timeout handling, and child error recovery.
+- Enhanced `test/manifest-parity.test.js` to assert `SECURITY.md` packaging, tool count coverage in `llms.txt`, and documentation parity across languages.
+- Expanded AI infrastructure and desktop software matrix in `README.md` and `README_de.md` with sibling tools (`workflowhooker`, `system-explorer`, `memoryhooker`, `policy-registry`, `ellmos-delegation-authority`, `sqlite-transit-sync`, `ProFiler`, `DokuZen`, `PDFtoPDFocr`, `MediaBrain`, `TextBrain`, `knowledgedigest`, `DevCenter`, `CodeBox`).
+- Synchronized `llms.txt` Last-checked timestamp to `2026-08-16`.
+- Verified 100% test suite pass (5/5 suites: privacy hygiene, runtime safety, tool surface, blender resolution, manifest parity) and clean syntax build (`npm run build`).
+
 ### Fixed (2026-08-15)
 - `blender_locate` and every tool resolving Blender no longer fall back to a single hardcoded path that only existed on the maintainer's machine. The Windows lookup now discovers the standard install roots at runtime (`%ProgramFiles%\Blender Foundation\Blender <version>` plus the 32-bit and per-user equivalents, newest version first). A normal Windows installation without Blender on `PATH` was previously not found at all, despite the documentation promising a "verified local Windows default".
 - `README.md`, `README_de.md`, and `llms.txt` described that fallback as a "verified local default"; all three now state which locations are actually probed and that Linux and macOS go straight from `BLENDER_EXE` to `PATH`.
