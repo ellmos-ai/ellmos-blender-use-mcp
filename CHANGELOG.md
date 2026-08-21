@@ -4,6 +4,12 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## 0.1.0-alpha.7 - 2026-07-31
 
+### Security & Dependency Audit (2026-08-21)
+- Hardened `.gitignore` with explicit exclusion patterns for private keys, certificates (`*.pem`, `*.key`, `*.pfx`, `*.p12`, `*.cert`, `*.crt`), npm credentials (`.npmrc`), plaintext credential JSONs (`*secrets*.json`, `credentials.json`, `*recovery*.txt`), and host synchronization conflict copies (`*-WORKSTATION-LG*`, `*-ASUS-GEI*`, `*.conflict`, `*.sync-conflict-*`).
+- Updated `THIRD_PARTY_LICENSES.md` runtime inventory to comprehensively account for all direct dependencies including `update-notifier` (`7.3.1`, BSD-2-Clause) alongside `@modelcontextprotocol/sdk` and `zod`.
+- Expanded automated contract test suite in `test/manifest-parity.test.js` with validations for third-party license inventory parity and `.gitignore` security exclusion patterns (10/10 contract tests passed).
+- Verified zero OSV/npm vulnerabilities via `npm audit` and 100% test pass across all 5 test suites.
+
 ### Maintenance (2026-08-21)
 - Discoverability, Visual UX & Metadata Parity Check (Pfad B): Added bilingual Mermaid Sequence Diagrams for the Headless Asset-QA Verification Lifecycle in both `README.md` and `README_de.md`.
 - Synchronized Shields.io badges (Platform Windows | Linux | macOS, 100% Offline / Zero-Egress Privacy, Isolated Headless Security, Node >=18, 5 Test Suites Passed, LLM-Ready, Glama, Ecosystem, and Umbrella links).

@@ -1,13 +1,14 @@
 # Third-Party License Review
 
-Stand: 2026-06-20.
+Stand: 2026-08-21.
 
 ## Runtime dependencies
 
 | Package | Version checked | License | Use |
 |---|---:|---|---|
 | `@modelcontextprotocol/sdk` | 1.29.0 | MIT | MCP server and stdio transport API |
-| `zod` | 3.25.76 | MIT | Tool argument schemas |
+| `update-notifier` | 7.3.1 | BSD-2-Clause | Non-intrusive interactive CLI update notification |
+| `zod` | 3.25.76 | MIT | Tool argument schemas and validation |
 
 The npm package does not vendor these dependencies; they are installed by npm from their packages.
 

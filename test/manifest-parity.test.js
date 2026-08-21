@@ -67,5 +67,23 @@ const ciYml = readFileSync(path.join(root, ".github", "workflows", "ci.yml"), "u
 assert.ok(ciYml.includes("actions/checkout@v4"), "ci.yml must use checkout@v4");
 assert.ok(ciYml.includes("npm test"), "ci.yml must run npm test");
 
+// 9. Third-party licenses inventory parity
+const thirdPartyLicenses = readFileSync(path.join(root, "THIRD_PARTY_LICENSES.md"), "utf8");
+assert.ok(existsSync(path.join(root, "THIRD_PARTY_LICENSES.md")), "THIRD_PARTY_LICENSES.md must exist");
+for (const dep of Object.keys(pkg.dependencies || {})) {
+  assert.ok(
+    thirdPartyLicenses.includes(`\`${dep}\``),
+    `THIRD_PARTY_LICENSES.md missing runtime dependency: ${dep}`
+  );
+}
+
+// 10. Gitignore security & sync-conflict protection rules
+const gitignore = readFileSync(path.join(root, ".gitignore"), "utf8");
+assert.ok(gitignore.includes(".npmrc"), ".gitignore must ignore .npmrc");
+assert.ok(gitignore.includes("*.pem"), ".gitignore must ignore *.pem certificates");
+assert.ok(gitignore.includes("*.key"), ".gitignore must ignore *.key private keys");
+assert.ok(gitignore.includes("*-WORKSTATION-LG*"), ".gitignore must ignore *-WORKSTATION-LG* sync conflicts");
+assert.ok(gitignore.includes("*-ASUS-GEI*"), ".gitignore must ignore *-ASUS-GEI* sync conflicts");
+
 console.log("All manifest-parity and metadata contract tests passed successfully.");
 

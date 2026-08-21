@@ -16,3 +16,21 @@ _after-care/
 
 # mcp-publisher login artifacts (credentials, never commit)
 .mcpregistry_*
+
+# Keys, certificates and credentials
+*.pem
+*.key
+*.pfx
+*.p12
+*.cert
+*.crt
+.npmrc
+*secrets*.json
+credentials.json
+*recovery*.txt
+
+# Sync conflict copies and host artifacts
+*-WORKSTATION-LG*
+*-ASUS-GEI*
+*.conflict
+*.sync-conflict-*
