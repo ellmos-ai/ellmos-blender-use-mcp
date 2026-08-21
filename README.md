@@ -14,13 +14,15 @@
 [![Tests](https://img.shields.io/badge/Tests-5%20Suites%20Passed%20%7C%20100%25-brightgreen.svg)](test/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org/)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](https://github.com/ellmos-ai/ellmos-blender-use-mcp)
+[![Privacy](https://img.shields.io/badge/Privacy-100%25%20Offline%20%7C%20Zero--Egress-success.svg)](SECURITY.md)
+[![Security](https://img.shields.io/badge/Security-Isolated%20Headless-success.svg)](SECURITY.md)
 [![LLM-Ready](https://img.shields.io/badge/LLM--Ready-llms.txt-blue.svg)](llms.txt)
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
-[![Security](https://img.shields.io/badge/Security-Isolated%20Headless-success.svg)](SECURITY.md)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
 
-📦 **[View on npm →](https://www.npmjs.com/package/ellmos-blender-use-mcp)**
+📦 **[View on npm →](https://www.npmjs.com/package/ellmos-blender-use-mcp)** | 🛡️ **[Security Policy](SECURITY.md)** | 🤖 **[LLM Context](llms.txt)** | 🌐 **[Ecosystem](#ellmos-ai-ecosystem)**
 
 An asset-QA tool for game and 3D asset pipelines: verify that an exported FBX actually reimports cleanly in headless Blender — mesh count, material count, and required naming prefixes checked automatically, with a deterministic JSON result instead of a manual eyeball pass. `blender_verify_fbx_reimport` is the core tool; `blender_locate` and `blender_run_script` are the general-purpose primitives it is built on.
 
@@ -35,6 +37,8 @@ An asset-QA tool for game and 3D asset pipelines: verify that an exported FBX ac
 > **CI & Asset Pipeline Automation**: Use `blender_verify_fbx_reimport` as an automated gate before committing 3D assets to source control. It flags missing prefixes (e.g., `SM_`, `M_`), unexpected mesh counts, or broken material assignments without human intervention.
 
 ## Architecture & Workflow
+
+### 1. Component Topology
 
 ```mermaid
 graph TD
@@ -74,6 +78,33 @@ graph TD
     style Client fill:#1e1e2e,stroke:#89b4fa,stroke-width:1px
     style Server fill:#181825,stroke:#cba6f7,stroke-width:1px
     style Subprocess fill:#11111b,stroke:#a6e3a1,stroke-width:1px
+```
+
+### 2. Headless Asset-QA Verification Lifecycle
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client as AI Assistant / CI Pipeline
+    participant Server as ellmos Blender Use MCP
+    participant Resolver as Blender Resolver
+    participant Process as Headless Subprocess
+    participant Python as Blender Python Engine
+    participant FS as Local Filesystem (FBX)
+
+    Client->>Server: Call blender_verify_fbx_reimport(fbxPath, requiredPrefixes)
+    Server->>Resolver: Resolve Blender Executable (blender_locate / BLENDER_EXE / Registry / PATH)
+    Resolver-->>Server: Return Validated Executable Path
+    Server->>FS: Write Temp Python Verification Script
+    Server->>Process: Spawn blender --background --python <script> (timeout-guarded)
+    Process->>Python: Execute Verification Script
+    Python->>FS: bpy.ops.import_scene.fbx(filepath=fbxPath)
+    FS-->>Python: Parse Mesh Objects & Material Slots
+    Python->>Python: Validate Naming Prefixes, Object Counts & Hierarchy
+    Python->>FS: Write Output JSON Verification Result
+    Process-->>Server: Process Exit (Exit Code 0 / Bounded Tail Buffer)
+    Server->>FS: Read Result & Clean Up Temp Verification Script
+    Server-->>Client: Deterministic JSON Result (meshCount, materialCount, missingPrefixes, ok)
 ```
 
 ## Tools

@@ -76,7 +76,8 @@ ellmos-blender-use-mcp
 - `test/runtime-safety.test.js`: regression test guarding output buffer tail limits.
 - `test/tool-surface.test.js`: regression test guarding process execution, timeout kills, and error handling.
 - `test/blender-resolution.test.js`: regression test guarding that the Blender executable lookup uses the standard install roots instead of a hardcoded path.
-- `test/manifest-parity.test.js`: automated regression test guarding manifest, file package, and metadata parity.
+- `test/manifest-parity.test.js`: automated regression test guarding manifest, file package, bilingual security policy, sequence diagrams, and metadata parity.
 
-## Last-checked: 2026-08-16
+## Last-checked: 2026-08-21
+
 

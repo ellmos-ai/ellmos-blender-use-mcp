@@ -4,6 +4,14 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## 0.1.0-alpha.7 - 2026-07-31
 
+### Maintenance (2026-08-21)
+- Discoverability, Visual UX & Metadata Parity Check (Pfad B): Added bilingual Mermaid Sequence Diagrams for the Headless Asset-QA Verification Lifecycle in both `README.md` and `README_de.md`.
+- Synchronized Shields.io badges (Platform Windows | Linux | macOS, 100% Offline / Zero-Egress Privacy, Isolated Headless Security, Node >=18, 5 Test Suites Passed, LLM-Ready, Glama, Ecosystem, and Umbrella links).
+- Upgraded `SECURITY.md` to a comprehensive bilingual policy (English & Deutsch) with explicit zero-egress, non-elevation, process tree termination (`taskkill /T /F` on Windows, `SIGKILL` on POSIX), and official security disclosure contact points (`security@ellmos.ai`, `lukas@ellmos.ai`, `support@lukasgeiger.com`, GitHub Security Advisories).
+- Expanded automated contract test suite in `test/manifest-parity.test.js` to assert bilingual security policy presence, security email contacts, badge integrity, sequence diagrams, and CI workflow configurations.
+- Synchronized `llms.txt` Last-checked timestamp to `2026-08-21`.
+- Verified 100% test pass across all 5 test suites (`test/privacy-hygiene.test.js`, `test/runtime-safety.test.js`, `test/tool-surface.test.js`, `test/blender-resolution.test.js`, `test/manifest-parity.test.js`) and clean syntax build (`npm run build`).
+
 ### Maintenance (2026-08-16)
 - Discoverability, README-Design, Badges, Test Status & Metadata Parity Check (Pfad B): Synchronized badges in `README.md` and `README_de.md` (5 Test Suites passed, isolated headless security badge, ecosystem, and umbrella links).
 - Implemented `SECURITY.md` covering headless stateless execution model, process tree termination, tail buffer limits, trust boundaries, and private vulnerability disclosure policy.

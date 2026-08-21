@@ -38,9 +38,34 @@ assert.ok(llmsTxt.includes("blender_verify_fbx_reimport"), "llms.txt missing ble
 assert.ok(llmsTxt.includes("blender_run_script"), "llms.txt missing blender_run_script tool");
 assert.ok(llmsTxt.includes("blender_locate"), "llms.txt missing blender_locate tool");
 
-// 6. Security and Documentation existence
+// 6. Security and Documentation existence & parity
+const securityMd = readFileSync(path.join(root, "SECURITY.md"), "utf8");
 assert.ok(existsSync(path.join(root, "SECURITY.md")), "SECURITY.md must exist");
+assert.ok(securityMd.includes("security@ellmos.ai"), "SECURITY.md missing security@ellmos.ai contact");
+assert.ok(securityMd.includes("lukas@ellmos.ai"), "SECURITY.md missing lukas@ellmos.ai contact");
+assert.ok(securityMd.includes("support@lukasgeiger.com"), "SECURITY.md missing support@lukasgeiger.com contact");
+assert.ok(securityMd.includes("GitHub Security Advisories"), "SECURITY.md missing GitHub Security Advisories reference");
+assert.ok(securityMd.includes("## English"), "SECURITY.md missing English section");
+assert.ok(securityMd.includes("## Deutsch"), "SECURITY.md missing Deutsch section");
+
+// 7. Readme structure, badges & diagram parity
 assert.ok(readmeEn.includes("ellmos-blender-use-mcp"), "README.md missing package name");
 assert.ok(readmeDe.includes("ellmos-blender-use-mcp"), "README_de.md missing package name");
+assert.ok(readmeEn.includes("sequenceDiagram"), "README.md missing sequenceDiagram");
+assert.ok(readmeDe.includes("sequenceDiagram"), "README_de.md missing sequenceDiagram");
+assert.ok(readmeEn.includes("Platform"), "README.md missing Platform badge");
+assert.ok(readmeDe.includes("Plattform"), "README_de.md missing Plattform badge");
+assert.ok(readmeEn.includes("Privacy"), "README.md missing Privacy badge");
+assert.ok(readmeDe.includes("Privatsph"), "README_de.md missing Privatsphäre badge");
+assert.ok(readmeEn.includes("SECURITY.md"), "README.md missing SECURITY.md reference");
+assert.ok(readmeDe.includes("SECURITY.md"), "README_de.md missing SECURITY.md reference");
+assert.ok(readmeEn.includes("open-bricks"), "README.md missing open-bricks reference");
+assert.ok(readmeDe.includes("open-bricks"), "README_de.md missing open-bricks reference");
 
-console.log("All manifest-parity tests passed successfully.");
+// 8. CI workflow sanity
+const ciYml = readFileSync(path.join(root, ".github", "workflows", "ci.yml"), "utf8");
+assert.ok(ciYml.includes("actions/checkout@v4"), "ci.yml must use checkout@v4");
+assert.ok(ciYml.includes("npm test"), "ci.yml must run npm test");
+
+console.log("All manifest-parity and metadata contract tests passed successfully.");
+

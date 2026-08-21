@@ -14,13 +14,15 @@
 [![Tests](https://img.shields.io/badge/Tests-5%20Suites%20Passed%20%7C%20100%25-brightgreen.svg)](test/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org/)
+[![Plattform](https://img.shields.io/badge/Plattform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](https://github.com/ellmos-ai/ellmos-blender-use-mcp)
+[![Privatsphaere](https://img.shields.io/badge/Privatsph%C3%A4re-100%25%20Offline%20%7C%20Zero--Egress-success.svg)](SECURITY.md)
+[![Sicherheit](https://img.shields.io/badge/Sicherheit-Isoliert%20Headless-success.svg)](SECURITY.md)
 [![LLM-Ready](https://img.shields.io/badge/LLM--Ready-llms.txt-blue.svg)](llms.txt)
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
-[![Sicherheit](https://img.shields.io/badge/Sicherheit-Isoliert%20Headless-success.svg)](SECURITY.md)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
 
-📦 **[Auf npm ansehen →](https://www.npmjs.com/package/ellmos-blender-use-mcp)**
+📦 **[Auf npm ansehen →](https://www.npmjs.com/package/ellmos-blender-use-mcp)** | 🛡️ **[Sicherheitsrichtlinie](SECURITY.md)** | 🤖 **[LLM-Kontext](llms.txt)** | 🌐 **[Ökosystem](#ellmos-ai-ökosystem)**
 
 Ein Asset-QA-Werkzeug für Game- und 3D-Asset-Pipelines: prüft, ob eine exportierte FBX-Datei im headless Blender tatsächlich sauber re-importiert — Mesh-Anzahl, Material-Anzahl und geforderte Namens-Präfixe werden automatisch geprüft, mit einem deterministischen JSON-Ergebnis statt einer manuellen Sichtprüfung. `blender_verify_fbx_reimport` ist das Kern-Tool; `blender_locate` und `blender_run_script` sind die allgemeinen Bausteine, auf denen es aufbaut.
 
@@ -35,6 +37,8 @@ Ein Asset-QA-Werkzeug für Game- und 3D-Asset-Pipelines: prüft, ob eine exporti
 > **CI & Asset-Pipeline-Automatisierung**: Nutzen Sie `blender_verify_fbx_reimport` als automatisiertes Release-Gate vor dem Commit von 3D-Assets in die Versionsverwaltung. Es meldet fehlende Namenspräfixe (z. B. `SM_`, `M_`), unerwartete Mesh-Anzahlen oder fehlerhafte Materialzuweisungen ohne manuellen Eingriff.
 
 ## Architektur & Workflow
+
+### 1. Komponenten-Topologie
 
 ```mermaid
 graph TD
@@ -74,6 +78,33 @@ graph TD
     style Client fill:#1e1e2e,stroke:#89b4fa,stroke-width:1px
     style Server fill:#181825,stroke:#cba6f7,stroke-width:1px
     style Subprocess fill:#11111b,stroke:#a6e3a1,stroke-width:1px
+```
+
+### 2. Headless Asset-QA Verifikations-Lebenszyklus
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client as KI-Assistent / CI-Pipeline
+    participant Server as ellmos Blender Use MCP
+    participant Resolver as Blender Resolver
+    participant Process as Headless Subprozess
+    participant Python as Blender Python-Engine
+    participant FS as Lokales Dateisystem (FBX)
+
+    Client->>Server: Aufruf blender_verify_fbx_reimport(fbxPath, requiredPrefixes)
+    Server->>Resolver: Blender-Pfad auflösen (blender_locate / BLENDER_EXE / Registry / PATH)
+    Resolver-->>Server: Validierter Executable-Pfad
+    Server->>FS: Temporäres Python-Verifikationsskript schreiben
+    Server->>Process: Start blender --background --python <skript> (timeout-geschützt)
+    Process->>Python: Verifikationsskript ausführen
+    Python->>FS: bpy.ops.import_scene.fbx(filepath=fbxPath)
+    FS-->>Python: Meshes & Material-Slots parsen
+    Python->>Python: Namenspräfixe, Mesh-Anzahlen & Hierarchien prüfen
+    Python->>FS: JSON-Verifikationsergebnis schreiben
+    Process-->>Server: Prozessende (Exit Code 0 / begrenzter Tail-Puffer)
+    Server->>FS: Ergebnis einlesen & temporäres Skript bereinigen
+    Server-->>Client: Deterministisches JSON-Ergebnis (meshCount, materialCount, missingPrefixes, ok)
 ```
 
 ## Tools
