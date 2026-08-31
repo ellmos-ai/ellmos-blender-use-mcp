@@ -115,6 +115,31 @@ sequenceDiagram
 | `blender_run_script` | Run `blender --background --python <script.py>` with optional arguments and bounded stdout tail. |
 | `blender_locate` | Resolve the Blender executable from an explicit path, `BLENDER_EXE`, the standard Windows install locations, or PATH. |
 
+### `blender_verify_visual`
+
+Renders four views of an FBX and checks geometry that a **structural** reimport cannot see.
+
+`blender_verify_fbx_reimport` counts meshes and checks name prefixes — it cannot tell you that
+a mesh is lying on its side, that a part floats away from the assembly, or that the pivot sits
+outside the model. This tool does, and it produces the renders to look at.
+
+```json
+{ "fbxPath": "kit.fbx", "outDir": "verify_visual", "expectHeight": "2.5,3.5" }
+```
+
+Detected failure classes: unapplied rotation, floating parts in multi-part assets, pivot/origin
+outside the bounding box, transform residuals in the export, stray empties.
+
+Returns `verification` (the parsed `verify_visual_result.json` with `ok`, `fails`, `warns`,
+`metrics`) plus `renders` — `view_front.png`, `view_side.png`, `view_top.png`,
+`view_perspective.png`.
+
+**Why four views and not one:** a single front shot hides depth errors — floating-vs-resting,
+behind-vs-in-front. A real case: chain links looked correctly attached from the front and were
+not attached at all when seen from the side.
+
+Like every tool here it is a one-shot headless run: no add-on, no daemon, no socket.
+
 ## Safety
 
 - This server runs local Python inside Blender. Use only scripts and asset paths you trust.

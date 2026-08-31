@@ -9,7 +9,7 @@ import * as path from "node:path";
 import { spawn, spawnSync } from "node:child_process";
 import updateNotifier from "update-notifier";
 import { createRequire } from "node:module";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
@@ -264,6 +264,69 @@ if not result["ok"]:
       durationMs: run.durationMs,
       outputTruncated: run.outputTruncated,
       verification,
+      outputTail: boundedTail(run.output, 8000)
+    });
+  }
+);
+
+server.tool(
+  "blender_verify_visual",
+  "Render four orthographic/perspective views of an FBX and check geometry that a structural " +
+    "reimport cannot see: unapplied rotation (mesh lying on its side), floating parts in " +
+    "multi-part assets, pivot/origin outside the model, transform residuals and stray empties. " +
+    "Complements blender_verify_fbx_reimport, which only counts meshes and checks name prefixes.",
+  {
+    fbxPath: z.string(),
+    outDir: z.string().optional(),
+    expectHeight: z.string().optional(),
+    noRender: z.boolean().default(false),
+    blenderPath: z.string().optional(),
+    timeoutMs: z.number().int().positive().max(600000).default(180000)
+  },
+  async ({ fbxPath, outDir, expectHeight, noRender, blenderPath, timeoutMs }) => {
+    const blender = resolveBlender(blenderPath);
+    const resolvedFbx = path.resolve(fbxPath);
+    if (!fileExists(resolvedFbx)) throw new Error(`FBX not found: ${resolvedFbx}`);
+
+    // The verifier ships with the package, so the server stays self-contained.
+    const verifier = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "scripts", "verify_asset_visual.py");
+    if (!fileExists(verifier)) throw new Error(`Verifier script missing: ${verifier}`);
+
+    const resolvedOut = outDir ? path.resolve(outDir) : path.join(path.dirname(resolvedFbx), "verify_visual");
+    await fs.mkdir(resolvedOut, { recursive: true });
+
+    const scriptArgs = ["--fbx", resolvedFbx, "--out", resolvedOut, "--json"];
+    if (expectHeight) scriptArgs.push("--expect-height", expectHeight);
+    if (noRender) scriptArgs.push("--no-render");
+
+    const run = await runProcess(
+      blender,
+      ["--background", "--factory-startup", "--python", verifier, "--", ...scriptArgs],
+      path.dirname(resolvedFbx),
+      timeoutMs,
+      8000
+    );
+
+    let verification = null;
+    try {
+      verification = JSON.parse(await fs.readFile(path.join(resolvedOut, "verify_visual_result.json"), "utf-8"));
+    } catch {
+      verification = null;
+    }
+
+    // A missing result file is the failure mode that matters: the process may exit 0
+    // while the script never ran. Never report ok without the artifact.
+    return textResult({
+      ok: run.exitCode === 0 && !run.timedOut && Boolean(verification) && verification.ok === true,
+      blender,
+      fbxPath: resolvedFbx,
+      outDir: resolvedOut,
+      exitCode: run.exitCode,
+      timedOut: run.timedOut,
+      durationMs: run.durationMs,
+      outputTruncated: run.outputTruncated,
+      verification,
+      renders: verification?.renders ?? [],
       outputTail: boundedTail(run.output, 8000)
     });
   }

@@ -115,6 +115,32 @@ sequenceDiagram
 | `blender_run_script` | Führt `blender --background --python <script.py>` mit optionalen Argumenten und begrenztem stdout-Tail aus. |
 | `blender_locate` | Löst die Blender-Executable auf — aus einem expliziten Pfad, `BLENDER_EXE`, den Standard-Installationsorten unter Windows oder PATH. |
 
+### `blender_verify_visual`
+
+Rendert vier Ansichten einer FBX und prüft Geometrie, die ein **struktureller** Reimport nicht
+sehen kann.
+
+`blender_verify_fbx_reimport` zählt Meshes und prüft Namenspräfixe — es kann nicht erkennen,
+dass ein Mesh auf der Seite liegt, dass ein Teil vom Verbund wegschwebt oder dass der Pivot
+außerhalb des Modells sitzt. Dieses Werkzeug schon, und es liefert die Bilder zum Ansehen.
+
+```json
+{ "fbxPath": "kit.fbx", "outDir": "verify_visual", "expectHeight": "2.5,3.5" }
+```
+
+Erkannte Fehlerklassen: nicht applizierte Rotation, schwebende Teile in Mehrteil-Assets,
+Pivot/Origin außerhalb der Bounding-Box, Transform-Residuen im Export, übrig gebliebene Empties.
+
+Liefert `verification` (das geparste `verify_visual_result.json` mit `ok`, `fails`, `warns`,
+`metrics`) sowie `renders` — `view_front.png`, `view_side.png`, `view_top.png`,
+`view_perspective.png`.
+
+**Warum vier Ansichten und nicht eine:** Ein einzelnes Bild von vorne verbirgt Tiefenfehler —
+schwebt-vs-liegt-auf, hinter-vs-vor. Realfall: Kettenglieder sahen frontal korrekt befestigt
+aus und waren seitlich gar nicht angebunden.
+
+Wie jedes Werkzeug hier ein einmaliger Headless-Lauf: kein Add-on, kein Daemon, kein Socket.
+
 ## Sicherheit
 
 - Dieser Server führt lokalen Python-Code innerhalb von Blender aus. Nur vertrauenswürdige Skripte und Asset-Pfade verwenden.

@@ -2,6 +2,16 @@
 
 All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
+## Unreleased
+
+### Added
+
+- `blender_verify_visual`: renders four views of an FBX and checks geometry a
+  structural reimport cannot see (unapplied rotation, floating parts, pivot outside
+  the model, transform residuals, stray empties). Returns the parsed result JSON plus
+  the render paths. Ships with `scripts/verify_asset_visual.py`, so the package stays
+  self-contained; `scripts/` added to `files`.
+
 ## 0.1.0-alpha.7 - 2026-07-31
 
 ### Security & Dependency Audit (2026-08-21)
