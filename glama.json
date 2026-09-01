@@ -1,8 +1,8 @@
 {
   "$schema": "https://glama.ai/mcp/schemas/server.json",
   "name": "ellmos-blender-use-mcp",
-  "version": "0.1.0-alpha.7",
-  "description": "Local-first MCP server for headless Blender asset QA: background script runs and FBX reimport verification. No add-on, no TCP port.",
+  "version": "0.1.0-alpha.8",
+  "description": "Local-first MCP server for headless Blender asset QA: background script runs, FBX reimport verification, and four-view visual verification. No add-on, no TCP port.",
   "maintainers": [
     "lukisch"
   ],
@@ -17,15 +17,18 @@
     "fbx",
     "asset-qa",
     "headless",
-    "mcp-server"
+    "mcp-server",
+    "visual-verification",
+    "render"
   ],
   "tools": {
-    "count": 3
+    "count": 4
   },
   "features": [
     "Blender executable discovery",
     "Headless background script runs",
     "FBX reimport verification",
+    "Four-view visual verification with geometry metrics",
     "Bounded output capture"
   ]
 }

@@ -53,6 +53,7 @@ graph TD
             T1["blender_verify_fbx_reimport"]
             T2["blender_run_script"]
             T3["blender_locate"]
+            T4["blender_verify_visual"]
         end
         Safety["Timeout & Tail-Puffer-Schutz (8k Zeichen)"]
     end
@@ -114,6 +115,7 @@ sequenceDiagram
 | `blender_verify_fbx_reimport` | Erzeugt ein temporäres Blender-Verifikationsskript, importiert eine FBX-Datei und schreibt ein JSON-Ergebnis mit Mesh-/Material-Anzahl und fehlenden Pflicht-Präfixen. |
 | `blender_run_script` | Führt `blender --background --python <script.py>` mit optionalen Argumenten und begrenztem stdout-Tail aus. |
 | `blender_locate` | Löst die Blender-Executable auf — aus einem expliziten Pfad, `BLENDER_EXE`, den Standard-Installationsorten unter Windows oder PATH. |
+| `blender_verify_visual` | Rendert vier Ansichten einer FBX und prüft Geometrie, die ein struktureller Reimport nicht sieht: nicht applizierte Rotation, schwebende Teile, Pivot außerhalb des Modells, Transform-Residuen, übrige Empties. |
 
 ### `blender_verify_visual`
 

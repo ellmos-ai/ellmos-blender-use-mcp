@@ -24,7 +24,7 @@
 
 📦 **[View on npm →](https://www.npmjs.com/package/ellmos-blender-use-mcp)** | 🛡️ **[Security Policy](SECURITY.md)** | 🤖 **[LLM Context](llms.txt)** | 🌐 **[Ecosystem](#ellmos-ai-ecosystem)**
 
-An asset-QA tool for game and 3D asset pipelines: verify that an exported FBX actually reimports cleanly in headless Blender — mesh count, material count, and required naming prefixes checked automatically, with a deterministic JSON result instead of a manual eyeball pass. `blender_verify_fbx_reimport` is the core tool; `blender_locate` and `blender_run_script` are the general-purpose primitives it is built on.
+An asset-QA tool for game and 3D asset pipelines: verify that an exported FBX actually reimports cleanly in headless Blender — mesh count, material count, and required naming prefixes checked automatically, with a deterministic JSON result instead of a manual eyeball pass. `blender_verify_fbx_reimport` is the core structural tool and `blender_verify_visual` its visual counterpart — the first counts meshes and checks name prefixes, the second renders four views and measures geometry that counting cannot see. `blender_locate` and `blender_run_script` are the general-purpose primitives both are built on.
 
 **No add-on. No TCP port. No background daemon.** This server does not install anything into Blender, does not open a socket for a running Blender instance to connect to, and does not keep Blender resident. Each call spawns `blender --background --python <script.py>`, waits for a bounded, timeout-guarded exit, and returns the result — headless and stateless by design. It does not download assets and does not collect telemetry.
 
@@ -53,6 +53,7 @@ graph TD
             T1["blender_verify_fbx_reimport"]
             T2["blender_run_script"]
             T3["blender_locate"]
+            T4["blender_verify_visual"]
         end
         Safety["Timeout & Tail Buffer Guard (8k chars)"]
     end
@@ -114,6 +115,7 @@ sequenceDiagram
 | `blender_verify_fbx_reimport` | Generate a temporary Blender verification script, import an FBX, and write a JSON result with mesh/material counts and missing required prefixes. |
 | `blender_run_script` | Run `blender --background --python <script.py>` with optional arguments and bounded stdout tail. |
 | `blender_locate` | Resolve the Blender executable from an explicit path, `BLENDER_EXE`, the standard Windows install locations, or PATH. |
+| `blender_verify_visual` | Render four views of an FBX and check geometry a structural reimport cannot see: unapplied rotation, floating parts, pivot outside the model, transform residuals, stray empties. |
 
 ### `blender_verify_visual`
 

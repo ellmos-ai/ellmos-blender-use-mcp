@@ -1,8 +1,8 @@
 {
   "name": "ellmos-blender-use-mcp",
-  "version": "0.1.0-alpha.7",
+  "version": "0.1.0-alpha.8",
   "mcpName": "io.github.ellmos-ai/ellmos-blender-use-mcp",
-  "description": "Local-first, add-on-free MCP asset-QA tool for headless Blender FBX reimport verification and background script runs",
+  "description": "Local-first, add-on-free MCP asset-QA tool for headless Blender: FBX reimport verification, four-view visual verification, and background script runs",
   "type": "module",
   "main": "src/index.js",
   "bin": {
@@ -42,7 +42,10 @@
     "headless",
     "local-first",
     "ellmos",
-    "glama"
+    "glama",
+    "visual-verification",
+    "render",
+    "geometry-check"
   ],
   "author": "Lukas Geiger",
   "license": "MIT",

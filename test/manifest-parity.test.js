@@ -33,10 +33,25 @@ for (const relPath of pkg.files) {
 }
 
 // 5. Tool count consistency in glama.json and llms.txt
-assert.equal(glama.tools.count, 3, "glama.json tool count mismatch (expected 3)");
-assert.ok(llmsTxt.includes("blender_verify_fbx_reimport"), "llms.txt missing blender_verify_fbx_reimport tool");
-assert.ok(llmsTxt.includes("blender_run_script"), "llms.txt missing blender_run_script tool");
-assert.ok(llmsTxt.includes("blender_locate"), "llms.txt missing blender_locate tool");
+//
+// The tool count is DERIVED from src/index.js, not hard-coded. A literal number here
+// pins the manifest to whatever the count happened to be when the test was written:
+// adding a fourth tool made this assertion fail on the correct value (4 vs. an expected
+// 3), which is a test asserting its own staleness rather than a real defect. Counting
+// the registrations means the manifest is checked against the actual tool surface, and
+// the check keeps working when a fifth tool arrives.
+const indexSrc = readFileSync(path.join(root, "src", "index.js"), "utf8");
+const registeredTools = [...indexSrc.matchAll(/server\.tool\(\s*["'`]([a-z0-9_]+)["'`]/gi)].map((m) => m[1]);
+assert.ok(registeredTools.length > 0, "no server.tool() registrations found in src/index.js");
+assert.equal(
+  glama.tools.count,
+  registeredTools.length,
+  `glama.json tool count mismatch (manifest says ${glama.tools.count}, src/index.js registers ${registeredTools.length}: ${registeredTools.join(", ")})`
+);
+// Every registered tool must be documented in llms.txt -- that file is what agents read.
+for (const toolName of registeredTools) {
+  assert.ok(llmsTxt.includes(toolName), `llms.txt missing ${toolName} tool`);
+}
 
 // 6. Security and Documentation existence & parity
 const securityMd = readFileSync(path.join(root, "SECURITY.md"), "utf8");

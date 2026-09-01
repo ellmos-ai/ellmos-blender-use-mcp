@@ -2,7 +2,7 @@
 
 All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
-## Unreleased
+## 0.1.0-alpha.8 - 2026-09-01
 
 ### Added
 

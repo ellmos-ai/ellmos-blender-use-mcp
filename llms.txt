@@ -11,7 +11,7 @@ Runtime: Node.js >=18
 
 ## Summary
 
-ellmos Blender Use MCP is an alpha-stage Model Context Protocol server built for game and 3D asset pipelines. Its core capability is `blender_verify_fbx_reimport`: it imports a given FBX into headless Blender and writes a deterministic JSON verification result with mesh count, material count, and any missing required naming prefixes, replacing a manual reimport-and-eyeball check. `blender_run_script` and `blender_locate` are the general-purpose primitives the verification tool is built on: running an arbitrary Python script in `blender --background` mode with a bounded, timeout-guarded output tail, and resolving the local Blender executable.
+ellmos Blender Use MCP is an alpha-stage Model Context Protocol server built for game and 3D asset pipelines. It has two verification tools that complement each other. `blender_verify_fbx_reimport` imports a given FBX into headless Blender and writes a deterministic JSON result with mesh count, material count, and any missing required naming prefixes — a structural check. `blender_verify_visual` renders four views and measures geometry that counting cannot detect (unapplied rotation, floating parts, pivot outside the model), replacing the manual load-and-eyeball pass that structural checks leave open. `blender_run_script` and `blender_locate` are the general-purpose primitives the verification tool is built on: running an arbitrary Python script in `blender --background` mode with a bounded, timeout-guarded output tail, and resolving the local Blender executable.
 
 It does not install a Blender add-on, does not open a TCP port for a running Blender instance, and does not keep Blender resident between calls — every call is a fresh, headless, stateless `blender --background` process with a bounded timeout. It does not download assets and does not collect telemetry.
 
@@ -22,6 +22,7 @@ It is useful for CI-style, one-shot asset verification in an asset pipeline. It 
 - `blender_verify_fbx_reimport`: import an FBX in headless Blender and write/read a JSON verification result (mesh count, material count, missing required prefixes). Its stdout/stderr tail is capped at 8,000 characters and reports `outputTruncated` when earlier output was discarded.
 - `blender_run_script`: run `blender --background --python <script.py>` with optional script arguments and a bounded stdout/stderr tail (8,000 characters by default, configurable up to 50,000). It reports `outputTruncated` when earlier output was discarded.
 - `blender_locate`: resolve the local Blender executable from an explicit path, `BLENDER_EXE`, the standard Blender install locations on Windows (newest installed version first), or `PATH`.
+- `blender_verify_visual`: render four views (front, side, top, perspective) of an FBX in headless Blender and check geometry that a structural reimport cannot see — unapplied rotation (mesh lying on its side), floating parts in multi-part assets, pivot/origin outside the bounding box, transform residuals, stray empties. Returns the parsed verification JSON plus the render paths. Like every tool here it is a one-shot headless run: no add-on, no daemon, no socket.
 
 ## Install
 
