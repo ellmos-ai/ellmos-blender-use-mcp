@@ -15,7 +15,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org/)
 [![Plattform](https://img.shields.io/badge/Plattform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](https://github.com/ellmos-ai/ellmos-blender-use-mcp)
-[![Privatsphaere](https://img.shields.io/badge/Privatsph%C3%A4re-100%25%20Offline%20%7C%20Zero--Egress-success.svg)](SECURITY.md)
+[![Privatsphäre](https://img.shields.io/badge/Privatsph%C3%A4re-100%25%20Offline%20%7C%20Zero--Egress-success.svg)](SECURITY.md)
 [![Sicherheit](https://img.shields.io/badge/Sicherheit-Isoliert%20Headless-success.svg)](SECURITY.md)
 [![LLM-Ready](https://img.shields.io/badge/LLM--Ready-llms.txt-blue.svg)](llms.txt)
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
@@ -24,7 +24,7 @@
 
 📦 **[Auf npm ansehen →](https://www.npmjs.com/package/ellmos-blender-use-mcp)** | 🛡️ **[Sicherheitsrichtlinie](SECURITY.md)** | 🤖 **[LLM-Kontext](llms.txt)** | 🌐 **[Ökosystem](#ellmos-ai-ökosystem)**
 
-Ein Asset-QA-Werkzeug für Game- und 3D-Asset-Pipelines: prüft, ob eine exportierte FBX-Datei im headless Blender tatsächlich sauber re-importiert — Mesh-Anzahl, Material-Anzahl und geforderte Namens-Präfixe werden automatisch geprüft, mit einem deterministischen JSON-Ergebnis statt einer manuellen Sichtprüfung. `blender_verify_fbx_reimport` ist das Kern-Tool; `blender_locate` und `blender_run_script` sind die allgemeinen Bausteine, auf denen es aufbaut.
+Ein Asset-QA-Werkzeug für Game- und 3D-Asset-Pipelines: prüft, ob eine exportierte FBX-Datei im headless Blender tatsächlich sauber re-importiert — Mesh-Anzahl, Material-Anzahl und geforderte Namens-Präfixe werden automatisch geprüft, mit einem deterministischen JSON-Ergebnis statt einer manuellen Sichtprüfung. `blender_verify_fbx_reimport` ist das strukturelle Kern-Tool und `blender_verify_visual` sein visuelles Gegenstück — das erste zählt Meshes und prüft Namenspräfixe, das zweite rendert vier Ansichten und misst Geometrie, die eine reine Zählung nicht erfassen kann. `blender_locate` und `blender_run_script` sind die allgemeinen Bausteine, auf denen beide aufbauen.
 
 **Kein Add-on. Kein TCP-Port. Kein Hintergrund-Daemon.** Dieser Server installiert nichts in Blender, öffnet keinen Socket für eine laufende Blender-Instanz und hält Blender nicht dauerhaft im Speicher. Jeder Aufruf startet `blender --background --python <script.py>`, wartet auf ein zeitlich begrenztes, timeout-geschütztes Ende und gibt das Ergebnis zurück — headless und zustandslos per Design. Es werden keine Assets heruntergeladen und keine Telemetrie erfasst.
 
@@ -70,6 +70,7 @@ graph TD
     T1 -->|Generiert Skript & startet| Exe
     T2 -->|Führt beliebiges Python aus| Exe
     T3 -->|Sucht Executable| Exe
+    T4 -->|Generiert visuelles Verifikationsskript & startet| Exe
     Exe --> Python
     Python --> FBX
     FBX -->|Mesh / Material / Namens-QA| JSONOut
@@ -215,7 +216,7 @@ Dieser MCP-Server ist Teil des **[ellmos-ai](https://github.com/ellmos-ai)**-Ök
 | [ControlCenter](https://github.com/ellmos-ai/ellmos-controlcenter-mcp) | 20 | MCP-Stack-Discovery, Profilverwaltung, Control Plane | [`ellmos-controlcenter-mcp`](https://www.npmjs.com/package/ellmos-controlcenter-mcp) |
 | [Homebase](https://github.com/ellmos-ai/ellmos-homebase-mcp) | 45 | Local-first LLM-Gedächtnis, Wissen, Zustand, Routing, Schwarm-Orchestrierung | [`ellmos-homebase-mcp`](https://www.npmjs.com/package/ellmos-homebase-mcp) (alpha) |
 | [ServerCommander](https://github.com/ellmos-ai/ellmos-servercommander-mcp) | 8 | Server-Operationen: Health-Checks, Log-Analyse, Deploy-Dry-Runs, Mail-Diagnose | [`ellmos-servercommander-mcp`](https://www.npmjs.com/package/ellmos-servercommander-mcp) (alpha) |
-| **[Blender Use](https://github.com/ellmos-ai/ellmos-blender-use-mcp)** | **3** | **Headless Blender-Asset-QA und FBX-Reimport-Verifikation** | **[`ellmos-blender-use-mcp`](https://www.npmjs.com/package/ellmos-blender-use-mcp)** (alpha) |
+| **[Blender Use](https://github.com/ellmos-ai/ellmos-blender-use-mcp)** | **4** | **Headless Blender-Asset-QA: strukturelle FBX-Reimport-Prüfung und visuelle Vier-Ansichten-Verifikation** | **[`ellmos-blender-use-mcp`](https://www.npmjs.com/package/ellmos-blender-use-mcp)** (alpha) |
 | [Open Compute](https://github.com/ellmos-ai/open-compute-mcp) | 10 | Modell-agnostischer Computer-Use: Capture, safety-gated Aktionen, Windows-UIA | [`open-compute-mcp`](https://www.npmjs.com/package/open-compute-mcp) (alpha) |
 
 ### KI-Infrastruktur & Entwickler-Werkzeuge

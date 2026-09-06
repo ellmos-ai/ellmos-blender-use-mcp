@@ -3,7 +3,7 @@
   "name": "io.github.ellmos-ai/ellmos-blender-use-mcp",
   "version": "0.1.0-alpha.8",
   "title": "ellmos Blender Use",
-  "description": "Headless Blender asset QA over MCP: background script runs, FBX reimport verification, and four-view visual verification with geometry metrics.",
+  "description": "Local-first, add-on-free MCP asset QA for headless Blender: executable discovery, bounded background scripts, structural FBX reimport checks, and four-view visual verification.",
   "websiteUrl": "https://github.com/ellmos-ai/ellmos-blender-use-mcp",
   "repository": {
     "url": "https://github.com/ellmos-ai/ellmos-blender-use-mcp",
