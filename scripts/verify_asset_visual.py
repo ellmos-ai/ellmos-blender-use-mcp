@@ -1,18 +1,18 @@
-r"""Visuelles Verify-Gate fuer selbstgebaute Roblox-Blender-Assets (FBX).
+r"""Visuelles Verify-Gate für selbstgebaute Roblox-Blender-Assets (FBX).
 
-Ergaenzt das bestehende Struktur-Gate (verify_reimport.py: Existenz/Meshzahl/Namen/
+Ergänzt das bestehende Struktur-Gate (verify_reimport.py: Existenz/Meshzahl/Namen/
 skriptfrei) um Fehlerklassen, die dort NICHT erkannt werden: auf der Seite liegende
 Meshes (Rotation nicht applied), schwebende Teile in Mehrteil-Assets, Pivot/Origin
-ausserhalb des Modells, Rotation/Scale-Residuen im Export, Empties im Export sowie
-ein visueller Output (4 Render-Views) fuer die Sichtpruefung.
+außerhalb des Modells, Rotation/Scale-Residuen im Export, Empties im Export sowie
+ein visueller Output (4 Render-Views) für die Sichtprüfung.
 
 Aufruf (Blender Background-Modus):
     blender.exe --background --factory-startup --python verify_asset_visual.py -- \
         --fbx <pfad.fbx> --out <ausgabeordner> [--expect-height MIN,MAX] [--json]
 
 Hinweis Hochachse: Nach dem Reimport in Blender ist Z die Hochachse (Blender-eigene
-Konvention; der FBX-Roundtrip mit Standard-Achsen sorgt dafuer, dass Z beim Reimport
-wieder "oben" ist, unabhaengig davon, dass FBX intern Y-up nutzt).
+Konvention; der FBX-Roundtrip mit Standard-Achsen sorgt dafür, dass Z beim Reimport
+wieder "oben" ist, unabhängig davon, dass FBX intern Y-up nutzt).
 
 Schreibt verify_visual_result.json in <out> mit {ok, fails[], warns[], metrics{...},
 renders[]} und setzt Exit-Code 0 (ok) bzw. 1 (fails vorhanden).
@@ -29,7 +29,7 @@ from pathlib import Path
 import bpy
 from mathutils import Vector
 
-# --- Default-Toleranzen (per CLI ueberschreibbar, siehe parse_args) ---
+# --- Default-Toleranzen (per CLI überschreibbar, siehe parse_args) ---
 DEFAULT_ROTATION_WARN_DEG = 0.05
 DEFAULT_ROTATION_FAIL_DEG = 1.0
 DEFAULT_SCALE_WARN_TOL = 0.002
@@ -41,14 +41,14 @@ RENDER_RESOLUTION = (640, 480)
 
 
 def parse_height_range(value: str) -> tuple[float, float]:
-    """Parst 'MIN,MAX' zu einem Float-Tupel (fuer --expect-height)."""
+    """Parst 'MIN,MAX' zu einem Float-Tupel (für --expect-height)."""
     parts = value.split(",")
     if len(parts) != 2:
         raise argparse.ArgumentTypeError("Format muss MIN,MAX sein, z.B. 3,8")
     try:
         lo, hi = float(parts[0]), float(parts[1])
     except ValueError as exc:
-        raise argparse.ArgumentTypeError(f"Ungueltige Zahl in '{value}'") from exc
+        raise argparse.ArgumentTypeError(f"Ungültige Zahl in '{value}'") from exc
     if lo > hi:
         lo, hi = hi, lo
     return lo, hi
@@ -57,17 +57,17 @@ def parse_height_range(value: str) -> tuple[float, float]:
 def parse_args() -> argparse.Namespace:
     """Liest die Skript-Argumente nach dem '--' Trenner (Blender-Konvention)."""
     argv = sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
-    parser = argparse.ArgumentParser(description="Visuelles Verify-Gate fuer FBX-Assets.")
-    parser.add_argument("--fbx", required=True, help="Pfad zur zu pruefenden FBX-Datei.")
-    parser.add_argument("--out", required=True, help="Ausgabeordner fuer JSON-Ergebnis und Renders.")
+    parser = argparse.ArgumentParser(description="Visuelles Verify-Gate für FBX-Assets.")
+    parser.add_argument("--fbx", required=True, help="Pfad zur zu prüfenden FBX-Datei.")
+    parser.add_argument("--out", required=True, help="Ausgabeordner für JSON-Ergebnis und Renders.")
     parser.add_argument(
         "--expect-height",
         type=parse_height_range,
         default=None,
-        help="Optionales Hoehen-Gate 'MIN,MAX' (gleiche Einheit wie die FBX-Datei, i.d.R. Studs).",
+        help="Optionales Höhen-Gate 'MIN,MAX' (gleiche Einheit wie die FBX-Datei, i.d.R. Studs).",
     )
-    parser.add_argument("--json", action="store_true", help="Ergebnis zusaetzlich als kompaktes JSON auf stdout.")
-    parser.add_argument("--no-render", action="store_true", help="Renders ueberspringen (nur Geometrie-Checks).")
+    parser.add_argument("--json", action="store_true", help="Ergebnis zusätzlich als kompaktes JSON auf stdout.")
+    parser.add_argument("--no-render", action="store_true", help="Renders überspringen (nur Geometrie-Checks).")
     parser.add_argument("--rotation-warn-deg", type=float, default=DEFAULT_ROTATION_WARN_DEG)
     parser.add_argument("--rotation-fail-deg", type=float, default=DEFAULT_ROTATION_FAIL_DEG)
     parser.add_argument("--scale-warn-tol", type=float, default=DEFAULT_SCALE_WARN_TOL)
@@ -81,7 +81,7 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Rotations-Residuen auch bei Kind-Objekten (mit Parent) als FAIL werten statt nur als WARN. "
             "Standard ist aus, weil Kind-Rotationen in Hierarchien (z.B. Waffen-Grip am Socket, radial "
-            "angeordnete Teile) haeufig beabsichtigte Posen sind und keine Export-Residuen -- empirisch "
+            "angeordnete Teile) häufig beabsichtigte Posen sind und keine Export-Residuen -- empirisch "
             "belegt an einem echten Produktions-Kit, das ohne diese Ausnahme dutzende falsche FAILs erzeugte."
         ),
     )
@@ -89,10 +89,10 @@ def parse_args() -> argparse.Namespace:
 
 
 def clear_scene() -> None:
-    """Leert die Szene vollstaendig (auch Default-Cube/Kamera/Licht bei --factory-startup)."""
+    """Leert die Szene vollständig (auch Default-Cube/Kamera/Licht bei --factory-startup)."""
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.object.delete()
-    # verwaiste Datenbloecke aus vorherigen Laeufen mit aufraeumen
+    # verwaiste Datenblöcke aus vorherigen Läufen mit aufräumen
     for block_collection in (bpy.data.meshes, bpy.data.materials, bpy.data.cameras, bpy.data.lights):
         for block in list(block_collection):
             if block.users == 0:
@@ -122,9 +122,9 @@ def find_pivot(all_objects: list[bpy.types.Object]) -> tuple[Vector, str | None]
     """Bestimmt den Referenzpunkt (Pivot) des gesamten Assets.
 
     Gibt es genau EIN Objekt ohne Parent (typischerweise eine Gruppen-Empty oder ein
-    einzelnes Root-Mesh), zaehlt dessen Welt-Position als Pivot. Bei mehreren
+    einzelnes Root-Mesh), zählt dessen Welt-Position als Pivot. Bei mehreren
     Top-Level-Objekten (flaches Mehrteil-Kit ohne gemeinsamen Parent) gilt der
-    Szenen-Ursprung (0,0,0) als Pivot, weil genau dort das Kit beim Re-Import landen wuerde.
+    Szenen-Ursprung (0,0,0) als Pivot, weil genau dort das Kit beim Re-Import landen würde.
     """
     top_level = [obj for obj in all_objects if obj.parent is None]
     if len(top_level) == 1:
@@ -140,19 +140,19 @@ def check_transforms(
     scale_fail_tol: float,
     strict_child_rotation: bool,
 ) -> tuple[list[str], list[str], list[dict]]:
-    """Prueft pro Objekt die LOKALE Rotation/Skalierung auf Nicht-Identitaet (Transform-Residuen).
+    """Prüft pro Objekt die LOKALE Rotation/Skalierung auf Nicht-Identitaet (Transform-Residuen).
 
-    Nutzt matrix_basis.decompose() statt rotation_euler, damit die Pruefung unabhaengig
+    Nutzt matrix_basis.decompose() statt rotation_euler, damit die Prüfung unabhängig
     vom eingestellten rotation_mode (Euler/Quaternion/Achse-Winkel) korrekt funktioniert.
 
-    WICHTIGE EINSCHRAENKUNG (empirisch an einem echten Produktions-Kit gefunden): Eine
+    WICHTIGE EINSCHRÄNKUNG (empirisch an einem echten Produktions-Kit gefunden): Eine
     reine Rotations-Abweichung ist bei Kind-Objekten (obj.parent gesetzt) NICHT von einer
     beabsichtigten Pose innerhalb der Hierarchie (Waffe am Hand-Socket, radial angeordnete
-    Teile) unterscheidbar. Deshalb eskaliert Rotation bei Kind-Objekten standardmaessig nur
-    zu WARN, nicht zu FAIL -- volle Staerke (FAIL) nur bei Root-Objekten (kein Parent), wo
+    Teile) unterscheidbar. Deshalb eskaliert Rotation bei Kind-Objekten standardmäßig nur
+    zu WARN, nicht zu FAIL -- volle Stärke (FAIL) nur bei Root-Objekten (kein Parent), wo
     eine Rotation praktisch immer ein vergessenes "Transform anwenden" vor dem Export ist.
-    Ueber --strict-child-rotation kann das strengere Verhalten erzwungen werden. Skalierung
-    bleibt davon unberuehrt (Non-Uniform-Scale ist unabhaengig von der Hierarchietiefe fast
+    Über --strict-child-rotation kann das strengere Verhalten erzwungen werden. Skalierung
+    bleibt davon unberührt (Non-Uniform-Scale ist unabhängig von der Hierarchietiefe fast
     immer ein Bug, z.B. bei Roblox-Kollision problematisch).
     """
     fails: list[str] = []
@@ -200,7 +200,7 @@ def check_pivot(
     outside_margin_frac: float,
     warn_frac: float,
 ) -> tuple[str | None, str | None, dict]:
-    """Prueft die Pivot-Lage relativ zur Gesamt-BBox: FAIL wenn deutlich ausserhalb,
+    """Prüft die Pivot-Lage relativ zur Gesamt-BBox: FAIL wenn deutlich außerhalb,
     WARN wenn innerhalb aber nicht an der Basis-Mitte (Toleranz parametrisierbar)."""
     diagonal = (bbox_max - bbox_min).length or 1e-6
     margin = diagonal * outside_margin_frac
@@ -222,7 +222,7 @@ def check_pivot(
 
 def check_assembly(mesh_objects: list[bpy.types.Object], gap_frac: float) -> list[str]:
     """Assembly-Guard: Jedes Mesh-Teil muss (leicht expandiert) mindestens ein anderes
-    Teil beruehren/ueberschneiden. Bei nur 1 Mesh wird die Pruefung uebersprungen."""
+    Teil berühren/überschneiden. Bei nur 1 Mesh wird die Prüfung übersprungen."""
     if len(mesh_objects) < 2:
         return []
     bboxes = {obj.name: world_bbox(obj) for obj in mesh_objects}
@@ -247,7 +247,7 @@ def check_assembly(mesh_objects: list[bpy.types.Object], gap_frac: float) -> lis
 
 def render_views(mesh_objects: list[bpy.types.Object], out_dir: Path, no_render: bool) -> tuple[list[str], list[str]]:
     """Rendert 4 Ansichten (Front/Seite/Top/Perspektive) als PNG mit neutralem Studio-Licht
-    (Workbench-Engine, keine Materialien/Lichter im Asset noetig). Fehler bei einzelnen
+    (Workbench-Engine, keine Materialien/Lichter im Asset nötig). Fehler bei einzelnen
     Ansichten werden als WARN behandelt, nicht als Absturz."""
     renders: list[str] = []
     warns: list[str] = []
@@ -431,14 +431,14 @@ def main() -> None:
         metrics["floating_parts"] = floating
         fails += [f"floating_part:{name}" for name in floating]
 
-        # 4) Aufrecht-Plausibilitaet / optionales Hoehen-Gate
+        # 4) Aufrecht-Plausibilität / optionales Höhen-Gate
         if args.expect_height:
             lo, hi = args.expect_height
             metrics["expected_height_range"] = [lo, hi]
             if not (lo <= height <= hi):
                 fails.append("height_out_of_expected_range")
 
-    # 5) Empties/Nicht-Mesh zaehlen und listen (nur WARN)
+    # 5) Empties/Nicht-Mesh zählen und listen (nur WARN)
     if non_mesh_objects:
         metrics["empties"] = [obj.name for obj in non_mesh_objects]
         warns.append(f"empties_present:{len(non_mesh_objects)}")
