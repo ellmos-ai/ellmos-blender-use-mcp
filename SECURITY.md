@@ -47,9 +47,9 @@
 If you discover a potential security issue in `ellmos-blender-use-mcp`:
 
 1. Please do **not** open a public issue on GitHub.
-2. Report the vulnerability privately via GitHub Security Advisories or by contacting the maintainers directly at [security@ellmos.ai](mailto:security@ellmos.ai), [lukas@ellmos.ai](mailto:lukas@ellmos.ai), or [support@lukasgeiger.com](mailto:support@lukasgeiger.com).
+2. Report the vulnerability privately via GitHub Security Advisories or by contacting the maintainers directly at [security@open-bricks.org](mailto:security@open-bricks.org), [security@ellmos.ai](mailto:security@ellmos.ai), [lukas@ellmos.ai](mailto:lukas@ellmos.ai), or [support@lukasgeiger.com](mailto:support@lukasgeiger.com).
 3. Provide a clear description of the vulnerability, steps to reproduce, and potential impact.
-4. We acknowledge receipt within 48 hours and coordinate a coordinated disclosure timeline.
+4. We acknowledge receipt within 48 hours, provide a preliminary assessment within 5 business days, and coordinate a disclosure timeline.
 
 ---
 
@@ -89,6 +89,6 @@ If you discover a potential security issue in `ellmos-blender-use-mcp`:
 Sollten Sie eine Sicherheitslücke entdecken:
 
 1. Eröffnen Sie bitte **kein** öffentliches GitHub-Issue.
-2. Melden Sie den Befund vertraulich über GitHub Security Advisories oder per E-Mail an [security@ellmos.ai](mailto:security@ellmos.ai), [lukas@ellmos.ai](mailto:lukas@ellmos.ai) oder [support@lukasgeiger.com](mailto:support@lukasgeiger.com).
-3. Wir bestätigen den Eingang innerhalb von 48 Stunden und koordinieren die Behebung.
+2. Melden Sie den Befund vertraulich über GitHub Security Advisories oder per E-Mail an [security@open-bricks.org](mailto:security@open-bricks.org), [security@ellmos.ai](mailto:security@ellmos.ai), [lukas@ellmos.ai](mailto:lukas@ellmos.ai) oder [support@lukasgeiger.com](mailto:support@lukasgeiger.com).
+3. Wir bestätigen den Eingang innerhalb von 48 Stunden, liefern innerhalb von 5 Werktagen eine Ersteinschätzung und koordinieren die Behebung.
 

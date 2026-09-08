@@ -63,7 +63,7 @@ assert.match(readmeEn, /\| \*\*\[Blender Use\][^\n]+\| \*\*4\*\* \|/, "README.md
 assert.match(readmeDe, /\| \*\*\[Blender Use\][^\n]+\| \*\*4\*\* \|/, "README_de.md Blender Use family tool count mismatch");
 assert.ok(readmeEn.includes("T4 -->"), "README.md architecture does not connect the fourth tool");
 assert.ok(readmeDe.includes("T4 -->"), "README_de.md architecture does not connect the fourth tool");
-assert.ok(llmsTxt.includes("## Last-checked: 2026-09-05"), "llms.txt check date is stale");
+assert.match(llmsTxt, /## Last-checked:\s*2026-09-\d{2}/, "llms.txt check date is stale");
 
 const capabilityTerms = ["executable discovery", "background script", "structural FBX reimport", "four-view visual"];
 for (const [manifestName, description] of [
@@ -79,6 +79,7 @@ for (const [manifestName, description] of [
 // 6. Security and Documentation existence & parity
 const securityMd = readFileSync(path.join(root, "SECURITY.md"), "utf8");
 assert.ok(existsSync(path.join(root, "SECURITY.md")), "SECURITY.md must exist");
+assert.ok(securityMd.includes("security@open-bricks.org"), "SECURITY.md missing security@open-bricks.org contact");
 assert.ok(securityMd.includes("security@ellmos.ai"), "SECURITY.md missing security@ellmos.ai contact");
 assert.ok(securityMd.includes("lukas@ellmos.ai"), "SECURITY.md missing lukas@ellmos.ai contact");
 assert.ok(securityMd.includes("support@lukasgeiger.com"), "SECURITY.md missing support@lukasgeiger.com contact");
@@ -123,6 +124,11 @@ for (const [fileName, text] of [["README_de.md", readmeDe], ["scripts/verify_ass
 const ciYml = readFileSync(path.join(root, ".github", "workflows", "ci.yml"), "utf8");
 assert.ok(ciYml.includes("actions/checkout@v4"), "ci.yml must use checkout@v4");
 assert.ok(ciYml.includes("npm test"), "ci.yml must run npm test");
+assert.ok(ciYml.includes("18.x"), "ci.yml must include Node 18.x in matrix");
+assert.ok(ciYml.includes("20.x"), "ci.yml must include Node 20.x in matrix");
+assert.ok(ciYml.includes("windows-latest"), "ci.yml must include windows-latest");
+assert.ok(ciYml.includes("ubuntu-latest"), "ci.yml must include ubuntu-latest");
+assert.ok(ciYml.includes("macos-latest"), "ci.yml must include macos-latest");
 
 // 9. Third-party licenses inventory parity
 const thirdPartyLicenses = readFileSync(path.join(root, "THIRD_PARTY_LICENSES.md"), "utf8");
@@ -141,5 +147,12 @@ assert.ok(gitignore.includes("*.pem"), ".gitignore must ignore *.pem certificate
 assert.ok(gitignore.includes("*.key"), ".gitignore must ignore *.key private keys");
 assert.ok(gitignore.includes("*-WORKSTATION-LG*"), ".gitignore must ignore *-WORKSTATION-LG* sync conflicts");
 assert.ok(gitignore.includes("*-ASUS-GEI*"), ".gitignore must ignore *-ASUS-GEI* sync conflicts");
+assert.ok(gitignore.includes("*.sync-conflict-*"), ".gitignore must ignore *.sync-conflict-*");
+assert.ok(gitignore.includes("*-CONFLIT-*"), ".gitignore must ignore *-CONFLIT-*");
+assert.ok(gitignore.includes("*.conflict"), ".gitignore must ignore *.conflict");
+assert.ok(gitignore.includes("LOCK*.txt"), ".gitignore must ignore LOCK*.txt");
+
+// 11. LLM Context freshness
+assert.ok(llmsTxt.includes("Last-checked: 2026-09-08"), "llms.txt missing up-to-date Last-checked timestamp");
 
 console.log("All manifest-parity and metadata contract tests passed successfully.");

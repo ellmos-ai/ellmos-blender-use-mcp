@@ -7,7 +7,9 @@ test_out.txt
 !.env.example
 tmp/
 __pycache__/
+**/__pycache__/**
 *.pyc
+*.pyo
 desktop.ini
 REVIEW_*.md
 LOCK*.txt
@@ -34,3 +36,23 @@ credentials.json
 *-ASUS-GEI*
 *.conflict
 *.sync-conflict-*
+*-CONFLIT-*
+*-conflict-*
+
+# Multi-agent locks and runtime locks
+LOCK.*
+*.lock
+!package-lock.json
+
+# Temporary files, caches, and test artifacts
+*.tmp
+*.bak
+*.swp
+*~
+.DS_Store
+Thumbs.db
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.wheel-smoke/

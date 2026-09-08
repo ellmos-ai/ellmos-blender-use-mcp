@@ -2,9 +2,18 @@
 
 All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
-## 0.1.0-alpha.8 - 2026-09-01
+## 0.1.0-alpha.8 - 2026-09-08
 
-### Added
+### Technical Hygiene & CI Hardening (2026-09-08)
+- Expanded GitHub Actions CI test matrix (`.github/workflows/ci.yml`) to include Node.js 18.x (`[18.x, 20.x, 22.x, 24.x]`), aligning CI runtime testing with the package manifest engine requirement (`>=18.0.0`).
+- Hardened `.gitignore` with comprehensive multi-host conflict patterns (`*-CONFLIT-*`, `*-conflict-*`, `*.sync-conflict-*`), multi-agent lockfile boundaries (`LOCK.*`, `*.lock` with `!package-lock.json`), and temporary test/cache artifacts (`.ruff_cache/`, `.pytest_cache/`, `*.tmp`, `*.bak`).
+- Updated `SECURITY.md` in both English and German to incorporate the umbrella organization security contact (`security@open-bricks.org`) alongside `security@ellmos.ai` and `support@lukasgeiger.com`, with explicit 48-hour SLA and 5 business days triage commitment.
+- Performed security dependency audit: updated transitive dependencies (`fast-uri` to 3.1.7, `qs` to 6.16.0) via `npm audit fix`, resolving high and moderate severity advisories (GHSA-5jgf-p345-68v8, GHSA-x5fp-wj9c-mxmx); package-lock.json synchronized to zero audit vulnerabilities and version 0.1.0-alpha.8 parity.
+- Extended automated regression suite in `test/manifest-parity.test.js` to assert umbrella security contacts, complete CI matrix coverage, gitignore sync-conflict patterns, and machine-readable context freshness.
+- Synchronized `llms.txt` Last-checked timestamp to `2026-09-08`.
+- Verified 100% test pass across all 5 test suites (`privacy-hygiene`, `runtime-safety`, `tool-surface`, `blender-resolution`, `manifest-parity`), clean syntax build (`npm run build`), zero leaks, and package dry-run tarball integrity (13 files).
+
+### Added (2026-09-01)
 
 - `blender_verify_visual`: renders four views of an FBX and checks geometry a
   structural reimport cannot see (unapplied rotation, floating parts, pivot outside

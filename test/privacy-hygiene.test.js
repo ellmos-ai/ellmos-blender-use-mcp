@@ -4,7 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const ignoredDirs = new Set(["node_modules", ".git"]);
+const ignoredDirs = new Set(["node_modules", ".git", ".ruff_cache", ".pytest_cache"]);
 const ignoredFiles = new Set(["package-lock.json", "push-protocoll.txt", "changelog-protocoll.txt"]);
 // Any literal Windows user-profile path leaks the developer's local machine
 // layout. Matching only one hardcoded username would miss the same leak
