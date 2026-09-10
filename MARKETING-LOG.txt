@@ -1,0 +1,88 @@
+# MARKETING LOG: ellmos-blender-use-mcp
+
+**Repository:** `ellmos-ai/ellmos-blender-use-mcp`  
+**Package:** `ellmos-blender-use-mcp` (npm / GitHub / Glama / Smithery)  
+**Author:** Lukas Geiger  
+**Organization:** [ellmos-ai](https://github.com/ellmos-ai) | Umbrella: [open-bricks](https://github.com/open-bricks)  
+**License:** MIT  
+**Current Version:** 0.1.0-alpha.8  
+**Audit Date:** 2026-09-09 (Pfad B Discoverability & Visual Architecture)
+
+---
+
+## 1. Executive Summary & Value Proposition
+
+`ellmos-blender-use-mcp` is a specialized, headless Model Context Protocol (MCP) asset-QA server engineered for 3D game pipelines, digital content creation (DCC), and automated delivery workflows.
+
+Unlike other Blender MCP servers that run interactive, persistent TCP daemons inside an active Blender GUI session, `ellmos-blender-use-mcp` operates with **zero persistent daemon overhead, zero installed add-ons, and zero open network ports**. Every invocation launches an isolated, ephemeral `blender --background` subprocess with a timeout guard and bounded memory buffer, returning deterministic structured JSON results and optional orthogonal four-view visual verification renders.
+
+---
+
+## 2. Core Architectural Differentiation
+
+| Feature / Dimension | Traditional Blender MCP Servers | `ellmos-blender-use-mcp` |
+|---|---|---|
+| **Execution Mode** | Interactive live GUI via open TCP socket | Headless, one-shot batch process (`--background`) |
+| **Installation Requirements** | Blender Add-on / Script installation required | Zero add-ons required; works out of the box |
+| **Trust Model & Network** | Open TCP port (listener on localhost) | 100% Offline / Zero-Egress (no sockets or ports) |
+| **Process Lifecycle** | Long-running resident background daemon | Ephemeral child process; cleanly killed on completion |
+| **Memory Safety** | Unbounded growth from script prints | Hard tail-buffer truncation (8 KB - 50 KB max) |
+| **Primary Use Case** | Interactive prompt-to-scene modeling | CI/CD asset verification, FBX QA & Visual Checks |
+| **Verification Scope** | Manual eyeball inspection | Structural FBX checks + 4-view multi-angle renders |
+
+---
+
+## 3. Tool Suite
+
+1. `blender_verify_fbx_reimport`: Imports an FBX file into headless Blender and verifies mesh counts, material assignments, and required naming prefixes (e.g. `SM_`, `M_`). Produces deterministic JSON reports.
+2. `blender_verify_visual`: Renders four standardized views (front, side, top, perspective) to reveal geometry anomalies that structural tests cannot detect (unapplied rotation, floating sub-meshes, displaced pivots, export transform residuals).
+3. `blender_locate`: Locates the active Blender executable on Windows, Linux, or macOS across environment variables (`BLENDER_EXE`), standard installation roots, and system `PATH`.
+4. `blender_run_script`: Runs arbitrary Python scripts inside headless Blender with timeout supervision and tail-buffer truncation.
+
+---
+
+## 4. Target Audiences & Use Cases
+
+- **Game Studios & Indie Developers**: Automate pre-commit and pre-release gates for Unreal Engine, Unity, Godot, and custom engine 3D asset packages.
+- **Technical Artists & 3D Pipeline Engineers**: Eliminate repetitive manual verification of exported FBX hierarchy, scale, rotation, and materials.
+- **AI Agent Frameworks & LLM Assistants (Claude, Codex, Gemini)**: Enable autonomous agents to safely inspect 3D assets in local sandboxes without risking uncontrolled process persistence or socket leaks.
+- **Continuous Integration (CI/CD)**: Run automated regression tests on 3D assets inside GitHub Actions, GitLab CI, or local build servers.
+
+---
+
+## 5. 10 Governance & Runtime Invariants
+
+- **INV-LOCAL-01: 100% Local-First & Zero Network Egress** — No remote telemetry, network sockets, or remote asset downloads.
+- **INV-HEADLESS-02: Stateless & Add-on-Free Headless Execution** — No Blender add-on registration, no open ports, no persistent daemons.
+- **INV-SEC-03: Non-Elevation & Unprivileged RunAsInvoker** — Strict execution in user-mode without administrative elevation.
+- **INV-BOUND-04: Strict Timeout & Tail-Buffer Bounding** — Guarded subprocess execution with 8 KB - 50 KB tail buffer limits preventing memory leaks.
+- **INV-INTEG-05: Deterministic JSON & Evidence Integrity** — Structured, machine-readable JSON validation reports for all runs.
+- **INV-VISUAL-06: Four-View Multi-Angle Visual Verification** — Orthogonal front, side, top, and perspective renders preventing depth-blindness errors.
+- **INV-CLEAN-07: Fail-Closed Ephemeral Staging & Script Cleanup** — Automated purge of temporary Python scripts and staging files upon exit.
+- **INV-CROSS-08: Cross-Platform Operating System Parity** — Robust support across Windows, POSIX Linux, and macOS.
+- **INV-SYNC-09: Cloud-Sync & Multi-Host Lock Discipline** — Resistance against multi-host file sync collisions and compliance with multi-agent lockfiles.
+- **INV-SLA-10: 48h Security Response & 5-Day Triage SLA** — Guaranteed security intake acknowledgment within 48 hours and triage within 5 business days.
+
+---
+
+## 6. Discoverability & Search Keywords
+
+```
+blender fbx reimport verification mcp
+headless blender asset qa mcp server
+blender mcp no add-on no tcp port
+blender background script mcp server
+mcp server fbx mesh material verification
+asset pipeline blender automation mcp
+ellmos blender use mcp
+ellmos-blender-use-mcp
+blender visual verification fbx 4-view
+```
+
+---
+
+## 7. Ecosystem & Sibling Integration
+
+- **MCP Family**: `ellmos-filecommander-mcp`, `ellmos-codecommander-mcp`, `ellmos-controlcenter-mcp`, `n8n-manager-mcp`, `ellmos-homebase-mcp`, `ellmos-servercommander-mcp`, `open-compute-mcp`.
+- **Infrastructure & Automation**: `system-explorer`, `workflowhooker`, `decision-clicker`, `sqlite-transit-sync`, `BACH`.
+- **Desktop Software & Tools**: `ProFiler`, `DokuZen`, `FormularErstellen`, `DevCenter`, `BattleStage`, `open-bricks`.

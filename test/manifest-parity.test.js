@@ -153,6 +153,32 @@ assert.ok(gitignore.includes("*.conflict"), ".gitignore must ignore *.conflict")
 assert.ok(gitignore.includes("LOCK*.txt"), ".gitignore must ignore LOCK*.txt");
 
 // 11. LLM Context freshness
-assert.ok(llmsTxt.includes("Last-checked: 2026-09-08"), "llms.txt missing up-to-date Last-checked timestamp");
+assert.ok(llmsTxt.includes("Last-checked: 2026-09-09"), "llms.txt missing up-to-date Last-checked timestamp");
+
+// 12. Marketing ledger, runtime invariants & discoverability parity
+const marketingLogPath = path.join(root, "MARKETING-LOG.txt");
+assert.ok(existsSync(marketingLogPath), "MARKETING-LOG.txt must exist");
+const marketingLog = readFileSync(marketingLogPath, "utf8");
+
+const invariants = [
+  "INV-LOCAL-01", "INV-HEADLESS-02", "INV-SEC-03", "INV-BOUND-04", "INV-INTEG-05",
+  "INV-VISUAL-06", "INV-CLEAN-07", "INV-CROSS-08", "INV-SYNC-09", "INV-SLA-10"
+];
+
+for (const inv of invariants) {
+  assert.ok(marketingLog.includes(inv), `MARKETING-LOG.txt missing invariant ${inv}`);
+  assert.ok(readmeEn.includes(inv), `README.md missing invariant ${inv}`);
+  assert.ok(readmeDe.includes(inv), `README_de.md missing invariant ${inv}`);
+  assert.ok(llmsTxt.includes(inv), `llms.txt missing invariant ${inv}`);
+}
+
+assert.ok(readmeEn.includes("Quick Navigation"), "README.md missing Quick Navigation section");
+assert.ok(readmeDe.includes("Schnellnavigation"), "README_de.md missing Schnellnavigation section");
+assert.ok(readmeEn.includes("Security%20SLA"), "README.md missing Security SLA badge");
+assert.ok(readmeDe.includes("Sicherheits--SLA"), "README_de.md missing Sicherheits-SLA badge");
+
+const changelog = readFileSync(path.join(root, "CHANGELOG.md"), "utf8");
+assert.ok(changelog.includes("Pfad B"), "CHANGELOG.md missing Pfad B entry");
+assert.ok(changelog.includes("2026-09-09"), "CHANGELOG.md missing 2026-09-09 timestamp");
 
 console.log("All manifest-parity and metadata contract tests passed successfully.");

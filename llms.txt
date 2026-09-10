@@ -71,6 +71,7 @@ ellmos-blender-use-mcp
 - `README_de.md`: German documentation.
 - `SECURITY.md`: execution isolation, process tree safety, and vulnerability disclosure policy.
 - `server.json`: MCP registry metadata.
+- `MARKETING-LOG.txt`: discoverability, positioning, runtime invariants, and keywords.
 - `THIRD_PARTY_LICENSES.md`: dependency and prior-art license review.
 - `src/index.js`: MCP server entrypoint and tool definitions.
 - `test/privacy-hygiene.test.js`: regression test guarding against leaked local user-profile paths and hardcoded private workspace roots.
@@ -79,6 +80,19 @@ ellmos-blender-use-mcp
 - `test/blender-resolution.test.js`: regression test guarding that the Blender executable lookup uses the standard install roots instead of a hardcoded path.
 - `test/manifest-parity.test.js`: automated regression test guarding manifest, file package, bilingual security policy, sequence diagrams, and metadata parity.
 
-## Last-checked: 2026-09-08
+## Governance & Runtime Invariants
+
+- `INV-LOCAL-01`: 100% Local-First & Zero Network Egress (offline execution, no telemetry, no sockets).
+- `INV-HEADLESS-02`: Stateless & Add-on-Free Headless Execution (no resident daemon, no open TCP port).
+- `INV-SEC-03`: Non-Elevation & Unprivileged RunAsInvoker (runs strictly in user-mode).
+- `INV-BOUND-04`: Strict Timeout & Tail-Buffer Bounding (8 KB default, 50 KB max buffer).
+- `INV-INTEG-05`: Deterministic JSON & Evidence Integrity (structured validation reports).
+- `INV-VISUAL-06`: Four-View Multi-Angle Visual Verification (front, side, top, perspective renders).
+- `INV-CLEAN-07`: Fail-Closed Ephemeral Staging & Script Cleanup (purges temp Python files).
+- `INV-CROSS-08`: Cross-Platform Operating System Parity (Windows, Linux, macOS).
+- `INV-SYNC-09`: Cloud-Sync & Multi-Host Lock Discipline (hardened against sync collisions).
+- `INV-SLA-10`: 48h Security Response & 5-Day Triage SLA (binding response commitment).
+
+## Last-checked: 2026-09-09
 
 

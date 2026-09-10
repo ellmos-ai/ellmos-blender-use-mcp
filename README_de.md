@@ -6,23 +6,37 @@
 
 **🇬🇧 [English version](README.md)**
 
-*Teil der [ellmos-ai](https://github.com/ellmos-ai)-Familie.*
+*Teil der [ellmos-ai](https://github.com/ellmos-ai)-Familie und der Open-Source-Initiative [open-bricks](https://github.com/open-bricks).*
 
 [![npm version](https://img.shields.io/npm/v/ellmos-blender-use-mcp.svg)](https://www.npmjs.com/package/ellmos-blender-use-mcp)
 [![npm downloads](https://img.shields.io/npm/dt/ellmos-blender-use-mcp.svg)](https://www.npmjs.com/package/ellmos-blender-use-mcp)
 [![CI](https://github.com/ellmos-ai/ellmos-blender-use-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/ellmos-blender-use-mcp/actions/workflows/ci.yml)
 [![Tests](https://img.shields.io/badge/Tests-5%20Suites%20Passed%20%7C%20100%25-brightgreen.svg)](test/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![Plattform](https://img.shields.io/badge/Plattform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](https://github.com/ellmos-ai/ellmos-blender-use-mcp)
 [![Privatsphäre](https://img.shields.io/badge/Privatsph%C3%A4re-100%25%20Offline%20%7C%20Zero--Egress-success.svg)](SECURITY.md)
-[![Sicherheit](https://img.shields.io/badge/Sicherheit-Isoliert%20Headless-success.svg)](SECURITY.md)
+[![Sicherheit](https://img.shields.io/badge/Sicherheit-Isoliert%20Headless%20%7C%20RunAsInvoker-success.svg)](SECURITY.md)
+[![Sicherheits-SLA](https://img.shields.io/badge/Sicherheits--SLA-48h%20Antwort%20%7C%205T%20Triage-blue.svg)](SECURITY.md)
+[![Code-Stil](https://img.shields.io/badge/Code--Stil-Standard%20%2F%20ESM-informational.svg)](package.json)
 [![LLM-Ready](https://img.shields.io/badge/LLM--Ready-llms.txt-blue.svg)](llms.txt)
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
+[![Zuletzt geprüft](https://img.shields.io/badge/Zuletzt%20gepr%C3%BCft-2026--09--09-informational.svg)](llms.txt)
 
-📦 **[Auf npm ansehen →](https://www.npmjs.com/package/ellmos-blender-use-mcp)** | 🛡️ **[Sicherheitsrichtlinie](SECURITY.md)** | 🤖 **[LLM-Kontext](llms.txt)** | 🌐 **[Ökosystem](#ellmos-ai-ökosystem)**
+---
+
+### Schnellnavigation
+
+> **Sprache / Language:** 🇩🇪 **Deutsch** | 🇬🇧 **[English](README.md)**
+
+[1. Kernfähigkeiten](#kernfähigkeiten) • [2. Architektur & Komponenten-Topologie](#architektur--workflow) • [3. Headless Verifikations-Lebenszyklus](#2-headless-asset-qa-verifikations-lebenszyklus) • [4. Werkzeugpalette & Verifikations-Matrix](#werkzeuge) • [5. Visuelle Prüfung im Detail](#blender_verify_visual) • [6. Governance & Laufzeit-Invarianten](#governance--laufzeit-invarianten) • [7. Sicherheitsrichtlinie](SECURITY.md) • [8. Installation & Einrichtung](#installation) • [9. Konfiguration & Umgebungsvariablen](#konfiguration) • [10. Drittanbieter-Lizenzen](THIRD_PARTY_LICENSES.md) • [11. Geschwisterprojekte & Ökosystem](#ellmos-ai-ökosystem) • [12. LLM-Kontext](llms.txt) • [13. Änderungsprotokoll](CHANGELOG.md) • [14. Lizenz & Urheberrecht](#lizenz)
+
+---
+
+<a id="kernfähigkeiten"></a>
+## Kernfähigkeiten
 
 Ein Asset-QA-Werkzeug für Game- und 3D-Asset-Pipelines: prüft, ob eine exportierte FBX-Datei im headless Blender tatsächlich sauber re-importiert — Mesh-Anzahl, Material-Anzahl und geforderte Namens-Präfixe werden automatisch geprüft, mit einem deterministischen JSON-Ergebnis statt einer manuellen Sichtprüfung. `blender_verify_fbx_reimport` ist das strukturelle Kern-Tool und `blender_verify_visual` sein visuelles Gegenstück — das erste zählt Meshes und prüft Namenspräfixe, das zweite rendert vier Ansichten und misst Geometrie, die eine reine Zählung nicht erfassen kann. `blender_locate` und `blender_run_script` sind die allgemeinen Bausteine, auf denen beide aufbauen.
 
@@ -109,7 +123,8 @@ sequenceDiagram
     Server-->>Client: Deterministisches JSON-Ergebnis (meshCount, materialCount, missingPrefixes, ok)
 ```
 
-## Tools
+<a id="werkzeuge"></a>
+## Werkzeuge
 
 | Tool | Zweck |
 |---|---|
@@ -151,6 +166,25 @@ Wie jedes Werkzeug hier ein einmaliger Headless-Lauf: kein Add-on, kein Daemon, 
 - Keine Remote-Asset-Marktplätze, API-Schlüssel oder Telemetrie enthalten.
 - Für live GUI-Kontrolle separat ein geprüftes Blender-MCP-Add-on nutzen.
 
+<a id="governance--laufzeit-invarianten"></a>
+## Governance & Laufzeit-Invarianten
+
+Der Server setzt 10 Architektur- und Laufzeit-Invarianten verbindlich durch, um Datenschutz, Sicherheit, Prozess-Isolation und Nachvollziehbarkeit zu garantieren:
+
+| ID | Invariante | Garantie & Implementierungsdetails |
+|---|---|---|
+| `INV-LOCAL-01` | **100% Local-First & Zero Network Egress** | Keinerlei ausgehende Netzwerkverbindungen, Telemetrie oder externe API-Abfragen. Headless-Blender-Ausführungen erfolgen vollständig offline auf dem lokalen System. |
+| `INV-HEADLESS-02` | **Zustandslose & add-on-freie Headless-Ausführung** | Keine persistenten Hintergrund-Daemons, keine offenen TCP-Netzwerkports und null Modifikationen an der lokalen Blender-Installation oder dem Skriptverzeichnis. |
+| `INV-SEC-03` | **Unprivilegierter Benutzer-Modus (RunAsInvoker)** | Läuft ausnahmslos im unprivilegierten Benutzer-Modus ohne Anforderung von Administratorrechten (`RunAsInvoker`). |
+| `INV-BOUND-04` | **Strikte Timeouts & Tail-Puffer-Begrenzung** | Jeder Aufruf ist zeitlich streng begrenzt. Standard- und Fehlerausgaben werden in begrenzten Tail-Puffern (Standard: 8 KB, max: 50 KB) gehalten, um Speicherüberläufe zu verhindern. |
+| `INV-INTEG-05` | **Deterministische JSON-Ergebnisse & Evidenz-Integrität** | Garantiert strukturierte, reproduzierbare JSON-Ausgaben mit exakten Mesh-Zahlen, Materialzuweisungen, Hierarchieprüfungen und visuellen Fehlerklassifikationen. |
+| `INV-VISUAL-06` | **Vier-Ansichten-Verifikation & Geometrie-Prüfung** | Erzeugt orthogonale Front-, Seiten-, Draufsichts- und Perspektiv-Renderings, um Geometriefehler (schwebende Teile, nicht angewendete Rotation) aufzudecken, die blinde Zählungen übersehen. |
+| `INV-CLEAN-07` | **Fail-Closed Staging & Bereinigung temporärer Skripte** | Temporär generierte Python-Verifikationsskripte werden nach Prozessende oder bei Fehlern stets rückstandslos aus dem Dateisystem entfernt. |
+| `INV-CROSS-08` | **Plattformübergreifende Betriebssystem-Parität** | Identisches Verhalten und robuste Executable-Erkennung unter Windows, Linux und macOS ohne fest verdrahtete Host-Pfade. |
+| `INV-SYNC-09` | **Cloud-Sync-Resilienz & Multi-Host-Lock-Disziplin** | Vollständig gehärtet gegen Cloud-Synchronisationskonflikte (`*-conflict-*`, `*-CONFLIT-*`) und konform mit kanonischen Multi-Agenten-Locks. |
+| `INV-SLA-10` | **48h Sicherheitsreaktion & 5-Werktage-Triage-SLA** | Verbindliche Eingangsbestätigung von Sicherheitsbefunden binnen 48 Stunden und strukturierte Ersteinschätzung innerhalb von 5 Werktagen. |
+
+<a id="installation"></a>
 ## Installation
 
 ### Option 1: Über npx ausführen (keine Installation nötig)
@@ -189,18 +223,21 @@ Bei einem lokalen Checkout `command`/`args` stattdessen auf das geklonte `src/in
 }
 ```
 
+<a id="konfiguration"></a>
 ## Konfiguration
 
 - `BLENDER_EXE` — optionaler Pfad zur Blender-Executable. Ohne diesen versuchen die Tools zuerst das explizite `blenderPath`-Argument, dann `BLENDER_EXE`, dann die Standard-Installationsorte von Blender unter Windows (`%ProgramFiles%\Blender Foundation\Blender <Version>\blender.exe` sowie die entsprechenden 32-Bit- und benutzereigenen Wurzeln, neueste Version zuerst), dann PATH. Unter Linux und macOS geht die Suche direkt von `BLENDER_EXE` zu PATH.
 - Jedes Tool akzeptiert zusätzlich ein explizites `blenderPath`-Argument pro Aufruf, das Vorrang vor `BLENDER_EXE` hat.
 - Prozessausgabe wird nur als Tail gehalten: `blender_run_script` nutzt standardmäßig 8.000 Zeichen (konfigurierbar bis 50.000), die FBX-Verifikation 8.000. `outputTruncated: true` zeigt an, dass frühere Ausgabe verworfen wurde. Auch sehr gesprächige Blender-Skripte können den MCP-Prozess dadurch nicht unbegrenzt mit Ausgabe im Speicher wachsen lassen.
 
+<a id="lizenz"></a>
 ## Lizenz
 
 MIT — siehe [LICENSE](LICENSE).
 
 ---
 
+<a id="ellmos-ai-ökosystem"></a>
 ## ellmos-ai-Ökosystem
 
 Dieser MCP-Server ist Teil des **[ellmos-ai](https://github.com/ellmos-ai)**-Ökosystems — KI-Infrastruktur, MCP-Server und intelligente Werkzeuge.
@@ -247,8 +284,10 @@ Unsere Partnerorganisation **[open-bricks](https://github.com/open-bricks)** bü
 | [ProFiler](https://github.com/file-bricks/ProFiler) | `file-bricks` | Erweiterte Dateiverwaltung, Tiefenprüfung und Batch-Pipeline-Workbench |
 | [DokuZen](https://github.com/doc-bricks/DokuZen) | `doc-bricks` | Einheitlicher Dokumentenkonverter, Markdown-Formatierer und Doku-Hub |
 | [PDFtoPDFocr](https://github.com/doc-bricks/PDFtoPDFocr) | `doc-bricks` | Hochpräzise OCR-Verarbeitung und durchsuchbare PDF-Pipeline |
+| [FormularErstellen](https://github.com/doc-bricks/FormularErstellen) | `doc-bricks` | Deklarativer Formulargenerator und PDF-Schema-Compiler |
 | [MediaBrain](https://github.com/file-bricks/MediaBrain) | `file-bricks` | KI-gestützte Medienkategorisierung, Verschlagwortung und Asset-Verwaltung |
 | [TextBrain](https://github.com/doc-bricks/TextBrain) | `doc-bricks` | Textanalyse, Zusammenfassungen und lokale Sprachintelligenz-Suite |
 | [knowledgedigest](https://github.com/open-bricks/knowledgedigest) | `open-bricks` | Wissensextraktion, semantisches Clustering und Synthese-Engine |
 | [DevCenter](https://github.com/dev-bricks/DevCenter) | `dev-bricks` | Entwicklungsumgebungs-Orchestrierung und Multi-Agenten-Cockpit |
 | [CodeBox](https://github.com/dev-bricks/CodeBox) | `dev-bricks` | Sichere Ausführungs-Sandbox und isolierte Code-Runner-Laufzeit |
+| [BattleStage](https://github.com/entertain-and-more/BattleStage) | `entertain-and-more` | Modulare taktische Spielarena mit automatisierter Asset-Pipeline-Validierung |

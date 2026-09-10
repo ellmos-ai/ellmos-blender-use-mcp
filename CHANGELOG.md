@@ -2,7 +2,16 @@
 
 All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
-## 0.1.0-alpha.8 - 2026-09-08
+## 0.1.0-alpha.8 - 2026-09-09
+
+### Discoverability, Visual Architecture & Governance Invariants (Pfad B) (2026-09-09)
+- Established dedicated Pfad B marketing and discoverability ledger (`MARKETING-LOG.txt`) documenting target personas, ecosystem positioning, asset-QA differentiation, and 10 runtime invariants.
+- Upgraded documentation header in `README.md` and `README_de.md` with full Shields.io badge suite (npm version, downloads, CI passing, tests 5 suites / 100% green, Node >=18.0.0, platform, privacy 100% offline, security isolated headless RunAsInvoker, 48h/5d security SLA, standard ESM code style, LLM-Ready, Glama listing, ecosystem, umbrella, and 2026-09-09 audit date).
+- Introduced standardized 14-point Quick Navigation bar with bidirectional language switcher and full anchor parity across English and German documentation.
+- Formulated 10 Governance & Runtime Invariants (`INV-LOCAL-01` through `INV-SLA-10`) covering zero egress, stateless headless execution, RunAsInvoker, bounded tail-buffers, deterministic JSON results, four-view visual verification, ephemeral script staging cleanup, cross-platform parity, cloud-sync lock discipline, and 48h/5d security SLA.
+- Expanded sibling projects and partner organizations ecosystem table to 16 repositories across `ellmos-ai`, `dev-bricks`, `file-bricks`, `doc-bricks`, `entertain-and-more`, and `open-bricks`.
+- Synchronized `llms.txt` with marketing ledger reference, 10 governance invariants, and fresh `Last-checked: 2026-09-09`.
+- Expanded automated contract test suite in `test/manifest-parity.test.js` to guard `MARKETING-LOG.txt` presence, invariant table integrity, quick navigation anchors, security SLA badges, and timestamp freshness.
 
 ### Technical Hygiene & CI Hardening (2026-09-08)
 - Expanded GitHub Actions CI test matrix (`.github/workflows/ci.yml`) to include Node.js 18.x (`[18.x, 20.x, 22.x, 24.x]`), aligning CI runtime testing with the package manifest engine requirement (`>=18.0.0`).
