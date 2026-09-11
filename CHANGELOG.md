@@ -2,6 +2,16 @@
 
 All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
+## 0.1.0-alpha.9 - 2026-09-11
+
+### Technical Hygiene, Packaging Defense & CI Hardening (Pfad A) (2026-09-11)
+- Added runaway execution timeout guardrail (`timeout-minutes: 15`) to GitHub Actions CI test matrix (`.github/workflows/ci.yml`), preventing resource starvation from unhandled headless process stalls or runner network hangs.
+- Restricted `package.json` distribution files list from directory wildcard `scripts/` to the explicit script artifact `scripts/verify_asset_visual.py`, preventing stray compilation artifacts (`scripts/__pycache__/*.pyc`) from inadvertently leaking into npm tarball releases.
+- Hardened `.gitignore` with additional multi-host sync conflict patterns (`* (kopie)*`, `* (copy)*`, `*.sync-temp-*`), merge residue (`*.orig`), and coverage/cache directories (`.turbo/`, `build/`, `.nyc_output/`, `coverage/`, `.tox/`, `.mypy_cache/`).
+- Harmonized package and MCP server version to `0.1.0-alpha.9` synchronously across `package.json`, `package-lock.json`, `server.json`, `glama.json`, and `MARKETING-LOG.txt`.
+- Synchronized documentation badges in `README.md` and `README_de.md` and machine-readable `llms.txt` with audit timestamp `2026-09-11`.
+- Expanded automated contract test suite in `test/manifest-parity.test.js` to guard CI timeout specification, specific script packaging hygiene, `.gitignore` conflict patterns, and documentation timestamp freshness.
+
 ## 0.1.0-alpha.8 - 2026-09-09
 
 ### Discoverability, Visual Architecture & Governance Invariants (Pfad B) (2026-09-09)

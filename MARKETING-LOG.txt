@@ -5,8 +5,8 @@
 **Author:** Lukas Geiger  
 **Organization:** [ellmos-ai](https://github.com/ellmos-ai) | Umbrella: [open-bricks](https://github.com/open-bricks)  
 **License:** MIT  
-**Current Version:** 0.1.0-alpha.8  
-**Audit Date:** 2026-09-09 (Pfad B Discoverability & Visual Architecture)
+**Current Version:** 0.1.0-alpha.9
+**Audit Date:** 2026-09-11 (Pfad A Technical Hygiene & Packaging Defense)
 
 ---
 
@@ -86,3 +86,10 @@ blender visual verification fbx 4-view
 - **MCP Family**: `ellmos-filecommander-mcp`, `ellmos-codecommander-mcp`, `ellmos-controlcenter-mcp`, `n8n-manager-mcp`, `ellmos-homebase-mcp`, `ellmos-servercommander-mcp`, `open-compute-mcp`.
 - **Infrastructure & Automation**: `system-explorer`, `workflowhooker`, `decision-clicker`, `sqlite-transit-sync`, `BACH`.
 - **Desktop Software & Tools**: `ProFiler`, `DokuZen`, `FormularErstellen`, `DevCenter`, `BattleStage`, `open-bricks`.
+
+---
+
+## 8. Audit History
+
+- **2026-09-11**: Pfad A Technical Hygiene & Maintenance: Hardened CI test matrix with 15-minute runaway timeout guardrail (`timeout-minutes: 15`), restricted package tarball packaging to exclude `.pyc` and `__pycache__` artifacts (`scripts/verify_asset_visual.py`), expanded `.gitignore` sync-conflict copy defenses and build artifact exclusions, synchronized manifests to `0.1.0-alpha.9`, updated contract tests.
+- **2026-09-09**: Pfad B Discoverability, Visual Architecture & Governance Invariants audit.

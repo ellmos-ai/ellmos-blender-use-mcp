@@ -38,9 +38,14 @@ credentials.json
 *.sync-conflict-*
 *-CONFLIT-*
 *-conflict-*
+* (kopie)*
+* (copy)*
+*.sync-temp-*
 
 # Multi-agent locks and runtime locks
 LOCK.*
+LOCK
+LOCK*.txt
 *.lock
 !package-lock.json
 
@@ -48,11 +53,19 @@ LOCK.*
 *.tmp
 *.bak
 *.swp
+*.orig
 *~
 .DS_Store
 Thumbs.db
 .pytest_cache/
 .ruff_cache/
 .coverage
+.coverage*
+coverage/
 htmlcov/
 .wheel-smoke/
+.nyc_output/
+.turbo/
+build/
+.tox/
+.mypy_cache/

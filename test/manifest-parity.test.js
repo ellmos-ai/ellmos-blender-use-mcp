@@ -32,6 +32,8 @@ assert.equal(glama.license, pkg.license, "glama.json license mismatch");
 
 // 4. Packaging files existence
 assert.ok(pkg.files.includes("SECURITY.md"), "SECURITY.md must be included in package.json files");
+assert.ok(pkg.files.includes("scripts/verify_asset_visual.py"), "scripts/verify_asset_visual.py must be specifically included in package.json files");
+assert.ok(!pkg.files.includes("scripts/"), "package.json files must not wildcard package scripts/ to avoid pycache leaks");
 for (const relPath of pkg.files) {
   const target = path.join(root, relPath);
   assert.ok(existsSync(target), `Packaged file or directory missing: ${relPath}`);
@@ -124,6 +126,7 @@ for (const [fileName, text] of [["README_de.md", readmeDe], ["scripts/verify_ass
 const ciYml = readFileSync(path.join(root, ".github", "workflows", "ci.yml"), "utf8");
 assert.ok(ciYml.includes("actions/checkout@v4"), "ci.yml must use checkout@v4");
 assert.ok(ciYml.includes("npm test"), "ci.yml must run npm test");
+assert.ok(ciYml.includes("timeout-minutes: 15"), "ci.yml must specify timeout-minutes: 15 runaway guardrail");
 assert.ok(ciYml.includes("18.x"), "ci.yml must include Node 18.x in matrix");
 assert.ok(ciYml.includes("20.x"), "ci.yml must include Node 20.x in matrix");
 assert.ok(ciYml.includes("windows-latest"), "ci.yml must include windows-latest");
@@ -151,14 +154,19 @@ assert.ok(gitignore.includes("*.sync-conflict-*"), ".gitignore must ignore *.syn
 assert.ok(gitignore.includes("*-CONFLIT-*"), ".gitignore must ignore *-CONFLIT-*");
 assert.ok(gitignore.includes("*.conflict"), ".gitignore must ignore *.conflict");
 assert.ok(gitignore.includes("LOCK*.txt"), ".gitignore must ignore LOCK*.txt");
+assert.ok(gitignore.includes("* (kopie)*"), ".gitignore must ignore * (kopie)* conflict copies");
+assert.ok(gitignore.includes("*.orig"), ".gitignore must ignore *.orig merge leftovers");
+assert.ok(gitignore.includes(".nyc_output/"), ".gitignore must ignore .nyc_output/ coverage artifacts");
 
 // 11. LLM Context freshness
-assert.ok(llmsTxt.includes("Last-checked: 2026-09-09"), "llms.txt missing up-to-date Last-checked timestamp");
+assert.ok(llmsTxt.includes("Last-checked: 2026-09-11"), "llms.txt missing up-to-date Last-checked timestamp");
 
 // 12. Marketing ledger, runtime invariants & discoverability parity
 const marketingLogPath = path.join(root, "MARKETING-LOG.txt");
 assert.ok(existsSync(marketingLogPath), "MARKETING-LOG.txt must exist");
 const marketingLog = readFileSync(marketingLogPath, "utf8");
+assert.ok(marketingLog.includes("0.1.0-alpha.9"), "MARKETING-LOG.txt missing version 0.1.0-alpha.9");
+assert.ok(marketingLog.includes("2026-09-11"), "MARKETING-LOG.txt missing 2026-09-11 audit date");
 
 const invariants = [
   "INV-LOCAL-01", "INV-HEADLESS-02", "INV-SEC-03", "INV-BOUND-04", "INV-INTEG-05",
@@ -178,7 +186,9 @@ assert.ok(readmeEn.includes("Security%20SLA"), "README.md missing Security SLA b
 assert.ok(readmeDe.includes("Sicherheits--SLA"), "README_de.md missing Sicherheits-SLA badge");
 
 const changelog = readFileSync(path.join(root, "CHANGELOG.md"), "utf8");
+assert.ok(changelog.includes("0.1.0-alpha.9"), "CHANGELOG.md missing 0.1.0-alpha.9 entry");
+assert.ok(changelog.includes("2026-09-11"), "CHANGELOG.md missing 2026-09-11 timestamp");
+assert.ok(changelog.includes("Pfad A"), "CHANGELOG.md missing Pfad A entry");
 assert.ok(changelog.includes("Pfad B"), "CHANGELOG.md missing Pfad B entry");
-assert.ok(changelog.includes("2026-09-09"), "CHANGELOG.md missing 2026-09-09 timestamp");
 
 console.log("All manifest-parity and metadata contract tests passed successfully.");

@@ -23,7 +23,7 @@
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
-[![Last-checked](https://img.shields.io/badge/Last--checked-2026--09--09-informational.svg)](llms.txt)
+[![Last-checked](https://img.shields.io/badge/Last--checked-2026--09--11-informational.svg)](llms.txt)
 
 ---
 

@@ -93,6 +93,6 @@ ellmos-blender-use-mcp
 - `INV-SYNC-09`: Cloud-Sync & Multi-Host Lock Discipline (hardened against sync collisions).
 - `INV-SLA-10`: 48h Security Response & 5-Day Triage SLA (binding response commitment).
 
-## Last-checked: 2026-09-09
+## Last-checked: 2026-09-11
 
 

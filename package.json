@@ -1,6 +1,6 @@
 {
   "name": "ellmos-blender-use-mcp",
-  "version": "0.1.0-alpha.8",
+  "version": "0.1.0-alpha.9",
   "mcpName": "io.github.ellmos-ai/ellmos-blender-use-mcp",
   "description": "Local-first, add-on-free MCP asset QA for headless Blender: executable discovery, bounded background scripts, structural FBX reimport checks, and four-view visual verification",
   "type": "module",
@@ -10,7 +10,7 @@
   },
   "files": [
     "src/",
-    "scripts/",
+    "scripts/verify_asset_visual.py",
     "LICENSE",
     "README.md",
     "README_de.md",
