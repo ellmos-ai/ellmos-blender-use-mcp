@@ -56,3 +56,9 @@ Thumbs.db
 .coverage
 htmlcov/
 .wheel-smoke/
+
+# IDE and local editor configuration
+.idea/
+.vscode/
+*.sublime-*
+.claude/

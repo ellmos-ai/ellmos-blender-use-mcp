@@ -129,6 +129,8 @@ assert.ok(ciYml.includes("20.x"), "ci.yml must include Node 20.x in matrix");
 assert.ok(ciYml.includes("windows-latest"), "ci.yml must include windows-latest");
 assert.ok(ciYml.includes("ubuntu-latest"), "ci.yml must include ubuntu-latest");
 assert.ok(ciYml.includes("macos-latest"), "ci.yml must include macos-latest");
+assert.ok(ciYml.includes("permissions:"), "ci.yml must define explicit least-privilege permissions");
+assert.ok(ciYml.includes("contents: read"), "ci.yml must limit token permissions to contents: read");
 
 // 9. Third-party licenses inventory parity
 const thirdPartyLicenses = readFileSync(path.join(root, "THIRD_PARTY_LICENSES.md"), "utf8");
@@ -151,8 +153,14 @@ assert.ok(gitignore.includes("*.sync-conflict-*"), ".gitignore must ignore *.syn
 assert.ok(gitignore.includes("*-CONFLIT-*"), ".gitignore must ignore *-CONFLIT-*");
 assert.ok(gitignore.includes("*.conflict"), ".gitignore must ignore *.conflict");
 assert.ok(gitignore.includes("LOCK*.txt"), ".gitignore must ignore LOCK*.txt");
+assert.ok(gitignore.includes(".idea/"), ".gitignore must ignore .idea/");
+assert.ok(gitignore.includes(".vscode/"), ".gitignore must ignore .vscode/");
 
-// 11. LLM Context freshness
-assert.ok(llmsTxt.includes("Last-checked: 2026-09-08"), "llms.txt missing up-to-date Last-checked timestamp");
+// 11. Node engines & package metadata
+assert.ok(pkg.engines && pkg.engines.node, "package.json must define engines.node");
+assert.strictEqual(pkg.engines.node, ">=18.0.0", "engines.node must be >=18.0.0");
+
+// 12. LLM Context freshness
+assert.ok(llmsTxt.includes("Last-checked: 2026-09-11"), "llms.txt missing up-to-date Last-checked timestamp");
 
 console.log("All manifest-parity and metadata contract tests passed successfully.");

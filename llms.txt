@@ -79,6 +79,6 @@ ellmos-blender-use-mcp
 - `test/blender-resolution.test.js`: regression test guarding that the Blender executable lookup uses the standard install roots instead of a hardcoded path.
 - `test/manifest-parity.test.js`: automated regression test guarding manifest, file package, bilingual security policy, sequence diagrams, and metadata parity.
 
-## Last-checked: 2026-09-08
+## Last-checked: 2026-09-11
 
 

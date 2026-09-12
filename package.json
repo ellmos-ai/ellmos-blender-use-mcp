@@ -64,7 +64,7 @@
   },
   "overrides": {
     "@hono/node-server": "^2.0.5",
-    "hono": "^4.12.31",
+    "hono": "^4.13.7",
     "vitest": "^3.2.6"
   },
   "engines": {

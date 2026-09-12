@@ -4,6 +4,14 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## 0.1.0-alpha.8 - 2026-09-08
 
+### Technical Hygiene, Security Audit & CI Hardening (2026-09-11)
+- Remediated moderate vulnerability in transitive `hono` dependency (CVE-2026-39408 / GHSA-gqvv-2mrq-wpjv) by bumping `hono` to `^4.13.7` via `package.json` overrides and `npm audit fix`, achieving 0 vulnerabilities across all dependencies.
+- Hardened GitHub Actions CI workflow (`.github/workflows/ci.yml`) by introducing explicit least-privilege `permissions: contents: read`.
+- Hardened `.gitignore` with IDE patterns (`.idea/`, `.vscode/`, `*.sublime-*`, `.claude/`).
+- Extended automated contract test suite in `test/manifest-parity.test.js` to guard CI permissions least-privilege configuration, IDE ignore patterns, and package engines metadata.
+- Synchronized `llms.txt` Last-checked timestamp to `2026-09-11`.
+- Verified 100% test pass across all 5 test suites (`privacy-hygiene`, `runtime-safety`, `tool-surface`, `blender-resolution`, `manifest-parity`), 0 lint/whitespace issues, and clean syntax build (`node --check src/index.js`).
+
 ### Technical Hygiene & CI Hardening (2026-09-08)
 - Expanded GitHub Actions CI test matrix (`.github/workflows/ci.yml`) to include Node.js 18.x (`[18.x, 20.x, 22.x, 24.x]`), aligning CI runtime testing with the package manifest engine requirement (`>=18.0.0`).
 - Hardened `.gitignore` with comprehensive multi-host conflict patterns (`*-CONFLIT-*`, `*-conflict-*`, `*.sync-conflict-*`), multi-agent lockfile boundaries (`LOCK.*`, `*.lock` with `!package-lock.json`), and temporary test/cache artifacts (`.ruff_cache/`, `.pytest_cache/`, `*.tmp`, `*.bak`).
