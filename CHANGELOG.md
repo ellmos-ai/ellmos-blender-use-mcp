@@ -4,6 +4,13 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## 0.1.0-alpha.9 - 2026-09-11
 
+### Discoverability, JSON Output Schemas & Multi-View Geometry Projection (Pfad B) (2026-09-13)
+- Expanded `README.md` and `README_de.md` with a dedicated deep dive for `blender_verify_fbx_reimport`, detailing input parameters, invocation syntax, and deterministic JSON report schema.
+- Added ASCII Four-View Orthogonal Projection diagram illustrating camera placements (Top, Front, Side, Perspective) and geometric defect detection boundaries for `blender_verify_visual`.
+- Documented full deterministic JSON output schemas for both visual verification and structural reimport verification to accelerate technical artist and AI assistant onboarding.
+- Added copy-pasteable CI/CD pipeline integration snippet (GitHub Actions workflow) for automated headless asset QA gates on pull requests.
+- Synchronized audit badges to `2026-09-13` across English and German documentation, updated `MARKETING-LOG.txt`, and refreshed search keywords in `llms.txt`.
+
 ### Technical Hygiene, Packaging Defense & CI Hardening (Pfad A) (2026-09-11)
 - Added runaway execution timeout guardrail (`timeout-minutes: 15`) to GitHub Actions CI test matrix (`.github/workflows/ci.yml`), preventing resource starvation from unhandled headless process stalls or runner network hangs.
 - Restricted `package.json` distribution files list from directory wildcard `scripts/` to the explicit script artifact `scripts/verify_asset_visual.py`, preventing stray compilation artifacts (`scripts/__pycache__/*.pyc`) from inadvertently leaking into npm tarball releases.

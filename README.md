@@ -23,7 +23,7 @@
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
-[![Last-checked](https://img.shields.io/badge/Last--checked-2026--09--11-informational.svg)](llms.txt)
+[![Last-checked](https://img.shields.io/badge/Last--checked-2026--09--13-informational.svg)](llms.txt)
 
 ---
 
@@ -31,7 +31,7 @@
 
 > **Language / Sprache:** 🇬🇧 **English** | 🇩🇪 **[Deutsch](README_de.md)**
 
-[1. Key Capabilities](#key-capabilities) • [2. Architecture & Component Topology](#architecture--workflow) • [3. Headless Verification Lifecycle](#2-headless-asset-qa-verification-lifecycle) • [4. Tool Suite & Verification Matrix](#tools) • [5. Visual Verification Deep Dive](#blender_verify_visual) • [6. Governance & Runtime Invariants](#governance--runtime-invariants) • [7. Security Policy](SECURITY.md) • [8. Installation & Setup](#installation) • [9. Configuration & Environment](#configuration) • [10. Third-Party Licenses](THIRD_PARTY_LICENSES.md) • [11. Sibling Projects & Ecosystem](#ellmos-ai-ecosystem) • [12. LLM Context](llms.txt) • [13. Changelog](CHANGELOG.md) • [14. License & Copyright](#license)
+[1. Key Capabilities](#key-capabilities) • [2. Architecture & Component Topology](#architecture--workflow) • [3. Headless Verification Lifecycle](#2-headless-asset-qa-verification-lifecycle) • [4. Tool Suite & Verification Matrix](#tools) • [5. Visual Verification Deep Dive](#blender_verify_visual) • [6. CI/CD Integration](#cicd-pipeline-integration) • [7. Governance & Runtime Invariants](#governance--runtime-invariants) • [8. Security Policy](SECURITY.md) • [9. Installation & Setup](#installation) • [10. Configuration & Environment](#configuration) • [11. Third-Party Licenses](THIRD_PARTY_LICENSES.md) • [12. Sibling Projects & Ecosystem](#ellmos-ai-ecosystem) • [13. LLM Context](llms.txt) • [14. Changelog](CHANGELOG.md) • [15. License & Copyright](#license)
 
 ---
 
@@ -133,6 +133,57 @@ sequenceDiagram
 | `blender_locate` | Resolve the Blender executable from an explicit path, `BLENDER_EXE`, the standard Windows install locations, or PATH. |
 | `blender_verify_visual` | Render four views of an FBX and check geometry a structural reimport cannot see: unapplied rotation, floating parts, pivot outside the model, transform residuals, stray empties. |
 
+### `blender_verify_fbx_reimport`
+
+Imports an FBX file into headless Blender and verifies mesh count, empty count, material count, material slot assignments, and required naming prefixes.
+
+#### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `fbxPath` | `string` | **Yes** | — | Target FBX asset file path to verify. |
+| `resultPath` | `string` | No | `<fbxDir>/verify_reimport_result.json` | Path where structured JSON verification results will be written. |
+| `requiredPrefixes` | `string[]` | No | `[]` | List of naming prefixes required on meshes or empties (e.g. `["SM_", "M_"]`). |
+| `blenderPath` | `string` | No | auto-detect | Custom path to the Blender executable (`blender.exe` / `blender`). |
+| `timeoutMs` | `number` | No | `120000` | Process execution timeout in milliseconds (max: `600000`). |
+
+#### Example Invocation
+
+```json
+{
+  "fbxPath": "assets/models/SM_Watchtower_01.fbx",
+  "requiredPrefixes": ["SM_", "M_"]
+}
+```
+
+#### Deterministic Output Schema
+
+```json
+{
+  "ok": true,
+  "blender": "C:\\Program Files\\Blender Foundation\\Blender 4.2\\blender.exe",
+  "fbxPath": "C:\\projects\\game\\assets\\models\\SM_Watchtower_01.fbx",
+  "resultPath": "C:\\projects\\game\\assets\\models\\verify_reimport_result.json",
+  "exitCode": 0,
+  "timedOut": false,
+  "durationMs": 1820,
+  "outputTruncated": false,
+  "verification": {
+    "ok": true,
+    "fbx": "C:\\projects\\game\\assets\\models\\SM_Watchtower_01.fbx",
+    "mesh_count": 3,
+    "empty_count": 0,
+    "material_count": 2,
+    "materials": [
+      "M_Stone_Brick",
+      "M_Wood_Trim"
+    ],
+    "missing_prefixes": [],
+    "script_free": true
+  }
+}
+```
+
 ### `blender_verify_visual`
 
 Renders four views of an FBX and checks geometry that a **structural** reimport cannot see.
@@ -145,18 +196,99 @@ outside the model. This tool does, and it produces the renders to look at.
 { "fbxPath": "kit.fbx", "outDir": "verify_visual", "expectHeight": "2.5,3.5" }
 ```
 
+#### Four-View Orthogonal Projection & Failure Detection
+
+```text
++---------------------------------------+---------------------------------------+
+|              TOP VIEW                 |           PERSPECTIVE VIEW            |
+|              (XY Plane)               |              (Isometric)              |
+|                                       |                                       |
+|   Detects: X/Y planar alignment,      |   Detects: Overall silhouette,        |
+|   bounding box symmetry, footprint    |   complex assembly integration        |
++---------------------------------------+---------------------------------------+
+|             FRONT VIEW                |               SIDE VIEW               |
+|              (XZ Plane)               |              (YZ Plane)               |
+|                                       |                                       |
+|   Detects: Model height, Z-grounding, |   Detects: Depth errors, floating vs  |
+|   upright orientation (lying down)    |   resting parts, pivot offset         |
++---------------------------------------+---------------------------------------+
+```
+
 Detected failure classes: unapplied rotation, floating parts in multi-part assets, pivot/origin
 outside the bounding box, transform residuals in the export, stray empties.
 
-Returns `verification` (the parsed `verify_visual_result.json` with `ok`, `fails`, `warns`,
-`metrics`) plus `renders` — `view_front.png`, `view_side.png`, `view_top.png`,
-`view_perspective.png`.
+#### Deterministic Output Schema
+
+```json
+{
+  "ok": true,
+  "blender": "C:\\Program Files\\Blender Foundation\\Blender 4.2\\blender.exe",
+  "fbxPath": "C:\\projects\\game\\kit.fbx",
+  "outDir": "C:\\projects\\game\\verify_visual",
+  "exitCode": 0,
+  "timedOut": false,
+  "durationMs": 3450,
+  "outputTruncated": false,
+  "verification": {
+    "ok": true,
+    "fails": [],
+    "warns": [],
+    "metrics": {
+      "dimensions": [2.45, 1.82, 4.10],
+      "center": [0.0, 0.0, 2.05],
+      "pivotAtOrigin": true,
+      "unappliedRotation": false
+    }
+  },
+  "renders": {
+    "view_front": "verify_visual/view_front.png",
+    "view_side": "verify_visual/view_side.png",
+    "view_top": "verify_visual/view_top.png",
+    "view_perspective": "verify_visual/view_perspective.png"
+  }
+}
+```
 
 **Why four views and not one:** a single front shot hides depth errors — floating-vs-resting,
 behind-vs-in-front. A real case: chain links looked correctly attached from the front and were
 not attached at all when seen from the side.
 
 Like every tool here it is a one-shot headless run: no add-on, no daemon, no socket.
+
+<a id="cicd-pipeline-integration"></a>
+## CI/CD Pipeline Integration (GitHub Actions)
+
+Integrate headless asset QA directly into your GitHub Actions pull request checks to prevent broken FBX models, missing material slots, unapplied rotations, and displaced pivots from reaching the main branch:
+
+```yaml
+name: 3D Asset QA Gate
+
+on:
+  pull_request:
+    paths:
+      - "assets/**/*.fbx"
+
+jobs:
+  verify-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Blender & Node.js
+        run: |
+          sudo snap install blender --classic
+          sudo apt-get install -y nodejs npm
+
+      - name: Run Headless Asset Verification
+        run: |
+          npx -y ellmos-blender-use-mcp --version
+          # Run structural FBX QA and 4-view visual verification
+          blender --background --factory-startup --python node_modules/ellmos-blender-use-mcp/scripts/verify_asset_visual.py -- \
+            --fbx assets/models/SM_HeroAsset.fbx \
+            --out build/asset-qa/ \
+            --json
+```
 
 ## Safety
 

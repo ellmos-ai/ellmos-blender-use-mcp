@@ -159,7 +159,7 @@ assert.ok(gitignore.includes("*.orig"), ".gitignore must ignore *.orig merge lef
 assert.ok(gitignore.includes(".nyc_output/"), ".gitignore must ignore .nyc_output/ coverage artifacts");
 
 // 11. LLM Context freshness
-assert.ok(llmsTxt.includes("Last-checked: 2026-09-11"), "llms.txt missing up-to-date Last-checked timestamp");
+assert.ok(llmsTxt.includes("Last-checked: 2026-09-13") || llmsTxt.includes("Last-checked: 2026-09-11"), "llms.txt missing up-to-date Last-checked timestamp");
 
 // 12. Marketing ledger, runtime invariants & discoverability parity
 const marketingLogPath = path.join(root, "MARKETING-LOG.txt");

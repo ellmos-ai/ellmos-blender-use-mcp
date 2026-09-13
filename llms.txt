@@ -55,6 +55,10 @@ blender mcp no add-on no tcp port
 blender background script mcp server
 mcp server fbx mesh material verification
 asset pipeline blender automation mcp
+game asset ci cd verification
+blender fbx naming convention check
+automated fbx qa gate
+blender four-view rendering mcp
 ellmos blender use mcp
 ellmos-blender-use-mcp
 ```
@@ -93,6 +97,6 @@ ellmos-blender-use-mcp
 - `INV-SYNC-09`: Cloud-Sync & Multi-Host Lock Discipline (hardened against sync collisions).
 - `INV-SLA-10`: 48h Security Response & 5-Day Triage SLA (binding response commitment).
 
-## Last-checked: 2026-09-11
+## Last-checked: 2026-09-13
 
 

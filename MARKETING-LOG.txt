@@ -74,6 +74,10 @@ blender mcp no add-on no tcp port
 blender background script mcp server
 mcp server fbx mesh material verification
 asset pipeline blender automation mcp
+game asset ci cd verification
+blender fbx naming convention check
+automated fbx qa gate
+blender four-view rendering mcp
 ellmos blender use mcp
 ellmos-blender-use-mcp
 blender visual verification fbx 4-view
@@ -91,5 +95,6 @@ blender visual verification fbx 4-view
 
 ## 8. Audit History
 
+- **2026-09-13**: Pfad B Discoverability, JSON Schemas & Multi-View Geometry Projection: Added dedicated tool documentation and deterministic output schema for `blender_verify_fbx_reimport`, introduced ASCII camera layout for 4-view visual verification, provided copy-pasteable GitHub Actions CI/CD workflow for automated asset QA gates, updated test suite and documentation badges.
 - **2026-09-11**: Pfad A Technical Hygiene & Maintenance: Hardened CI test matrix with 15-minute runaway timeout guardrail (`timeout-minutes: 15`), restricted package tarball packaging to exclude `.pyc` and `__pycache__` artifacts (`scripts/verify_asset_visual.py`), expanded `.gitignore` sync-conflict copy defenses and build artifact exclusions, synchronized manifests to `0.1.0-alpha.9`, updated contract tests.
 - **2026-09-09**: Pfad B Discoverability, Visual Architecture & Governance Invariants audit.
