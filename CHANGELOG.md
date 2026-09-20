@@ -2,6 +2,17 @@
 
 All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
+## 0.1.0-alpha.10 - 2026-09-20
+
+### Technical Hygiene, CI Workflows & Multi-Host Lock Defense (Pfad A) (2026-09-20)
+- Hardened GitHub Actions CI configuration (`.github/workflows/ci.yml`) with least-privilege `permissions: contents: read` guardrail on the test matrix job.
+- Deployed automated community lifecycle workflows: `stale.yml` (actions/stale@v9 with daily 01:30 UTC schedule, timeout-minutes: 10, operations-per-run: 30) and `welcome.yml` (actions/first-interaction@v3 with timeout-minutes: 5, cancel-in-progress concurrency).
+- Hardened `.gitignore` multi-host sync and canonical lock defense patterns (`*conflicted copy*`, `* (Kopie)*`, `* (Copy)*`, `*-WORKSTATION*`, `*-LAPTOP*`, `*-ASUS*`, `*-Mac Studio*`, `*-MacBook*`, `LOCK.user.*`, `LOCK.until.*`, `LOCK.condition.*`, `LOCK.permissions.json`, `.automation-lock`, `.hypothesis/`, `*.rej`).
+- Performed Level 1 SBOM third-party license audit in `THIRD_PARTY_LICENSES.md` (Stand 2026-09-20, zero copyleft, unprivileged RunAsInvoker non-elevation verification).
+- Harmonized package and MCP server version to `0.1.0-alpha.10` synchronously across `package.json`, `package-lock.json`, `server.json`, `glama.json`, and `MARKETING-LOG.txt`.
+- Synchronized documentation badges in `README.md` and `README_de.md` and machine-readable `llms.txt` with audit timestamp `2026-09-20`.
+- Expanded automated contract test suite in `test/manifest-parity.test.js` to guard new CI workflows (`stale.yml`, `welcome.yml`), CI permissions, expanded lock defenses, and version `0.1.0-alpha.10`.
+
 ## 0.1.0-alpha.9 - 2026-09-11
 
 ### Discoverability, JSON Output Schemas & Multi-View Geometry Projection (Pfad B) (2026-09-13)

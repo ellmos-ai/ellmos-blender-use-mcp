@@ -32,21 +32,34 @@ credentials.json
 *recovery*.txt
 
 # Sync conflict copies and host artifacts
+*conflicted copy*
+* (Kopie)*
+* (Copy)*
+* (kopie)*
+* (copy)*
+*-WORKSTATION*
 *-WORKSTATION-LG*
+*-LAPTOP*
+*-ASUS*
 *-ASUS-GEI*
+*-Mac Studio*
+*-MacBook*
 *.conflict
 *.sync-conflict-*
 *-CONFLIT-*
 *-conflict-*
-* (kopie)*
-* (copy)*
 *.sync-temp-*
 
 # Multi-agent locks and runtime locks
-LOCK.*
 LOCK
+LOCK.*
 LOCK*.txt
+LOCK.user.*
+LOCK.until.*
+LOCK.condition.*
+LOCK.permissions.json
 *.lock
+.automation-lock
 !package-lock.json
 
 # Temporary files, caches, and test artifacts
@@ -54,11 +67,13 @@ LOCK*.txt
 *.bak
 *.swp
 *.orig
+*.rej
 *~
 .DS_Store
 Thumbs.db
 .pytest_cache/
 .ruff_cache/
+.hypothesis/
 .coverage
 .coverage*
 coverage/

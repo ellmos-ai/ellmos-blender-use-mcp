@@ -127,15 +127,32 @@ const ciYml = readFileSync(path.join(root, ".github", "workflows", "ci.yml"), "u
 assert.ok(ciYml.includes("actions/checkout@v4"), "ci.yml must use checkout@v4");
 assert.ok(ciYml.includes("npm test"), "ci.yml must run npm test");
 assert.ok(ciYml.includes("timeout-minutes: 15"), "ci.yml must specify timeout-minutes: 15 runaway guardrail");
+assert.ok(ciYml.includes("contents: read"), "ci.yml must enforce least-privilege contents: read permissions");
 assert.ok(ciYml.includes("18.x"), "ci.yml must include Node 18.x in matrix");
 assert.ok(ciYml.includes("20.x"), "ci.yml must include Node 20.x in matrix");
 assert.ok(ciYml.includes("windows-latest"), "ci.yml must include windows-latest");
 assert.ok(ciYml.includes("ubuntu-latest"), "ci.yml must include ubuntu-latest");
 assert.ok(ciYml.includes("macos-latest"), "ci.yml must include macos-latest");
 
+const staleYmlPath = path.join(root, ".github", "workflows", "stale.yml");
+assert.ok(existsSync(staleYmlPath), "stale.yml workflow must exist");
+const staleYml = readFileSync(staleYmlPath, "utf8");
+assert.ok(staleYml.includes("actions/stale@v9"), "stale.yml must use actions/stale@v9");
+assert.ok(staleYml.includes("timeout-minutes: 10"), "stale.yml must enforce timeout-minutes: 10");
+assert.ok(staleYml.includes("30 1 * * *"), "stale.yml must run daily schedule at 01:30 UTC");
+assert.ok(staleYml.includes("issues: write"), "stale.yml must declare issues: write");
+
+const welcomeYmlPath = path.join(root, ".github", "workflows", "welcome.yml");
+assert.ok(existsSync(welcomeYmlPath), "welcome.yml workflow must exist");
+const welcomeYml = readFileSync(welcomeYmlPath, "utf8");
+assert.ok(welcomeYml.includes("actions/first-interaction@v3"), "welcome.yml must use actions/first-interaction@v3");
+assert.ok(welcomeYml.includes("timeout-minutes: 5"), "welcome.yml must enforce timeout-minutes: 5");
+assert.ok(welcomeYml.includes("cancel-in-progress: true"), "welcome.yml must enable cancel-in-progress concurrency");
+
 // 9. Third-party licenses inventory parity
 const thirdPartyLicenses = readFileSync(path.join(root, "THIRD_PARTY_LICENSES.md"), "utf8");
 assert.ok(existsSync(path.join(root, "THIRD_PARTY_LICENSES.md")), "THIRD_PARTY_LICENSES.md must exist");
+assert.ok(thirdPartyLicenses.includes("Stand: 2026-09-20"), "THIRD_PARTY_LICENSES.md must reflect Stand 2026-09-20 audit date");
 for (const dep of Object.keys(pkg.dependencies || {})) {
   assert.ok(
     thirdPartyLicenses.includes(`\`${dep}\``),
@@ -148,25 +165,34 @@ const gitignore = readFileSync(path.join(root, ".gitignore"), "utf8");
 assert.ok(gitignore.includes(".npmrc"), ".gitignore must ignore .npmrc");
 assert.ok(gitignore.includes("*.pem"), ".gitignore must ignore *.pem certificates");
 assert.ok(gitignore.includes("*.key"), ".gitignore must ignore *.key private keys");
+assert.ok(gitignore.includes("*-WORKSTATION*"), ".gitignore must ignore *-WORKSTATION* sync conflicts");
 assert.ok(gitignore.includes("*-WORKSTATION-LG*"), ".gitignore must ignore *-WORKSTATION-LG* sync conflicts");
+assert.ok(gitignore.includes("*-LAPTOP*"), ".gitignore must ignore *-LAPTOP* sync conflicts");
+assert.ok(gitignore.includes("*-ASUS*"), ".gitignore must ignore *-ASUS* sync conflicts");
 assert.ok(gitignore.includes("*-ASUS-GEI*"), ".gitignore must ignore *-ASUS-GEI* sync conflicts");
 assert.ok(gitignore.includes("*.sync-conflict-*"), ".gitignore must ignore *.sync-conflict-*");
 assert.ok(gitignore.includes("*-CONFLIT-*"), ".gitignore must ignore *-CONFLIT-*");
 assert.ok(gitignore.includes("*.conflict"), ".gitignore must ignore *.conflict");
 assert.ok(gitignore.includes("LOCK*.txt"), ".gitignore must ignore LOCK*.txt");
+assert.ok(gitignore.includes("LOCK.user.*"), ".gitignore must ignore LOCK.user.* canonical lock defense");
+assert.ok(gitignore.includes(".automation-lock"), ".gitignore must ignore .automation-lock");
+assert.ok(gitignore.includes("*conflicted copy*"), ".gitignore must ignore *conflicted copy* conflict copies");
+assert.ok(gitignore.includes("* (Kopie)*"), ".gitignore must ignore * (Kopie)* conflict copies");
 assert.ok(gitignore.includes("* (kopie)*"), ".gitignore must ignore * (kopie)* conflict copies");
 assert.ok(gitignore.includes("*.orig"), ".gitignore must ignore *.orig merge leftovers");
+assert.ok(gitignore.includes("*.rej"), ".gitignore must ignore *.rej patch rejects");
 assert.ok(gitignore.includes(".nyc_output/"), ".gitignore must ignore .nyc_output/ coverage artifacts");
+assert.ok(gitignore.includes(".hypothesis/"), ".gitignore must ignore .hypothesis/ test artifacts");
 
 // 11. LLM Context freshness
-assert.ok(llmsTxt.includes("Last-checked: 2026-09-13") || llmsTxt.includes("Last-checked: 2026-09-11"), "llms.txt missing up-to-date Last-checked timestamp");
+assert.ok(llmsTxt.includes("Last-checked: 2026-09-20"), "llms.txt missing up-to-date Last-checked: 2026-09-20 timestamp");
 
 // 12. Marketing ledger, runtime invariants & discoverability parity
 const marketingLogPath = path.join(root, "MARKETING-LOG.txt");
 assert.ok(existsSync(marketingLogPath), "MARKETING-LOG.txt must exist");
 const marketingLog = readFileSync(marketingLogPath, "utf8");
-assert.ok(marketingLog.includes("0.1.0-alpha.9"), "MARKETING-LOG.txt missing version 0.1.0-alpha.9");
-assert.ok(marketingLog.includes("2026-09-11"), "MARKETING-LOG.txt missing 2026-09-11 audit date");
+assert.ok(marketingLog.includes("0.1.0-alpha.10"), "MARKETING-LOG.txt missing version 0.1.0-alpha.10");
+assert.ok(marketingLog.includes("2026-09-20"), "MARKETING-LOG.txt missing 2026-09-20 audit date");
 
 const invariants = [
   "INV-LOCAL-01", "INV-HEADLESS-02", "INV-SEC-03", "INV-BOUND-04", "INV-INTEG-05",
@@ -186,8 +212,8 @@ assert.ok(readmeEn.includes("Security%20SLA"), "README.md missing Security SLA b
 assert.ok(readmeDe.includes("Sicherheits--SLA"), "README_de.md missing Sicherheits-SLA badge");
 
 const changelog = readFileSync(path.join(root, "CHANGELOG.md"), "utf8");
-assert.ok(changelog.includes("0.1.0-alpha.9"), "CHANGELOG.md missing 0.1.0-alpha.9 entry");
-assert.ok(changelog.includes("2026-09-11"), "CHANGELOG.md missing 2026-09-11 timestamp");
+assert.ok(changelog.includes("0.1.0-alpha.10"), "CHANGELOG.md missing 0.1.0-alpha.10 entry");
+assert.ok(changelog.includes("2026-09-20"), "CHANGELOG.md missing 2026-09-20 timestamp");
 assert.ok(changelog.includes("Pfad A"), "CHANGELOG.md missing Pfad A entry");
 assert.ok(changelog.includes("Pfad B"), "CHANGELOG.md missing Pfad B entry");
 

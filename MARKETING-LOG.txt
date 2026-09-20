@@ -5,8 +5,8 @@
 **Author:** Lukas Geiger  
 **Organization:** [ellmos-ai](https://github.com/ellmos-ai) | Umbrella: [open-bricks](https://github.com/open-bricks)  
 **License:** MIT  
-**Current Version:** 0.1.0-alpha.9
-**Audit Date:** 2026-09-11 (Pfad A Technical Hygiene & Packaging Defense)
+**Current Version:** 0.1.0-alpha.10
+**Audit Date:** 2026-09-20 (Pfad A Technical Hygiene, CI Workflows & Multi-Host Lock Defense)
 
 ---
 
@@ -95,6 +95,7 @@ blender visual verification fbx 4-view
 
 ## 8. Audit History
 
+- **2026-09-20**: Pfad A Technical Hygiene, CI Workflows & Multi-Host Lock Defense: Hardened `.github/workflows/ci.yml` with least-privilege `permissions: contents: read`, deployed `stale.yml` (actions/stale@v9 with daily 01:30 UTC schedule, timeout-minutes: 10, operations-per-run: 30) and `welcome.yml` (actions/first-interaction@v3 with timeout-minutes: 5, cancel-in-progress concurrency) community lifecycle workflows, hardened `.gitignore` multi-host sync and canonical lock defense patterns (`*conflicted copy*`, `* (Kopie)*`, `* (Copy)*`, `*-WORKSTATION*`, `*-LAPTOP*`, `*-ASUS*`, `*-Mac Studio*`, `*-MacBook*`, `LOCK.user.*`, `LOCK.until.*`, `LOCK.condition.*`, `LOCK.permissions.json`, `.automation-lock`, `.hypothesis/`, `*.rej`), performed Level 1 SBOM third-party license audit in `THIRD_PARTY_LICENSES.md` (Stand 2026-09-20, zero copyleft, unprivileged RunAsInvoker non-elevation verification), harmonized version to `0.1.0-alpha.10`, refreshed documentation badges to 2026-09-20, and extended contract test suite.
 - **2026-09-13**: Pfad B Discoverability, JSON Schemas & Multi-View Geometry Projection: Added dedicated tool documentation and deterministic output schema for `blender_verify_fbx_reimport`, introduced ASCII camera layout for 4-view visual verification, provided copy-pasteable GitHub Actions CI/CD workflow for automated asset QA gates, updated test suite and documentation badges.
 - **2026-09-11**: Pfad A Technical Hygiene & Maintenance: Hardened CI test matrix with 15-minute runaway timeout guardrail (`timeout-minutes: 15`), restricted package tarball packaging to exclude `.pyc` and `__pycache__` artifacts (`scripts/verify_asset_visual.py`), expanded `.gitignore` sync-conflict copy defenses and build artifact exclusions, synchronized manifests to `0.1.0-alpha.9`, updated contract tests.
 - **2026-09-09**: Pfad B Discoverability, Visual Architecture & Governance Invariants audit.

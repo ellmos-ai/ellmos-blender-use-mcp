@@ -1,6 +1,6 @@
 # Third-Party License Review
 
-Stand: 2026-08-21.
+Stand: 2026-09-20 (Level 1 SBOM Audit, Zero-Copyleft & unprivileged RunAsInvoker Non-Elevation Certification).
 
 ## Runtime dependencies
 
