@@ -2,6 +2,20 @@
 
 All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
+## [Unreleased]
+
+### Discoverability, 18-Point Bilingual Navigation, Target Personas & Comparative Matrix (Pfad B) (2026-09-22)
+- Established full 18-point bilingual quick navigation parity with reciprocal dual HTML anchors (`<a id="..."></a>`) across `README.md` and `README_de.md`.
+- Saturated GitHub repository topics to full 20/20 capacity (`asset-pipeline`, `blender`, `fbx`, `headless`, `local-first`, `mcp`, `model-context-protocol`, `qa`, `3d-assets`, `blender-mcp`, `game-development`, `mcp-server`, `ci-cd`, `developer-tools`, `ellmos-ai`, `offline-first`, `open-bricks`, `visual-verification`, `zero-egress`, `four-view-rendering`).
+- Defined 4 distinct target personas ([PERSONA-01] to [PERSONA-04]) and high-intent SEO queries for Technical Artists, CI/CD Engineers, AI Agent Developers, and Studio Compliance Officers.
+- Established a 10-dimension 5-way comparative matrix against alternative tools (Interactive TCP Add-ons, Ad-hoc Python Scripts, Heavy DCC Validators, Cloud SaaS Checkers) mapped across invariants `INV-LOCAL-01` to `INV-SLA-10`.
+- Added canonical root `NOTICE` attribution file (Lukas Geiger, ellmos-ai, open-bricks) and integrated it into `package.json` package files.
+- Upgraded Level 1 SBOM in `THIRD_PARTY_LICENSES.md` (Stand 2026-09-22) with Section 4 Invariant Cross-Reference Matrix table, unprivileged RunAsInvoker non-elevation certification, and 100% Permissive Zero-Copyleft isolation guarantee.
+- Integrated German statutory disclaimer (§ 521 BGB Gefälligkeitsrecht) and binding 48h Security Response SLA into Section 18 of `README.md` and `README_de.md`.
+- Updated machine-readable context in `llms.txt` with audit timestamp `2026-09-22`, NOTICE attribution, statutory disclaimer, and 20/20 topics.
+- Strictly maintained version freeze discipline on `0.1.0-alpha.10` per T-20260920-167562623.
+- Expanded automated contract test suite in `test/manifest-parity.test.js` to guard 18-point navigation parity, dual reciprocal anchors, personas, comparative matrix, § 521 BGB notice, NOTICE file, and Level 1 SBOM invariants.
+
 ## 0.1.0-alpha.10 - 2026-09-20
 
 ### Technical Hygiene, CI Workflows & Multi-Host Lock Defense (Pfad A) (2026-09-20)

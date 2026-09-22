@@ -12,6 +12,7 @@
     "src/",
     "scripts/verify_asset_visual.py",
     "LICENSE",
+    "NOTICE",
     "README.md",
     "README_de.md",
     "SECURITY.md",
@@ -45,7 +46,10 @@
     "glama",
     "visual-verification",
     "render",
-    "geometry-check"
+    "geometry-check",
+    "four-view-rendering",
+    "ci-cd",
+    "zero-egress"
   ],
   "author": "Lukas Geiger",
   "license": "MIT",

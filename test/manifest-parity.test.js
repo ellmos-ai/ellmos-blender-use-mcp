@@ -13,7 +13,8 @@ const readmeEn = readFileSync(path.join(root, "README.md"), "utf8");
 const readmeDe = readFileSync(path.join(root, "README_de.md"), "utf8");
 const llmsTxt = readFileSync(path.join(root, "llms.txt"), "utf8");
 
-// 1. Version parity across manifests
+// 1. Version parity across manifests & strict version freeze discipline (T-20260920-167562623)
+assert.equal(pkg.version, "0.1.0-alpha.10", "version must remain strictly frozen at 0.1.0-alpha.10");
 assert.equal(server.version, pkg.version, "server.json version mismatch");
 assert.equal(glama.version, pkg.version, "glama.json version mismatch");
 assert.equal(server.packages[0].version, pkg.version, "server.json package[0] version mismatch");
@@ -27,11 +28,14 @@ assert.equal(server.packages[0].identifier, pkg.name, "server.json package ident
 assert.equal(glama.name, pkg.name, "glama.json package name mismatch");
 assert.equal(server.name, pkg.mcpName, "server.json MCP name mismatch");
 
-// 3. License parity
+// 3. License & NOTICE parity
 assert.equal(glama.license, pkg.license, "glama.json license mismatch");
+assert.ok(existsSync(path.join(root, "NOTICE")), "Canonical root NOTICE file must exist");
+assert.ok(pkg.files.includes("NOTICE"), "package.json files array must include NOTICE");
 
 // 4. Packaging files existence
 assert.ok(pkg.files.includes("SECURITY.md"), "SECURITY.md must be included in package.json files");
+assert.ok(pkg.files.includes("THIRD_PARTY_LICENSES.md"), "THIRD_PARTY_LICENSES.md must be included in package.json files");
 assert.ok(pkg.files.includes("scripts/verify_asset_visual.py"), "scripts/verify_asset_visual.py must be specifically included in package.json files");
 assert.ok(!pkg.files.includes("scripts/"), "package.json files must not wildcard package scripts/ to avoid pycache leaks");
 for (const relPath of pkg.files) {
@@ -40,13 +44,6 @@ for (const relPath of pkg.files) {
 }
 
 // 5. Tool count consistency in glama.json and llms.txt
-//
-// The tool count is DERIVED from src/index.js, not hard-coded. A literal number here
-// pins the manifest to whatever the count happened to be when the test was written:
-// adding a fourth tool made this assertion fail on the correct value (4 vs. an expected
-// 3), which is a test asserting its own staleness rather than a real defect. Counting
-// the registrations means the manifest is checked against the actual tool surface, and
-// the check keeps working when a fifth tool arrives.
 const indexSrc = readFileSync(path.join(root, "src", "index.js"), "utf8");
 const registeredTools = [...indexSrc.matchAll(/server\.tool\(\s*["'`]([a-z0-9_]+)["'`]/gi)].map((m) => m[1]);
 assert.ok(registeredTools.length > 0, "no server.tool() registrations found in src/index.js");
@@ -66,6 +63,7 @@ assert.match(readmeDe, /\| \*\*\[Blender Use\][^\n]+\| \*\*4\*\* \|/, "README_de
 assert.ok(readmeEn.includes("T4 -->"), "README.md architecture does not connect the fourth tool");
 assert.ok(readmeDe.includes("T4 -->"), "README_de.md architecture does not connect the fourth tool");
 assert.match(llmsTxt, /## Last-checked:\s*2026-09-\d{2}/, "llms.txt check date is stale");
+assert.ok(llmsTxt.includes("Last-checked: 2026-09-22"), "llms.txt must reflect Last-checked: 2026-09-22");
 
 const capabilityTerms = ["executable discovery", "background script", "structural FBX reimport", "four-view visual"];
 for (const [manifestName, description] of [
@@ -106,7 +104,7 @@ assert.ok(readmeDe.includes("Privatsphäre"), "README_de.md must use the real um
 
 const visualScript = readFileSync(path.join(root, "scripts", "verify_asset_visual.py"), "utf8");
 for (const [fileName, text] of [["README_de.md", readmeDe], ["scripts/verify_asset_visual.py", visualScript]]) {
-  assert.ok(!text.includes("�"), `${fileName} contains U+FFFD replacement characters`);
+  assert.ok(!text.includes("\uFFFD"), `${fileName} contains U+FFFD replacement characters`);
   assert.ok(!/[ÃÂ][\u0080-\u00ff]/u.test(text), `${fileName} contains likely mojibake`);
 }
 const germanReplacementForms = [
@@ -122,7 +120,58 @@ for (const [fileName, text] of [["README_de.md", readmeDe], ["scripts/verify_ass
   }
 }
 
-// 8. CI workflow sanity
+// 8. 18-Point Bilingual Quick Navigation & Reciprocal Dual Anchors
+const expectedNavAnchors = [
+  ["key-capabilities", "kernfaehigkeiten"],
+  ["target-personas--discoverability", "zielgruppen--auffindbarkeit"],
+  ["comparative-matrix-vs-alternatives", "vergleichsmatrix-gegenueber-alternativen"],
+  ["architecture--workflow", "architektur--workflow"],
+  ["headless-verification-lifecycle", "headless-verifikations-lebenszyklus"],
+  ["tools", "werkzeuge"],
+  ["blender_verify_fbx_reimport", "blender_verify_fbx_reimport-de"],
+  ["blender_verify_visual", "blender_verify_visual-de"],
+  ["general-purpose-primitives", "allgemeine-basis-werkzeuge"],
+  ["cicd-pipeline-integration", "cicd-pipeline-integration-de"],
+  ["governance--runtime-invariants", "governance--laufzeit-invarianten"],
+  ["security-policy", "sicherheitsrichtlinie"],
+  ["installation", "installation-de"],
+  ["configuration", "konfiguration-de"],
+  ["third-party-licenses--level-1-sbom", "drittanbieter-lizenzen--level-1-sbom"],
+  ["ellmos-ai-ecosystem", "ellmos-ai-oekosystem"],
+  ["llm-context-index", "llm-kontextindex"],
+  ["license--statutory-disclaimer", "lizenz--haftungsausschluss"]
+];
+
+assert.equal(expectedNavAnchors.length, 18, "Navigation must contain exactly 18 reciprocal anchors");
+
+for (const [enAnchor, deAnchor] of expectedNavAnchors) {
+  // Dual reciprocal anchors must exist in both READMEs
+  assert.ok(
+    readmeEn.includes(`id="${enAnchor}"`) && readmeEn.includes(`id="${deAnchor}"`),
+    `README.md missing dual reciprocal anchor for ${enAnchor} / ${deAnchor}`
+  );
+  assert.ok(
+    readmeDe.includes(`id="${enAnchor}"`) && readmeDe.includes(`id="${deAnchor}"`),
+    `README_de.md missing dual reciprocal anchor for ${enAnchor} / ${deAnchor}`
+  );
+}
+
+// 9. Target Personas ([PERSONA-01] to [PERSONA-04])
+const personas = ["[PERSONA-01]", "[PERSONA-02]", "[PERSONA-03]", "[PERSONA-04]"];
+for (const p of personas) {
+  assert.ok(readmeEn.includes(p), `README.md missing persona ${p}`);
+  assert.ok(readmeDe.includes(p), `README_de.md missing persona ${p}`);
+  assert.ok(llmsTxt.includes(p), `llms.txt missing persona ${p}`);
+}
+
+// 10. German Statutory Notice (§ 521 BGB Gefälligkeitsrecht) & Security SLA
+assert.ok(readmeEn.includes("§ 521 BGB"), "README.md missing § 521 BGB disclaimer");
+assert.ok(readmeDe.includes("§ 521 BGB"), "README_de.md missing § 521 BGB disclaimer");
+assert.ok(llmsTxt.includes("§ 521 BGB"), "llms.txt missing § 521 BGB disclaimer");
+assert.ok(readmeEn.includes("Security%20SLA"), "README.md missing Security SLA badge");
+assert.ok(readmeDe.includes("Sicherheits--SLA"), "README_de.md missing Sicherheits-SLA badge");
+
+// 11. CI workflow sanity
 const ciYml = readFileSync(path.join(root, ".github", "workflows", "ci.yml"), "utf8");
 assert.ok(ciYml.includes("actions/checkout@v4"), "ci.yml must use checkout@v4");
 assert.ok(ciYml.includes("npm test"), "ci.yml must run npm test");
@@ -149,10 +198,12 @@ assert.ok(welcomeYml.includes("actions/first-interaction@v3"), "welcome.yml must
 assert.ok(welcomeYml.includes("timeout-minutes: 5"), "welcome.yml must enforce timeout-minutes: 5");
 assert.ok(welcomeYml.includes("cancel-in-progress: true"), "welcome.yml must enable cancel-in-progress concurrency");
 
-// 9. Third-party licenses inventory parity
+// 12. Third-party licenses inventory parity & Level 1 SBOM Invariant Matrix
 const thirdPartyLicenses = readFileSync(path.join(root, "THIRD_PARTY_LICENSES.md"), "utf8");
 assert.ok(existsSync(path.join(root, "THIRD_PARTY_LICENSES.md")), "THIRD_PARTY_LICENSES.md must exist");
-assert.ok(thirdPartyLicenses.includes("Stand: 2026-09-20"), "THIRD_PARTY_LICENSES.md must reflect Stand 2026-09-20 audit date");
+assert.ok(thirdPartyLicenses.includes("Stand: 2026-09-22"), "THIRD_PARTY_LICENSES.md must reflect Stand 2026-09-22 audit date");
+assert.ok(thirdPartyLicenses.includes("RunAsInvoker"), "THIRD_PARTY_LICENSES.md missing RunAsInvoker certification");
+assert.ok(thirdPartyLicenses.includes("Zero-Copyleft"), "THIRD_PARTY_LICENSES.md missing Zero-Copyleft certification");
 for (const dep of Object.keys(pkg.dependencies || {})) {
   assert.ok(
     thirdPartyLicenses.includes(`\`${dep}\``),
@@ -160,7 +211,7 @@ for (const dep of Object.keys(pkg.dependencies || {})) {
   );
 }
 
-// 10. Gitignore security & sync-conflict protection rules
+// 13. Gitignore security & sync-conflict protection rules
 const gitignore = readFileSync(path.join(root, ".gitignore"), "utf8");
 assert.ok(gitignore.includes(".npmrc"), ".gitignore must ignore .npmrc");
 assert.ok(gitignore.includes("*.pem"), ".gitignore must ignore *.pem certificates");
@@ -184,15 +235,12 @@ assert.ok(gitignore.includes("*.rej"), ".gitignore must ignore *.rej patch rejec
 assert.ok(gitignore.includes(".nyc_output/"), ".gitignore must ignore .nyc_output/ coverage artifacts");
 assert.ok(gitignore.includes(".hypothesis/"), ".gitignore must ignore .hypothesis/ test artifacts");
 
-// 11. LLM Context freshness
-assert.ok(llmsTxt.includes("Last-checked: 2026-09-20"), "llms.txt missing up-to-date Last-checked: 2026-09-20 timestamp");
-
-// 12. Marketing ledger, runtime invariants & discoverability parity
+// 14. Marketing ledger, runtime invariants & discoverability parity
 const marketingLogPath = path.join(root, "MARKETING-LOG.txt");
 assert.ok(existsSync(marketingLogPath), "MARKETING-LOG.txt must exist");
 const marketingLog = readFileSync(marketingLogPath, "utf8");
 assert.ok(marketingLog.includes("0.1.0-alpha.10"), "MARKETING-LOG.txt missing version 0.1.0-alpha.10");
-assert.ok(marketingLog.includes("2026-09-20"), "MARKETING-LOG.txt missing 2026-09-20 audit date");
+assert.ok(marketingLog.includes("2026-09-22"), "MARKETING-LOG.txt missing 2026-09-22 audit date");
 
 const invariants = [
   "INV-LOCAL-01", "INV-HEADLESS-02", "INV-SEC-03", "INV-BOUND-04", "INV-INTEG-05",
@@ -204,16 +252,15 @@ for (const inv of invariants) {
   assert.ok(readmeEn.includes(inv), `README.md missing invariant ${inv}`);
   assert.ok(readmeDe.includes(inv), `README_de.md missing invariant ${inv}`);
   assert.ok(llmsTxt.includes(inv), `llms.txt missing invariant ${inv}`);
+  assert.ok(thirdPartyLicenses.includes(inv), `THIRD_PARTY_LICENSES.md missing invariant ${inv}`);
 }
 
 assert.ok(readmeEn.includes("Quick Navigation"), "README.md missing Quick Navigation section");
 assert.ok(readmeDe.includes("Schnellnavigation"), "README_de.md missing Schnellnavigation section");
-assert.ok(readmeEn.includes("Security%20SLA"), "README.md missing Security SLA badge");
-assert.ok(readmeDe.includes("Sicherheits--SLA"), "README_de.md missing Sicherheits-SLA badge");
 
 const changelog = readFileSync(path.join(root, "CHANGELOG.md"), "utf8");
 assert.ok(changelog.includes("0.1.0-alpha.10"), "CHANGELOG.md missing 0.1.0-alpha.10 entry");
-assert.ok(changelog.includes("2026-09-20"), "CHANGELOG.md missing 2026-09-20 timestamp");
+assert.ok(changelog.includes("2026-09-22"), "CHANGELOG.md missing 2026-09-22 timestamp");
 assert.ok(changelog.includes("Pfad A"), "CHANGELOG.md missing Pfad A entry");
 assert.ok(changelog.includes("Pfad B"), "CHANGELOG.md missing Pfad B entry");
 

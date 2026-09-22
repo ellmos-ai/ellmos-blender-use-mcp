@@ -4,9 +4,9 @@
 **Package:** `ellmos-blender-use-mcp` (npm / GitHub / Glama / Smithery)  
 **Author:** Lukas Geiger  
 **Organization:** [ellmos-ai](https://github.com/ellmos-ai) | Umbrella: [open-bricks](https://github.com/open-bricks)  
-**License:** MIT  
-**Current Version:** 0.1.0-alpha.10
-**Audit Date:** 2026-09-20 (Pfad A Technical Hygiene, CI Workflows & Multi-Host Lock Defense)
+**License:** MIT (Canonical Attribution: [NOTICE](NOTICE))
+**Current Version:** 0.1.0-alpha.10 (strictly frozen per T-20260920-167562623)
+**Audit Date:** 2026-09-22 (Pfad B Discoverability, 18-Point Bilingual Navigation, Target Personas & Comparative Matrix)
 
 ---
 
@@ -14,39 +14,61 @@
 
 `ellmos-blender-use-mcp` is a specialized, headless Model Context Protocol (MCP) asset-QA server engineered for 3D game pipelines, digital content creation (DCC), and automated delivery workflows.
 
-Unlike other Blender MCP servers that run interactive, persistent TCP daemons inside an active Blender GUI session, `ellmos-blender-use-mcp` operates with **zero persistent daemon overhead, zero installed add-ons, and zero open network ports**. Every invocation launches an isolated, ephemeral `blender --background` subprocess with a timeout guard and bounded memory buffer, returning deterministic structured JSON results and optional orthogonal four-view visual verification renders.
+Unlike other Blender MCP servers that run interactive, persistent TCP daemons inside an active Blender GUI session, `ellmos-blender-use-mcp` operates with **zero persistent daemon overhead, zero installed add-ons, and zero open network ports**. Every invocation launches an isolated, ephemeral `blender --background` subprocess with a timeout guard and bounded memory buffer, returning deterministic structured JSON results and orthogonal four-view visual verification renders.
 
 ---
 
-## 2. Core Architectural Differentiation
+## 2. 10-Dimension 5-Way Comparative Matrix vs. Alternatives
 
-| Feature / Dimension | Traditional Blender MCP Servers | `ellmos-blender-use-mcp` |
-|---|---|---|
-| **Execution Mode** | Interactive live GUI via open TCP socket | Headless, one-shot batch process (`--background`) |
-| **Installation Requirements** | Blender Add-on / Script installation required | Zero add-ons required; works out of the box |
-| **Trust Model & Network** | Open TCP port (listener on localhost) | 100% Offline / Zero-Egress (no sockets or ports) |
-| **Process Lifecycle** | Long-running resident background daemon | Ephemeral child process; cleanly killed on completion |
-| **Memory Safety** | Unbounded growth from script prints | Hard tail-buffer truncation (8 KB - 50 KB max) |
-| **Primary Use Case** | Interactive prompt-to-scene modeling | CI/CD asset verification, FBX QA & Visual Checks |
-| **Verification Scope** | Manual eyeball inspection | Structural FBX checks + 4-view multi-angle renders |
+| Invariant / Dimension | [1] `ellmos-blender-use-mcp` | [2] Interactive Blender MCP (TCP Add-on) | [3] Ad-Hoc Python Scripts | [4] Heavy DCC Suites (Maya / 3ds Max QA) | [5] Cloud SaaS 3D Checkers (Sketchfab) |
+|---|---|---|---|---|---|
+| **INV-LOCAL-01: Network & Air-Gap** | **100% Offline / Zero-Egress** (0 network calls) | Open TCP localhost listener required | Local, but unbounded network access | Local, but heavy license server polling | Remote SaaS upload required (Egress risk) |
+| **INV-HEADLESS-02: Add-on Burden** | **Zero Add-ons** (works out of the box) | Requires Blender add-on installation | No add-on required | Proprietary plugin installations | Web browser or heavy client upload |
+| **INV-SEC-03: Privilege Model** | **Unprivileged RunAsInvoker** (User mode) | User mode, but open socket attack surface | Unrestricted script execution | Administrator/Service installation | SaaS cloud security boundary |
+| **INV-BOUND-04: Memory Bounding** | **Hard Tail Buffer (8 KB - 50 KB max)** | Unbounded GUI session memory | Unbounded console output memory | Unbounded workstation memory footprint | Cloud processing quotas |
+| **INV-INTEG-05: Structured JSON QA** | **Deterministic Machine-Readable JSON** | Text prompt / chat responses | Unstructured stdout prints | XML / propriety log reports | Web dashboard visualization |
+| **INV-VISUAL-06: 4-View Geometry** | **Standardized 4-View Render Pipeline** | Manual GUI eyeball rotation | Requires custom camera scripts | Manual viewport navigation | Single WebGL model viewer |
+| **INV-CLEAN-07: Ephemeral Cleanup** | **Fail-Closed Automated Temp Purge** | Persistent scene state in memory | Leftover .py/.blend scratch files | Heavy project temp directories | Remote cloud storage retention |
+| **INV-CROSS-08: Cross-Platform** | **Windows, Linux, macOS Parity** | Dependent on GUI desktop support | OS-dependent path handling | OS-constrained (primarily Windows) | Platform-independent browser |
+| **INV-SYNC-09: Lock & Sync Defense** | **Multi-Host Lock & Sync Hardened** | Vulnerable to file locking collisions | No lock awareness | Heavy proprietary file locks | No multi-device git discipline |
+| **INV-SLA-10: Security SLA** | **48h Intake / 5d Triage Commitment** | Community best-effort (no SLA) | No formal support | Enterprise support contract required | Generic SaaS ticket queue |
 
 ---
 
-## 3. Tool Suite
+## 3. Tool Suite & Verification Matrix
 
-1. `blender_verify_fbx_reimport`: Imports an FBX file into headless Blender and verifies mesh counts, material assignments, and required naming prefixes (e.g. `SM_`, `M_`). Produces deterministic JSON reports.
+1. `blender_verify_fbx_reimport`: Imports an FBX file into headless Blender and verifies mesh counts, empty counts, material counts, material slot assignments, and required naming prefixes (e.g. `SM_`, `M_`). Produces deterministic JSON reports.
 2. `blender_verify_visual`: Renders four standardized views (front, side, top, perspective) to reveal geometry anomalies that structural tests cannot detect (unapplied rotation, floating sub-meshes, displaced pivots, export transform residuals).
 3. `blender_locate`: Locates the active Blender executable on Windows, Linux, or macOS across environment variables (`BLENDER_EXE`), standard installation roots, and system `PATH`.
 4. `blender_run_script`: Runs arbitrary Python scripts inside headless Blender with timeout supervision and tail-buffer truncation.
 
 ---
 
-## 4. Target Audiences & Use Cases
+## 4. Target Personas & High-Intent Discoverability
 
-- **Game Studios & Indie Developers**: Automate pre-commit and pre-release gates for Unreal Engine, Unity, Godot, and custom engine 3D asset packages.
-- **Technical Artists & 3D Pipeline Engineers**: Eliminate repetitive manual verification of exported FBX hierarchy, scale, rotation, and materials.
-- **AI Agent Frameworks & LLM Assistants (Claude, Codex, Gemini)**: Enable autonomous agents to safely inspect 3D assets in local sandboxes without risking uncontrolled process persistence or socket leaks.
-- **Continuous Integration (CI/CD)**: Run automated regression tests on 3D assets inside GitHub Actions, GitLab CI, or local build servers.
+### [PERSONA-01] Indie & AAA Game Technical Artists & 3D Pipeline TDs
+- **Profile:** Technical Artists managing FBX/GLTF asset pipelines for Unreal Engine, Unity, Godot, and custom C++ game engines.
+- **Pain Point:** Exported 3D assets frequently have unapplied rotation (lying on their side in-engine), broken pivot offsets, missing `SM_`/`M_` prefixes, or unassigned materials that slip past manual review.
+- **High-Intent Queries:** `blender fbx reimport verification mcp`, `blender headless asset qa gate`, `automated fbx naming convention check`, `detect unapplied rotation fbx blender`.
+- **How We Solve It:** One-shot structural reimport verification and 4-view visual geometry checks without having to open the Blender GUI.
+
+### [PERSONA-02] CI/CD Automation & Build Infrastructure Engineers
+- **Profile:** DevOps and Build Engineers responsible for automated asset validation gates in GitHub Actions, GitLab CI, or Jenkins.
+- **Pain Point:** Traditional Blender automation tools require installing graphical add-ons or running interactive background sockets, which fail in headless containerized runners.
+- **High-Intent Queries:** `headless blender asset qa mcp server`, `github actions blender fbx qa gate`, `blender background script ci cd verification`, `blender mcp no add-on no tcp port`.
+- **How We Solve It:** Stateless `blender --background` execution with strict 15-minute runaway timeouts, bounded 8 KB memory tails, zero add-ons, and deterministic JSON exit codes.
+
+### [PERSONA-03] Autonomous AI Agent Engineers (Claude, Codex, Gemini)
+- **Profile:** Developers deploying autonomous AI coding agents for procedural 3D generation, asset processing, and game prototyping.
+- **Pain Point:** AI agents need to inspect and verify 3D assets without socket leaks, zombie processes, or uncontrolled memory consumption.
+- **High-Intent Queries:** `mcp server fbx mesh material verification`, `ai agent blender 3d asset inspection`, `blender four-view rendering mcp`, `llm tool headless blender`.
+- **How We Solve It:** Native Model Context Protocol (MCP) server with comprehensive [llms.txt](llms.txt) documentation, robust `taskkill /T /F` process tree termination, and fail-closed temporary file cleanup.
+
+### [PERSONA-04] Enterprise Game Studio Compliance & Security Officers
+- **Profile:** Security Officers and Compliance Managers safeguarding proprietary game IP and development workstations.
+- **Pain Point:** Third-party DCC tools frequently open local network ports, dial remote telemetry servers, or require administrator privileges.
+- **High-Intent Queries:** `offline blender mcp zero egress`, `air gapped 3d asset verification`, `unprivileged blender asset qa`, `zero copyleft mcp tool`.
+- **How We Solve It:** Strict `RunAsInvoker` non-elevation certification, 100% offline zero-egress guarantee, zero runtime telemetry, and Level 1 SBOM with 0% copyleft licenses.
 
 ---
 
@@ -81,6 +103,8 @@ blender four-view rendering mcp
 ellmos blender use mcp
 ellmos-blender-use-mcp
 blender visual verification fbx 4-view
+detect unapplied rotation fbx blender
+headless 3d asset validation
 ```
 
 ---
@@ -95,6 +119,7 @@ blender visual verification fbx 4-view
 
 ## 8. Audit History
 
+- **2026-09-22**: Pfad B Discoverability, 18-Point Bilingual Navigation, Target Personas & Comparative Matrix: Established full 18-point bilingual quick navigation parity with reciprocal dual HTML anchors across `README.md` and `README_de.md`, added 20/20 saturated GitHub topics, defined 4 distinct target personas ([PERSONA-01] to [PERSONA-04]) and high-intent SEO queries, established a 10-dimension 5-way comparative matrix against alternative tools mapped to invariants INV-LOCAL-01..INV-SLA-10, authored canonical root `NOTICE` attribution file, updated Level 1 SBOM in `THIRD_PARTY_LICENSES.md` (Stand 2026-09-22) with Invariant Cross-Reference Matrix and unprivileged RunAsInvoker non-elevation certification, anchored German statutory disclaimer (§ 521 BGB Gefälligkeitsrecht) and 48h Security SLA in Section 18 of both READMEs, updated `llms.txt` and `package.json` metadata, maintained strict version freeze discipline on `0.1.0-alpha.10` per T-20260920-167562623, and extended contract test suite.
 - **2026-09-20**: Pfad A Technical Hygiene, CI Workflows & Multi-Host Lock Defense: Hardened `.github/workflows/ci.yml` with least-privilege `permissions: contents: read`, deployed `stale.yml` (actions/stale@v9 with daily 01:30 UTC schedule, timeout-minutes: 10, operations-per-run: 30) and `welcome.yml` (actions/first-interaction@v3 with timeout-minutes: 5, cancel-in-progress concurrency) community lifecycle workflows, hardened `.gitignore` multi-host sync and canonical lock defense patterns (`*conflicted copy*`, `* (Kopie)*`, `* (Copy)*`, `*-WORKSTATION*`, `*-LAPTOP*`, `*-ASUS*`, `*-Mac Studio*`, `*-MacBook*`, `LOCK.user.*`, `LOCK.until.*`, `LOCK.condition.*`, `LOCK.permissions.json`, `.automation-lock`, `.hypothesis/`, `*.rej`), performed Level 1 SBOM third-party license audit in `THIRD_PARTY_LICENSES.md` (Stand 2026-09-20, zero copyleft, unprivileged RunAsInvoker non-elevation verification), harmonized version to `0.1.0-alpha.10`, refreshed documentation badges to 2026-09-20, and extended contract test suite.
 - **2026-09-13**: Pfad B Discoverability, JSON Schemas & Multi-View Geometry Projection: Added dedicated tool documentation and deterministic output schema for `blender_verify_fbx_reimport`, introduced ASCII camera layout for 4-view visual verification, provided copy-pasteable GitHub Actions CI/CD workflow for automated asset QA gates, updated test suite and documentation badges.
 - **2026-09-11**: Pfad A Technical Hygiene & Maintenance: Hardened CI test matrix with 15-minute runaway timeout guardrail (`timeout-minutes: 15`), restricted package tarball packaging to exclude `.pyc` and `__pycache__` artifacts (`scripts/verify_asset_visual.py`), expanded `.gitignore` sync-conflict copy defenses and build artifact exclusions, synchronized manifests to `0.1.0-alpha.9`, updated contract tests.

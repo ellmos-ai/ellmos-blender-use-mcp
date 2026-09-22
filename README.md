@@ -13,6 +13,7 @@
 [![CI](https://github.com/ellmos-ai/ellmos-blender-use-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/ellmos-blender-use-mcp/actions/workflows/ci.yml)
 [![Tests](https://img.shields.io/badge/Tests-5%20Suites%20Passed%20%7C%20100%25-brightgreen.svg)](test/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Attribution: NOTICE](https://img.shields.io/badge/Attribution-NOTICE-blue.svg)](NOTICE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](https://github.com/ellmos-ai/ellmos-blender-use-mcp)
 [![Privacy](https://img.shields.io/badge/Privacy-100%25%20Offline%20%7C%20Zero--Egress-success.svg)](SECURITY.md)
@@ -23,7 +24,7 @@
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
-[![Last-checked](https://img.shields.io/badge/Last--checked-2026--09--20-informational.svg)](llms.txt)
+[![Last-checked](https://img.shields.io/badge/Last--checked-2026--09--22-informational.svg)](llms.txt)
 
 ---
 
@@ -31,12 +32,13 @@
 
 > **Language / Sprache:** 🇬🇧 **English** | 🇩🇪 **[Deutsch](README_de.md)**
 
-[1. Key Capabilities](#key-capabilities) • [2. Architecture & Component Topology](#architecture--workflow) • [3. Headless Verification Lifecycle](#2-headless-asset-qa-verification-lifecycle) • [4. Tool Suite & Verification Matrix](#tools) • [5. Visual Verification Deep Dive](#blender_verify_visual) • [6. CI/CD Integration](#cicd-pipeline-integration) • [7. Governance & Runtime Invariants](#governance--runtime-invariants) • [8. Security Policy](SECURITY.md) • [9. Installation & Setup](#installation) • [10. Configuration & Environment](#configuration) • [11. Third-Party Licenses](THIRD_PARTY_LICENSES.md) • [12. Sibling Projects & Ecosystem](#ellmos-ai-ecosystem) • [13. LLM Context](llms.txt) • [14. Changelog](CHANGELOG.md) • [15. License & Copyright](#license)
+[1. Key Capabilities](#key-capabilities) • [2. Target Personas & Discoverability](#target-personas--discoverability) • [3. Comparative Matrix](#comparative-matrix-vs-alternatives) • [4. Architecture & Topology](#architecture--workflow) • [5. Verification Lifecycle](#headless-verification-lifecycle) • [6. Tool Suite](#tools) • [7. FBX Verification Deep Dive](#blender_verify_fbx_reimport) • [8. Visual Verification Deep Dive](#blender_verify_visual) • [9. General Primitives](#general-purpose-primitives) • [10. CI/CD Integration](#cicd-pipeline-integration) • [11. Governance Invariants](#governance--runtime-invariants) • [12. Security Policy](SECURITY.md) • [13. Installation](#installation) • [14. Configuration](#configuration) • [15. Level 1 SBOM](THIRD_PARTY_LICENSES.md) • [16. Ecosystem](#ellmos-ai-ecosystem) • [17. LLM Context](llms.txt) • [18. License & Statutory Notice](#license--statutory-disclaimer)
 
 ---
 
 <a id="key-capabilities"></a>
-## Key Capabilities
+<a id="kernfaehigkeiten"></a>
+## 1. Key Capabilities
 
 An asset-QA tool for game and 3D asset pipelines: verify that an exported FBX actually reimports cleanly in headless Blender — mesh count, material count, and required naming prefixes checked automatically, with a deterministic JSON result instead of a manual eyeball pass. `blender_verify_fbx_reimport` is the core structural tool and `blender_verify_visual` its visual counterpart — the first counts meshes and checks name prefixes, the second renders four views and measures geometry that counting cannot see. `blender_locate` and `blender_run_script` are the general-purpose primitives both are built on.
 
@@ -50,9 +52,60 @@ An asset-QA tool for game and 3D asset pipelines: verify that an exported FBX ac
 > [!TIP]
 > **CI & Asset Pipeline Automation**: Use `blender_verify_fbx_reimport` as an automated gate before committing 3D assets to source control. It flags missing prefixes (e.g., `SM_`, `M_`), unexpected mesh counts, or broken material assignments without human intervention.
 
-## Architecture & Workflow
+---
 
-### 1. Component Topology
+<a id="target-personas--discoverability"></a>
+<a id="zielgruppen--auffindbarkeit"></a>
+## 2. Target Personas & High-Intent Discoverability
+
+### [PERSONA-01] Indie & AAA Game Technical Artists & 3D Pipeline TDs
+- **Profile:** Technical Artists managing FBX/GLTF asset pipelines for Unreal Engine, Unity, Godot, and custom C++ game engines.
+- **Pain Point:** Exported 3D assets frequently have unapplied rotation (lying on their side in-engine), broken pivot offsets, missing `SM_`/`M_` prefixes, or unassigned materials that slip past manual review.
+- **High-Intent Queries:** `blender fbx reimport verification mcp`, `blender headless asset qa gate`, `automated fbx naming convention check`, `detect unapplied rotation fbx blender`.
+- **How We Solve It:** One-shot structural reimport verification and 4-view visual geometry checks without having to open the Blender GUI.
+
+### [PERSONA-02] CI/CD Automation & Build Infrastructure Engineers
+- **Profile:** DevOps and Build Engineers responsible for automated asset validation gates in GitHub Actions, GitLab CI, or Jenkins.
+- **Pain Point:** Traditional Blender automation tools require installing graphical add-ons or running interactive background sockets, which fail in headless containerized runners.
+- **High-Intent Queries:** `headless blender asset qa mcp server`, `github actions blender fbx qa gate`, `blender background script ci cd verification`, `blender mcp no add-on no tcp port`.
+- **How We Solve It:** Stateless `blender --background` execution with strict 15-minute runaway timeouts, bounded 8 KB memory tails, zero add-ons, and deterministic JSON exit codes.
+
+### [PERSONA-03] Autonomous AI Agent Engineers (Claude, Codex, Gemini)
+- **Profile:** Developers deploying autonomous AI coding agents for procedural 3D generation, asset processing, and game prototyping.
+- **Pain Point:** AI agents need to inspect and verify 3D assets without socket leaks, zombie processes, or uncontrolled memory consumption.
+- **High-Intent Queries:** `mcp server fbx mesh material verification`, `ai agent blender 3d asset inspection`, `blender four-view rendering mcp`, `llm tool headless blender`.
+- **How We Solve It:** Native Model Context Protocol (MCP) server with comprehensive [llms.txt](llms.txt) documentation, robust `taskkill /T /F` process tree termination, and fail-closed temporary file cleanup.
+
+### [PERSONA-04] Enterprise Game Studio Compliance & Security Officers
+- **Profile:** Security Officers and Compliance Managers safeguarding proprietary game IP and development workstations.
+- **Pain Point:** Third-party DCC tools frequently open local network ports, dial remote telemetry servers, or require administrator privileges.
+- **High-Intent Queries:** `offline blender mcp zero egress`, `air gapped 3d asset verification`, `unprivileged blender asset qa`, `zero copyleft mcp tool`.
+- **How We Solve It:** Strict `RunAsInvoker` non-elevation certification, 100% offline zero-egress guarantee, zero runtime telemetry, and Level 1 SBOM with 0% copyleft licenses.
+
+---
+
+<a id="comparative-matrix-vs-alternatives"></a>
+<a id="vergleichsmatrix-gegenueber-alternativen"></a>
+## 3. 10-Dimension Comparative Matrix vs. Alternatives
+
+| Invariant / Dimension | [1] `ellmos-blender-use-mcp` | [2] Interactive Blender MCP (TCP Add-on) | [3] Ad-Hoc Python Scripts | [4] Heavy DCC Suites (Maya / 3ds Max QA) | [5] Cloud SaaS 3D Checkers (Sketchfab) |
+|---|---|---|---|---|---|
+| **INV-LOCAL-01: Network & Air-Gap** | **100% Offline / Zero-Egress** (0 network calls) | Open TCP localhost listener required | Local, but unbounded network access | Local, but heavy license server polling | Remote SaaS upload required (Egress risk) |
+| **INV-HEADLESS-02: Add-on Burden** | **Zero Add-ons** (works out of the box) | Requires Blender add-on installation | No add-on required | Proprietary plugin installations | Web browser or heavy client upload |
+| **INV-SEC-03: Privilege Model** | **Unprivileged RunAsInvoker** (User mode) | User mode, but open socket attack surface | Unrestricted script execution | Administrator/Service installation | SaaS cloud security boundary |
+| **INV-BOUND-04: Memory Bounding** | **Hard Tail Buffer (8 KB - 50 KB max)** | Unbounded GUI session memory | Unbounded console output memory | Unbounded workstation memory footprint | Cloud processing quotas |
+| **INV-INTEG-05: Structured JSON QA** | **Deterministic Machine-Readable JSON** | Text prompt / chat responses | Unstructured stdout prints | XML / propriety log reports | Web dashboard visualization |
+| **INV-VISUAL-06: 4-View Geometry** | **Standardized 4-View Render Pipeline** | Manual GUI eyeball rotation | Requires custom camera scripts | Manual viewport navigation | Single WebGL model viewer |
+| **INV-CLEAN-07: Ephemeral Cleanup** | **Fail-Closed Automated Temp Purge** | Persistent scene state in memory | Leftover .py/.blend scratch files | Heavy project temp directories | Remote cloud storage retention |
+| **INV-CROSS-08: Cross-Platform** | **Windows, Linux, macOS Parity** | Dependent on GUI desktop support | OS-dependent path handling | OS-constrained (primarily Windows) | Platform-independent browser |
+| **INV-SYNC-09: Lock & Sync Defense** | **Multi-Host Lock & Sync Hardened** | Vulnerable to file locking collisions | No lock awareness | Heavy proprietary file locks | No multi-device git discipline |
+| **INV-SLA-10: Security SLA** | **48h Intake / 5d Triage Commitment** | Community best-effort (no SLA) | No formal support | Enterprise support contract required | Generic SaaS ticket queue |
+
+---
+
+<a id="architecture--workflow"></a>
+<a id="architektur--workflow"></a>
+## 4. Architecture & Component Topology
 
 ```mermaid
 graph TD
@@ -96,7 +149,11 @@ graph TD
     style Subprocess fill:#11111b,stroke:#a6e3a1,stroke-width:1px
 ```
 
-### 2. Headless Asset-QA Verification Lifecycle
+---
+
+<a id="headless-verification-lifecycle"></a>
+<a id="headless-verifikations-lebenszyklus"></a>
+## 5. Headless Asset-QA Verification Lifecycle
 
 ```mermaid
 sequenceDiagram
@@ -112,7 +169,7 @@ sequenceDiagram
     Server->>Resolver: Resolve Blender Executable (blender_locate / BLENDER_EXE / Registry / PATH)
     Resolver-->>Server: Return Validated Executable Path
     Server->>FS: Write Temp Python Verification Script
-    Server->>Process: Spawn blender --background --python <script> (timeout-guarded)
+    Server->>Process: Spawn blender --background --python script (timeout-guarded)
     Process->>Python: Execute Verification Script
     Python->>FS: bpy.ops.import_scene.fbx(filepath=fbxPath)
     FS-->>Python: Parse Mesh Objects & Material Slots
@@ -123,21 +180,28 @@ sequenceDiagram
     Server-->>Client: Deterministic JSON Result (meshCount, materialCount, missingPrefixes, ok)
 ```
 
+---
+
 <a id="tools"></a>
-## Tools
+<a id="werkzeuge"></a>
+## 6. Tool Suite & Verification Matrix
 
-| Tool | Purpose |
-|---|---|
-| `blender_verify_fbx_reimport` | Generate a temporary Blender verification script, import an FBX, and write a JSON result with mesh/material counts and missing required prefixes. |
-| `blender_run_script` | Run `blender --background --python <script.py>` with optional arguments and bounded stdout tail. |
-| `blender_locate` | Resolve the Blender executable from an explicit path, `BLENDER_EXE`, the standard Windows install locations, or PATH. |
-| `blender_verify_visual` | Render four views of an FBX and check geometry a structural reimport cannot see: unapplied rotation, floating parts, pivot outside the model, transform residuals, stray empties. |
+| Tool | Purpose | Primary Output | Memory Guard |
+|---|---|---|---|
+| `blender_verify_fbx_reimport` | Generate a temporary Blender verification script, import an FBX, and write a JSON result with mesh/material counts and missing required prefixes. | JSON Report | Bounded 8 KB Tail |
+| `blender_verify_visual` | Render four views of an FBX and check geometry a structural reimport cannot see: unapplied rotation, floating parts, pivot outside the model, transform residuals, stray empties. | 4 PNGs + JSON | Bounded 8 KB Tail |
+| `blender_run_script` | Run `blender --background --python <script.py>` with optional arguments and bounded stdout tail. | Script Tail Text | 8 KB - 50 KB Max |
+| `blender_locate` | Resolve the Blender executable from an explicit path, `BLENDER_EXE`, standard Windows install locations, or PATH. | Resolved Path | Zero Subprocess |
 
-### `blender_verify_fbx_reimport`
+---
+
+<a id="blender_verify_fbx_reimport"></a>
+<a id="blender_verify_fbx_reimport-de"></a>
+## 7. `blender_verify_fbx_reimport` Deep Dive & Schema
 
 Imports an FBX file into headless Blender and verifies mesh count, empty count, material count, material slot assignments, and required naming prefixes.
 
-#### Parameters
+### Parameters
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -147,7 +211,7 @@ Imports an FBX file into headless Blender and verifies mesh count, empty count, 
 | `blenderPath` | `string` | No | auto-detect | Custom path to the Blender executable (`blender.exe` / `blender`). |
 | `timeoutMs` | `number` | No | `120000` | Process execution timeout in milliseconds (max: `600000`). |
 
-#### Example Invocation
+### Example Invocation
 
 ```json
 {
@@ -156,7 +220,7 @@ Imports an FBX file into headless Blender and verifies mesh count, empty count, 
 }
 ```
 
-#### Deterministic Output Schema
+### Deterministic Output Schema
 
 ```json
 {
@@ -184,19 +248,21 @@ Imports an FBX file into headless Blender and verifies mesh count, empty count, 
 }
 ```
 
-### `blender_verify_visual`
+---
+
+<a id="blender_verify_visual"></a>
+<a id="blender_verify_visual-de"></a>
+## 8. Visual Verification Deep Dive & 4-View Geometry
 
 Renders four views of an FBX and checks geometry that a **structural** reimport cannot see.
 
-`blender_verify_fbx_reimport` counts meshes and checks name prefixes — it cannot tell you that
-a mesh is lying on its side, that a part floats away from the assembly, or that the pivot sits
-outside the model. This tool does, and it produces the renders to look at.
+`blender_verify_fbx_reimport` counts meshes and checks name prefixes — it cannot tell you that a mesh is lying on its side, that a part floats away from the assembly, or that the pivot sits outside the model. This tool does, and it produces the renders to look at.
 
 ```json
 { "fbxPath": "kit.fbx", "outDir": "verify_visual", "expectHeight": "2.5,3.5" }
 ```
 
-#### Four-View Orthogonal Projection & Failure Detection
+### Four-View Orthogonal Projection & Failure Detection
 
 ```text
 +---------------------------------------+---------------------------------------+
@@ -214,10 +280,9 @@ outside the model. This tool does, and it produces the renders to look at.
 +---------------------------------------+---------------------------------------+
 ```
 
-Detected failure classes: unapplied rotation, floating parts in multi-part assets, pivot/origin
-outside the bounding box, transform residuals in the export, stray empties.
+Detected failure classes: unapplied rotation, floating parts in multi-part assets, pivot/origin outside the bounding box, transform residuals in the export, stray empties.
 
-#### Deterministic Output Schema
+### Deterministic Output Schema
 
 ```json
 {
@@ -249,14 +314,24 @@ outside the bounding box, transform residuals in the export, stray empties.
 }
 ```
 
-**Why four views and not one:** a single front shot hides depth errors — floating-vs-resting,
-behind-vs-in-front. A real case: chain links looked correctly attached from the front and were
-not attached at all when seen from the side.
+**Why four views and not one:** a single front shot hides depth errors — floating-vs-resting, behind-vs-in-front. A real case: chain links looked correctly attached from the front and were not attached at all when seen from the side.
 
 Like every tool here it is a one-shot headless run: no add-on, no daemon, no socket.
 
+---
+
+<a id="general-purpose-primitives"></a>
+<a id="allgemeine-basis-werkzeuge"></a>
+## 9. General-Purpose Primitives (`blender_locate` & `blender_run_script`)
+
+- `blender_locate`: Resolves the active Blender executable on Windows, Linux, or macOS across explicit call parameters, environment variable `BLENDER_EXE`, standard installation paths (newest version first), and system `PATH`.
+- `blender_run_script`: Runs an arbitrary local Python script via `blender --background --python <script.py>` with optional arguments, timeout guardrail, and hard tail-buffer truncation (8 KB default, up to 50 KB max).
+
+---
+
 <a id="cicd-pipeline-integration"></a>
-## CI/CD Pipeline Integration (GitHub Actions)
+<a id="cicd-pipeline-integration-de"></a>
+## 10. CI/CD Pipeline Integration (GitHub Actions)
 
 Integrate headless asset QA directly into your GitHub Actions pull request checks to prevent broken FBX models, missing material slots, unapplied rotations, and displaced pivots from reaching the main branch:
 
@@ -290,15 +365,11 @@ jobs:
             --json
 ```
 
-## Safety
-
-- This server runs local Python inside Blender. Use only scripts and asset paths you trust.
-- The default timeout is bounded.
-- No remote asset marketplaces, API keys, or telemetry are included.
-- For live GUI control, use a reviewed Blender MCP add-on separately.
+---
 
 <a id="governance--runtime-invariants"></a>
-## Governance & Runtime Invariants
+<a id="governance--laufzeit-invarianten"></a>
+## 11. Governance & Runtime Invariants
 
 The server enforces 10 architectural and runtime invariants to guarantee privacy, safety, process isolation, and auditability:
 
@@ -315,8 +386,23 @@ The server enforces 10 architectural and runtime invariants to guarantee privacy
 | `INV-SYNC-09` | **Cloud-Sync & Multi-Host Lock Discipline** | Resilient against cloud synchronization conflicts (`*-conflict-*`, `*-CONFLIT-*`) and compliant with canonical multi-agent locks. |
 | `INV-SLA-10` | **48h Security Response & 5-Day Triage SLA** | Formal vulnerability acknowledgment within 48 hours and triage commitment within 5 business days via official coordination channels. |
 
+---
+
+<a id="security-policy"></a>
+<a id="sicherheitsrichtlinie"></a>
+## 12. Security Policy & RunAsInvoker
+
+- **Local Python Execution**: This server runs local Python inside Blender. Use only scripts and asset paths you trust.
+- **RunAsInvoker Non-Elevation**: Runs strictly under standard unprivileged user accounts; no administrator or root privileges required.
+- **Process Cleanup**: Subprocesses are supervised; Windows processes are cleanly killed via `taskkill /pid <PID> /T /F` on timeout.
+- **Offline Assurance**: No remote asset marketplaces, external APIs, or usage telemetry are involved.
+- **Vulnerability Disclosure**: Review [SECURITY.md](SECURITY.md) for official coordination contacts and our binding 48-hour response SLA.
+
+---
+
 <a id="installation"></a>
-## Installation
+<a id="installation-de"></a>
+## 13. Installation & Getting Started
 
 ### Option 1: Run via npx (no install)
 
@@ -354,22 +440,34 @@ For a local checkout, point `command`/`args` at the cloned `src/index.js` instea
 }
 ```
 
-<a id="configuration"></a>
-## Configuration
+---
 
-- `BLENDER_EXE` — optional path to the Blender executable. Without it, tools try the explicit `blenderPath` argument, then `BLENDER_EXE`, then the standard Blender install locations on Windows (`%ProgramFiles%\Blender Foundation\Blender <version>\blender.exe` and the equivalent 32-bit and per-user roots, newest version first), then `PATH`. On Linux and macOS the lookup goes straight from `BLENDER_EXE` to `PATH`.
+<a id="configuration"></a>
+<a id="konfiguration-de"></a>
+## 14. Configuration & Environment
+
+- `BLENDER_EXE` — optional path to the Blender executable. Without it, tools try the explicit `blenderPath` argument, then `BLENDER_EXE`, then standard Blender install locations on Windows (`%ProgramFiles%\Blender Foundation\Blender <version>\blender.exe` and equivalent 32-bit and per-user roots, newest version first), then `PATH`. On Linux and macOS the lookup goes straight from `BLENDER_EXE` to `PATH`.
 - Every tool also accepts an explicit `blenderPath` argument per call, which takes priority over `BLENDER_EXE`.
 - Process output is retained only as a tail: `blender_run_script` defaults to 8,000 characters (configurable up to 50,000); FBX verification keeps 8,000. The response marks `outputTruncated: true` when earlier output was discarded, so verbose Blender scripts cannot grow the MCP process memory without bound.
 
-<a id="license"></a>
-## License
+---
 
-MIT — see [LICENSE](LICENSE).
+<a id="third-party-licenses--level-1-sbom"></a>
+<a id="drittanbieter-lizenzen--level-1-sbom"></a>
+## 15. Third-Party Licenses & Level 1 SBOM
+
+All runtime production dependencies are distributed under permissive open-source licenses (MIT and BSD-2-Clause) with 0% copyleft:
+- `@modelcontextprotocol/sdk` (MIT)
+- `update-notifier` (BSD-2-Clause)
+- `zod` (MIT)
+
+For the complete dependency inventory, Invariant Cross-Reference Matrix, and prior-art isolation analysis, see [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
 
 ---
 
 <a id="ellmos-ai-ecosystem"></a>
-## ellmos-ai Ecosystem
+<a id="ellmos-ai-oekosystem"></a>
+## 16. Sibling Projects & ellmos-ai Ecosystem
 
 This MCP server is part of the **[ellmos-ai](https://github.com/ellmos-ai)** ecosystem — AI infrastructure, MCP servers, and intelligent tools.
 
@@ -422,3 +520,26 @@ Our partner organization **[open-bricks](https://github.com/open-bricks)** bundl
 | [DevCenter](https://github.com/dev-bricks/DevCenter) | `dev-bricks` | Developer environment orchestration and multi-agent management cockpit |
 | [CodeBox](https://github.com/dev-bricks/CodeBox) | `dev-bricks` | Secure execution sandbox and isolated code-runner runtime |
 | [BattleStage](https://github.com/entertain-and-more/BattleStage) | `entertain-and-more` | Modular tactical game arena with automated asset pipeline validation |
+
+---
+
+<a id="llm-context-index"></a>
+<a id="llm-kontextindex"></a>
+## 17. LLM Context Index (`llms.txt`)
+
+For AI assistants and LLM tooling, [llms.txt](llms.txt) provides machine-readable architecture documentation, tool descriptions, search phrases, and runtime invariants.
+
+---
+
+<a id="license--statutory-disclaimer"></a>
+<a id="lizenz--haftungsausschluss"></a>
+## 18. License & Statutory Disclaimer (§ 521 BGB)
+
+### License & Attribution
+Distributed under the MIT License. See [LICENSE](LICENSE) and [NOTICE](NOTICE) for full copyright and attribution details.
+
+### Statutory German Disclaimer (§ 521 BGB Gefälligkeitsrecht)
+This open-source package is provided free of charge without consideration (Gefälligkeit). Under statutory German law (§ 521 BGB), liability for defects in quality and title is strictly limited to intentional misconduct (Vorsatz) and gross negligence (grobe Fahrlässigkeit).
+
+### Security Response Commitment
+Security vulnerabilities are triaged within 48 hours under our binding Security SLA. Refer to [SECURITY.md](SECURITY.md) for coordinated disclosure guidelines.

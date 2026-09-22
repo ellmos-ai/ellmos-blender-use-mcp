@@ -5,13 +5,14 @@
 Canonical repository: https://github.com/ellmos-ai/ellmos-blender-use-mcp
 npm package: https://www.npmjs.com/package/ellmos-blender-use-mcp
 MCP registry name: io.github.ellmos-ai/ellmos-blender-use-mcp
-License: MIT
+License: MIT (Canonical attribution: NOTICE)
 Language: JavaScript (ESM)
 Runtime: Node.js >=18
+Current Version: 0.1.0-alpha.10 (strictly frozen per T-20260920-167562623)
 
 ## Summary
 
-ellmos Blender Use MCP is an alpha-stage Model Context Protocol server built for game and 3D asset pipelines. It has two verification tools that complement each other. `blender_verify_fbx_reimport` imports a given FBX into headless Blender and writes a deterministic JSON result with mesh count, material count, and any missing required naming prefixes — a structural check. `blender_verify_visual` renders four views and measures geometry that counting cannot detect (unapplied rotation, floating parts, pivot outside the model), replacing the manual load-and-eyeball pass that structural checks leave open. `blender_run_script` and `blender_locate` are the general-purpose primitives the verification tool is built on: running an arbitrary Python script in `blender --background` mode with a bounded, timeout-guarded output tail, and resolving the local Blender executable.
+ellmos Blender Use MCP is an alpha-stage Model Context Protocol server built for game and 3D asset pipelines. It has two verification tools that complement each other: `blender_verify_fbx_reimport` imports a given FBX into headless Blender and writes a deterministic JSON result with mesh count, material count, and any missing required naming prefixes — a structural check. `blender_verify_visual` renders four views and measures geometry that counting cannot detect (unapplied rotation, floating parts, pivot outside the model), replacing the manual load-and-eyeball pass that structural checks leave open. `blender_run_script` and `blender_locate` are the general-purpose primitives the verification tools are built on: running an arbitrary Python script in `blender --background` mode with a bounded, timeout-guarded output tail, and resolving the local Blender executable.
 
 It does not install a Blender add-on, does not open a TCP port for a running Blender instance, and does not keep Blender resident between calls — every call is a fresh, headless, stateless `blender --background` process with a bounded timeout. It does not download assets and does not collect telemetry.
 
@@ -36,17 +37,18 @@ or install from source:
 git clone https://github.com/ellmos-ai/ellmos-blender-use-mcp.git
 cd ellmos-blender-use-mcp
 npm install
+npm run build
 node src/index.js
 ```
 
-## Audience
+## Target Personas
 
-- Technical artists and asset pipeline engineers who want an automated, deterministic pass/fail check for FBX reimport instead of manually reopening files in Blender
-- Game studios and 3D asset teams running CI checks on exported assets (mesh/material counts, required naming prefixes)
-- Developers who need a headless, add-on-free, no-open-port way to run bounded Blender Python scripts from an MCP client
-- AI assistants (Claude, Codex, Gemini) automating Blender-based asset QA steps in a build or delivery pipeline
+- [PERSONA-01] Indie & AAA Game Technical Artists & 3D Pipeline TDs (automated FBX QA gates, unapplied rotation detection).
+- [PERSONA-02] CI/CD Automation & Build Infrastructure Engineers (stateless GitHub Actions validation, zero add-ons).
+- [PERSONA-03] Autonomous AI Agent Engineers (Claude, Codex, Gemini) (bounded memory buffers, reliable process termination).
+- [PERSONA-04] Enterprise Game Studio Compliance & Security Officers (100% offline zero-egress, RunAsInvoker non-elevation).
 
-## Search Phrases
+## Search Phrases & Keywords
 
 ```
 blender fbx reimport verification mcp
@@ -61,6 +63,9 @@ automated fbx qa gate
 blender four-view rendering mcp
 ellmos blender use mcp
 ellmos-blender-use-mcp
+blender visual verification fbx 4-view
+detect unapplied rotation fbx blender
+headless 3d asset validation
 ```
 
 ## External Discovery Notes
@@ -71,17 +76,19 @@ ellmos-blender-use-mcp
 
 ## Important Files
 
-- `README.md`: full English documentation.
-- `README_de.md`: German documentation.
-- `SECURITY.md`: execution isolation, process tree safety, and vulnerability disclosure policy.
+- `README.md`: full English documentation with 18-point navigation and reciprocal dual anchors.
+- `README_de.md`: German documentation with 18-point navigation and reciprocal dual anchors.
+- `NOTICE`: canonical copyright and governance attribution file (Lukas Geiger, ellmos-ai, open-bricks).
+- `SECURITY.md`: execution isolation, process tree safety, unprivileged RunAsInvoker model, and vulnerability disclosure policy.
+- `THIRD_PARTY_LICENSES.md`: Level 1 SBOM dependency audit, Invariant Cross-Reference Matrix, and Zero-Copyleft isolation guarantee.
 - `server.json`: MCP registry metadata.
+- `glama.json`: Glama directory metadata and capabilities.
 - `MARKETING-LOG.txt`: discoverability, positioning, runtime invariants, and keywords.
-- `THIRD_PARTY_LICENSES.md`: dependency and prior-art license review.
 - `src/index.js`: MCP server entrypoint and tool definitions.
 - `test/privacy-hygiene.test.js`: regression test guarding against leaked local user-profile paths and hardcoded private workspace roots.
 - `test/runtime-safety.test.js`: regression test guarding output buffer tail limits.
 - `test/tool-surface.test.js`: regression test guarding process execution, timeout kills, and error handling.
-- `test/blender-resolution.test.js`: regression test guarding that the Blender executable lookup uses the standard install roots instead of a hardcoded path.
+- `test/blender-resolution.test.js`: regression test guarding that the Blender executable lookup uses standard install roots instead of hardcoded paths.
 - `test/manifest-parity.test.js`: automated regression test guarding manifest, file package, bilingual security policy, sequence diagrams, and metadata parity.
 
 ## Governance & Runtime Invariants
@@ -97,6 +104,8 @@ ellmos-blender-use-mcp
 - `INV-SYNC-09`: Cloud-Sync & Multi-Host Lock Discipline (hardened against sync collisions).
 - `INV-SLA-10`: 48h Security Response & 5-Day Triage SLA (binding response commitment).
 
-## Last-checked: 2026-09-20
+## Statutory Notice (§ 521 BGB)
 
+This software is provided free of charge without consideration (Gefälligkeit). Under statutory German law (§ 521 BGB), liability for defects in quality and title is strictly limited to intentional misconduct (Vorsatz) and gross negligence (grobe Fahrlässigkeit).
 
+## Last-checked: 2026-09-22
