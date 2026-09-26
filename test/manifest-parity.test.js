@@ -86,6 +86,9 @@ assert.ok(securityMd.includes("support@lukasgeiger.com"), "SECURITY.md missing s
 assert.ok(securityMd.includes("GitHub Security Advisories"), "SECURITY.md missing GitHub Security Advisories reference");
 assert.ok(securityMd.includes("## English"), "SECURITY.md missing English section");
 assert.ok(securityMd.includes("## Deutsch"), "SECURITY.md missing Deutsch section");
+assert.ok(securityMd.includes("INV-SLA-10"), "SECURITY.md missing INV-SLA-10 remediation SLA reference");
+assert.ok(securityMd.includes("30 calendar days"), "SECURITY.md English missing 30 calendar days SLA");
+assert.ok(securityMd.includes("30 Kalendertagen"), "SECURITY.md Deutsch missing 30 Kalendertagen SLA");
 
 // 7. Readme structure, badges & diagram parity
 assert.ok(readmeEn.includes("ellmos-blender-use-mcp"), "README.md missing package name");
@@ -216,6 +219,12 @@ const gitignore = readFileSync(path.join(root, ".gitignore"), "utf8");
 assert.ok(gitignore.includes(".npmrc"), ".gitignore must ignore .npmrc");
 assert.ok(gitignore.includes("*.pem"), ".gitignore must ignore *.pem certificates");
 assert.ok(gitignore.includes("*.key"), ".gitignore must ignore *.key private keys");
+assert.ok(gitignore.includes("*.csr"), ".gitignore must ignore *.csr signing requests");
+assert.ok(gitignore.includes("*.token"), ".gitignore must ignore *.token secrets");
+assert.ok(gitignore.includes("*.secret"), ".gitignore must ignore *.secret secrets");
+assert.ok(gitignore.includes("id_rsa*"), ".gitignore must ignore id_rsa* SSH keys");
+assert.ok(gitignore.includes("id_ed25519*"), ".gitignore must ignore id_ed25519* SSH keys");
+assert.ok(gitignore.includes("CONFLICT_REVIEW_LOG*"), ".gitignore must ignore CONFLICT_REVIEW_LOG* host logs");
 assert.ok(gitignore.includes("*-WORKSTATION*"), ".gitignore must ignore *-WORKSTATION* sync conflicts");
 assert.ok(gitignore.includes("*-WORKSTATION-LG*"), ".gitignore must ignore *-WORKSTATION-LG* sync conflicts");
 assert.ok(gitignore.includes("*-LAPTOP*"), ".gitignore must ignore *-LAPTOP* sync conflicts");

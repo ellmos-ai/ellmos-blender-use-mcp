@@ -26,12 +26,20 @@ _after-care/
 *.p12
 *.cert
 *.crt
+*.csr
 .npmrc
 *secrets*.json
 credentials.json
 *recovery*.txt
+*.token
+*.secret
+id_rsa*
+id_ed25519*
+id_ecdsa*
+id_dsa*
 
 # Sync conflict copies and host artifacts
+CONFLICT_REVIEW_LOG*
 *conflicted copy*
 * (Kopie)*
 * (Copy)*

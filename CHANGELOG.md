@@ -4,6 +4,12 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## [Unreleased]
 
+### Security & Dependency Remediation, SLA Contract & Gitignore Hardening (2026-09-26)
+- Remediated 3 moderate supply chain vulnerabilities in transitive dependencies (GHSA-gqvv-2mrq-wpjv, GHSA-g6gw-c38x-mqfc, GHSA-crvj-82cr-hjcx) by pinning `@hono/node-server` to `^2.0.12`, `hono` to `^4.13.8`, `qs` to `^6.16.0`, `vitest` to `^4.1.11`, and `@vitest/mocker` to `^4.1.11` across `package.json` overrides and `package-lock.json` (`npm audit` 100% clean, 0 vulnerabilities).
+- Formalized explicit 30-calendar-day remediation SLA commitment (`INV-SLA-10`) in English and German sections of `SECURITY.md`.
+- Hardened `.gitignore` against credential and synchronization artifacts including SSH key wildcards (`id_rsa*`, `id_ed25519*`, `id_ecdsa*`, `id_dsa*`), certificate signing requests (`*.csr`), token/secret files (`*.token`, `*.secret`), and multi-host review protocols (`CONFLICT_REVIEW_LOG*`).
+- Expanded automated contract test suite in `test/manifest-parity.test.js` to guard the 30-day remediation SLA commitment and the new credential/sync `.gitignore` patterns.
+
 ### Discoverability, 18-Point Bilingual Navigation, Target Personas & Comparative Matrix (Pfad B) (2026-09-22)
 - Established full 18-point bilingual quick navigation parity with reciprocal dual HTML anchors (`<a id="..."></a>`) across `README.md` and `README_de.md`.
 - Saturated GitHub repository topics to full 20/20 capacity (`asset-pipeline`, `blender`, `fbx`, `headless`, `local-first`, `mcp`, `model-context-protocol`, `qa`, `3d-assets`, `blender-mcp`, `game-development`, `mcp-server`, `ci-cd`, `developer-tools`, `ellmos-ai`, `offline-first`, `open-bricks`, `visual-verification`, `zero-egress`, `four-view-rendering`).
