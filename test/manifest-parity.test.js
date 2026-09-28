@@ -36,6 +36,8 @@ assert.ok(pkg.files.includes("NOTICE"), "package.json files array must include N
 // 4. Packaging files existence
 assert.ok(pkg.files.includes("SECURITY.md"), "SECURITY.md must be included in package.json files");
 assert.ok(pkg.files.includes("THIRD_PARTY_LICENSES.md"), "THIRD_PARTY_LICENSES.md must be included in package.json files");
+assert.ok(pkg.files.includes("THIRD_PARTY_LICENSES.txt"), "THIRD_PARTY_LICENSES.txt must be included in package.json files");
+assert.ok(existsSync(path.join(root, "THIRD_PARTY_LICENSES.txt")), "Canonical root THIRD_PARTY_LICENSES.txt file must exist");
 assert.ok(pkg.files.includes("scripts/verify_asset_visual.py"), "scripts/verify_asset_visual.py must be specifically included in package.json files");
 assert.ok(!pkg.files.includes("scripts/"), "package.json files must not wildcard package scripts/ to avoid pycache leaks");
 for (const relPath of pkg.files) {
@@ -63,7 +65,7 @@ assert.match(readmeDe, /\| \*\*\[Blender Use\][^\n]+\| \*\*4\*\* \|/, "README_de
 assert.ok(readmeEn.includes("T4 -->"), "README.md architecture does not connect the fourth tool");
 assert.ok(readmeDe.includes("T4 -->"), "README_de.md architecture does not connect the fourth tool");
 assert.match(llmsTxt, /## Last-checked:\s*2026-09-\d{2}/, "llms.txt check date is stale");
-assert.ok(llmsTxt.includes("Last-checked: 2026-09-22"), "llms.txt must reflect Last-checked: 2026-09-22");
+assert.ok(llmsTxt.includes("Last-checked: 2026-09-29"), "llms.txt must reflect Last-checked: 2026-09-29");
 
 const capabilityTerms = ["executable discovery", "background script", "structural FBX reimport", "four-view visual"];
 for (const [manifestName, description] of [
@@ -193,6 +195,7 @@ assert.ok(staleYml.includes("actions/stale@v9"), "stale.yml must use actions/sta
 assert.ok(staleYml.includes("timeout-minutes: 10"), "stale.yml must enforce timeout-minutes: 10");
 assert.ok(staleYml.includes("30 1 * * *"), "stale.yml must run daily schedule at 01:30 UTC");
 assert.ok(staleYml.includes("issues: write"), "stale.yml must declare issues: write");
+assert.ok(staleYml.includes("cancel-in-progress: true"), "stale.yml must enable cancel-in-progress concurrency");
 
 const welcomeYmlPath = path.join(root, ".github", "workflows", "welcome.yml");
 assert.ok(existsSync(welcomeYmlPath), "welcome.yml workflow must exist");
@@ -201,10 +204,36 @@ assert.ok(welcomeYml.includes("actions/first-interaction@v3"), "welcome.yml must
 assert.ok(welcomeYml.includes("timeout-minutes: 5"), "welcome.yml must enforce timeout-minutes: 5");
 assert.ok(welcomeYml.includes("cancel-in-progress: true"), "welcome.yml must enable cancel-in-progress concurrency");
 
+const autoAssignYmlPath = path.join(root, ".github", "workflows", "auto-assign.yml");
+assert.ok(existsSync(autoAssignYmlPath), "auto-assign.yml workflow must exist");
+const autoAssignYml = readFileSync(autoAssignYmlPath, "utf8");
+assert.ok(autoAssignYml.includes("actions/github-script@v7"), "auto-assign.yml must use actions/github-script@v7");
+assert.ok(autoAssignYml.includes("timeout-minutes: 5"), "auto-assign.yml must enforce timeout-minutes: 5");
+assert.ok(autoAssignYml.includes("cancel-in-progress: true"), "auto-assign.yml must enable cancel-in-progress concurrency");
+
+const labelSyncYmlPath = path.join(root, ".github", "workflows", "label-sync.yml");
+assert.ok(existsSync(labelSyncYmlPath), "label-sync.yml workflow must exist");
+const labelSyncYml = readFileSync(labelSyncYmlPath, "utf8");
+assert.ok(labelSyncYml.includes("EndBug/label-sync@v2"), "label-sync.yml must use EndBug/label-sync@v2");
+assert.ok(labelSyncYml.includes("timeout-minutes: 5"), "label-sync.yml must enforce timeout-minutes: 5");
+assert.ok(labelSyncYml.includes("cancel-in-progress: true"), "label-sync.yml must enable cancel-in-progress concurrency");
+
+const labelsYmlPath = path.join(root, ".github", "labels.yml");
+assert.ok(existsSync(labelsYmlPath), ".github/labels.yml must exist");
+const labelsYml = readFileSync(labelsYmlPath, "utf8");
+const expectedLabels = [
+  "bug", "enhancement", "good first issue", "help wanted",
+  "documentation", "duplicate", "wontfix", "priority: high",
+  "priority: low", "needs-triage", "stale"
+];
+for (const label of expectedLabels) {
+  assert.ok(labelsYml.includes(`name: ${label}`) || labelsYml.includes(`name: '${label}'`), `labels.yml missing label: ${label}`);
+}
+
 // 12. Third-party licenses inventory parity & Level 1 SBOM Invariant Matrix
 const thirdPartyLicenses = readFileSync(path.join(root, "THIRD_PARTY_LICENSES.md"), "utf8");
 assert.ok(existsSync(path.join(root, "THIRD_PARTY_LICENSES.md")), "THIRD_PARTY_LICENSES.md must exist");
-assert.ok(thirdPartyLicenses.includes("Stand: 2026-09-22"), "THIRD_PARTY_LICENSES.md must reflect Stand 2026-09-22 audit date");
+assert.ok(thirdPartyLicenses.includes("Stand: 2026-09-29"), "THIRD_PARTY_LICENSES.md must reflect Stand 2026-09-29 audit date");
 assert.ok(thirdPartyLicenses.includes("RunAsInvoker"), "THIRD_PARTY_LICENSES.md missing RunAsInvoker certification");
 assert.ok(thirdPartyLicenses.includes("Zero-Copyleft"), "THIRD_PARTY_LICENSES.md missing Zero-Copyleft certification");
 for (const dep of Object.keys(pkg.dependencies || {})) {
@@ -213,6 +242,13 @@ for (const dep of Object.keys(pkg.dependencies || {})) {
     `THIRD_PARTY_LICENSES.md missing runtime dependency: ${dep}`
   );
 }
+
+const thirdPartyLicensesTxt = readFileSync(path.join(root, "THIRD_PARTY_LICENSES.txt"), "utf8");
+assert.ok(existsSync(path.join(root, "THIRD_PARTY_LICENSES.txt")), "THIRD_PARTY_LICENSES.txt must exist");
+assert.ok(thirdPartyLicensesTxt.includes("Stand: 2026-09-29"), "THIRD_PARTY_LICENSES.txt must reflect Stand 2026-09-29 audit date");
+assert.ok(thirdPartyLicensesTxt.includes("RunAsInvoker"), "THIRD_PARTY_LICENSES.txt missing RunAsInvoker");
+assert.ok(thirdPartyLicensesTxt.includes("Zero-Copyleft"), "THIRD_PARTY_LICENSES.txt missing Zero-Copyleft");
+assert.ok(thirdPartyLicensesTxt.includes("NOTICE"), "THIRD_PARTY_LICENSES.txt missing NOTICE attribution");
 
 // 13. Gitignore security & sync-conflict protection rules
 const gitignore = readFileSync(path.join(root, ".gitignore"), "utf8");
@@ -243,6 +279,15 @@ assert.ok(gitignore.includes("*.orig"), ".gitignore must ignore *.orig merge lef
 assert.ok(gitignore.includes("*.rej"), ".gitignore must ignore *.rej patch rejects");
 assert.ok(gitignore.includes(".nyc_output/"), ".gitignore must ignore .nyc_output/ coverage artifacts");
 assert.ok(gitignore.includes(".hypothesis/"), ".gitignore must ignore .hypothesis/ test artifacts");
+assert.ok(gitignore.includes("Desktop.ini"), ".gitignore must ignore Desktop.ini");
+assert.ok(gitignore.includes("*.swo"), ".gitignore must ignore *.swo");
+assert.ok(gitignore.includes("*_WORKSTATION*"), ".gitignore must ignore *_WORKSTATION*");
+assert.ok(gitignore.includes("*_WORKSTATION-LG*"), ".gitignore must ignore *_WORKSTATION-LG*");
+assert.ok(gitignore.includes("*-WORKSTATION.*"), ".gitignore must ignore *-WORKSTATION.*");
+assert.ok(gitignore.includes("*-WORKSTATION-LG.*"), ".gitignore must ignore *-WORKSTATION-LG.*");
+assert.ok(gitignore.includes("*-IDEAPAD*"), ".gitignore must ignore *-IDEAPAD*");
+assert.ok(gitignore.includes("uv.lock"), ".gitignore must ignore uv.lock");
+assert.ok(gitignore.includes(".pytest_temp/"), ".gitignore must ignore .pytest_temp/");
 
 // 14. Marketing ledger, runtime invariants & discoverability parity
 const marketingLogPath = path.join(root, "MARKETING-LOG.txt");
@@ -250,6 +295,7 @@ assert.ok(existsSync(marketingLogPath), "MARKETING-LOG.txt must exist");
 const marketingLog = readFileSync(marketingLogPath, "utf8");
 assert.ok(marketingLog.includes("0.1.0-alpha.10"), "MARKETING-LOG.txt missing version 0.1.0-alpha.10");
 assert.ok(marketingLog.includes("2026-09-22"), "MARKETING-LOG.txt missing 2026-09-22 audit date");
+assert.ok(marketingLog.includes("2026-09-29"), "MARKETING-LOG.txt missing 2026-09-29 audit date");
 
 const invariants = [
   "INV-LOCAL-01", "INV-HEADLESS-02", "INV-SEC-03", "INV-BOUND-04", "INV-INTEG-05",
@@ -262,6 +308,7 @@ for (const inv of invariants) {
   assert.ok(readmeDe.includes(inv), `README_de.md missing invariant ${inv}`);
   assert.ok(llmsTxt.includes(inv), `llms.txt missing invariant ${inv}`);
   assert.ok(thirdPartyLicenses.includes(inv), `THIRD_PARTY_LICENSES.md missing invariant ${inv}`);
+  assert.ok(thirdPartyLicensesTxt.includes(inv), `THIRD_PARTY_LICENSES.txt missing invariant ${inv}`);
 }
 
 assert.ok(readmeEn.includes("Quick Navigation"), "README.md missing Quick Navigation section");
@@ -270,6 +317,7 @@ assert.ok(readmeDe.includes("Schnellnavigation"), "README_de.md missing Schnelln
 const changelog = readFileSync(path.join(root, "CHANGELOG.md"), "utf8");
 assert.ok(changelog.includes("0.1.0-alpha.10"), "CHANGELOG.md missing 0.1.0-alpha.10 entry");
 assert.ok(changelog.includes("2026-09-22"), "CHANGELOG.md missing 2026-09-22 timestamp");
+assert.ok(changelog.includes("2026-09-29"), "CHANGELOG.md missing 2026-09-29 timestamp");
 assert.ok(changelog.includes("Pfad A"), "CHANGELOG.md missing Pfad A entry");
 assert.ok(changelog.includes("Pfad B"), "CHANGELOG.md missing Pfad B entry");
 

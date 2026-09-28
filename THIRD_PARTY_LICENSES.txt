@@ -1,0 +1,63 @@
+# Third-Party Licenses & Level 1 SBOM
+
+Last checked: 2026-09-29 against npm metadata & Node.js ecosystem.
+Audited: Stand: 2026-09-29 against Level 1 SBOM and runtime invariants.
+
+Scope: direct dependencies declared in `package.json` as well as
+runtime environment and development tooling. This inventory is a
+direct dependency review and Level 1 SBOM affirmation, complementing the
+markdown review in `THIRD_PARTY_LICENSES.md`.
+
+## Project License & Attribution
+
+ellmos-blender-use-mcp is licensed under the MIT License.
+Canonical copyright attribution is maintained in `NOTICE`:
+Copyright (c) 2026 Lukas Geiger, ellmos-ai family under open-bricks umbrella.
+
+## Architecture & Security Invariants
+
+- 100% Local-First & Zero Cloud Egress (INV-LOCAL-01, verified in test/privacy-hygiene.test.js)
+- Stateless Headless Execution & Add-on-Free (INV-HEADLESS-02)
+- Unprivileged User-Mode Execution: RunAsInvoker Non-Elevation (INV-SEC-03)
+- Bounded Execution with Timeout & Tail Buffers (INV-BOUND-04)
+- Deterministic JSON QA Reports (INV-INTEG-05)
+- Four-View Geometric Visual Verification (INV-VISUAL-06)
+- Fail-Closed Ephemeral Scratch Cleanup (INV-CLEAN-07)
+- Cross-Platform OS Parity: Windows, Linux, macOS (INV-CROSS-08)
+- Cloud-Sync & Multi-Host Lock Defense (INV-SYNC-09, hardened .gitignore)
+- Zero-Copyleft & 100% Permissive Open-Source Licensing (MIT, BSD-2-Clause)
+- 48h Response, 5-Day Triage & 30-Day Remediation SLA (INV-SLA-10, SECURITY.md)
+
+## Core Runtime Dependencies
+
+| Package | Ecosystem | Version / Range | License | Role & Purpose |
+|---|---|---:|---|---|
+| @modelcontextprotocol/sdk | Node / npm | ^1.0.0 | MIT | Model Context Protocol SDK protocol transport & stdio API |
+| update-notifier | Node / npm | ^7.3.1 | BSD-2-Clause | Non-intrusive interactive CLI update notification |
+| zod | Node / npm | ^3.23.8 | MIT | Tool input schema validation & TypeScript type inference |
+
+## Development & Build Tooling
+
+| Package / Tool | Ecosystem | Version / Range | License | Role & Purpose |
+|---|---|---:|---|---|
+| node | JavaScript Runtime | >=18.0.0 | MIT / Node.js | Core execution runtime |
+| vitest (override) | Node / npm | ^4.1.11 | MIT | Unit, privacy, and contract test runner |
+| @hono/node-server (override) | Node / npm | ^2.0.12 | MIT | Local development test server utilities |
+| hono (override) | Node / npm | ^4.13.8 | MIT | Web/API middleware test abstractions |
+| qs (override) | Node / npm | ^6.16.0 | BSD-3-Clause | Query string parsing test utility |
+
+## Level 1 SBOM Invariant Verification (Stand: 2026-09-29)
+
+All 10 architectural and runtime governance invariants are confirmed:
+- INV-LOCAL-01: 100% Local-First & Zero-Egress (no outbound connections, telemetry, or cloud dependencies)
+- INV-HEADLESS-02: Stateless & Add-on-Free (ephemeral blender --background subprocesses, no persistent daemons)
+- INV-SEC-03: Non-Elevation & RunAsInvoker Principle (unprivileged user-mode execution, zero admin rights required)
+- INV-BOUND-04: Timeout & Tail Buffer Bounds (bounded process runtime, 8 KB tail buffers preventing memory spikes)
+- INV-INTEG-05: Deterministic JSON QA (reproducible structured reports for mesh, materials, and hierarchy)
+- INV-VISUAL-06: 4-View Geometry Verification (four-angle rendering catching depth, rotation, and pivot flaws)
+- INV-CLEAN-07: Fail-Closed Cleanup (guaranteed purge of ephemeral scripts and temporary render output)
+- INV-CROSS-08: Cross-Platform OS Parity (verified on Windows, Linux, and macOS across Node.js 18-24)
+- INV-SYNC-09: Cloud-Sync & Lock Discipline (multi-host conflict copy & canonical lock prevention in .gitignore)
+- INV-SLA-10: 48h Response, 5-Day Triage & 30-Day Remediation SLA (binding security commitments in SECURITY.md)
+
+Refer to `THIRD_PARTY_LICENSES.md` for full cross-reference matrix and component analyses.

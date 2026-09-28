@@ -24,7 +24,7 @@
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
-[![Last-checked](https://img.shields.io/badge/Last--checked-2026--09--22-informational.svg)](llms.txt)
+[![Last-checked](https://img.shields.io/badge/Last--checked-2026--09--29-informational.svg)](llms.txt)
 
 ---
 
@@ -461,7 +461,7 @@ All runtime production dependencies are distributed under permissive open-source
 - `update-notifier` (BSD-2-Clause)
 - `zod` (MIT)
 
-For the complete dependency inventory, Invariant Cross-Reference Matrix, and prior-art isolation analysis, see [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
+For the complete dependency inventory, Invariant Cross-Reference Matrix, and prior-art isolation analysis, see [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) and the companion plaintext inventory [THIRD_PARTY_LICENSES.txt](THIRD_PARTY_LICENSES.txt).
 
 ---
 

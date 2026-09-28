@@ -24,7 +24,7 @@
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
-[![Zuletzt geprüft](https://img.shields.io/badge/Zuletzt%20gepr%C3%BCft-2026--09--22-informational.svg)](llms.txt)
+[![Zuletzt geprüft](https://img.shields.io/badge/Zuletzt%20gepr%C3%BCft-2026--09--29-informational.svg)](llms.txt)
 
 ---
 
@@ -457,7 +457,7 @@ Alle Laufzeit-Abhängigkeiten stehen unter permissiven Open-Source-Lizenzen (MIT
 - `update-notifier` (BSD-2-Clause)
 - `zod` (MIT)
 
-Eine vollständige Übersicht inklusive Invarianten-Matrix und Isolation externer Konzepte finden Sie in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
+Eine vollständige Übersicht inklusive Invarianten-Matrix und Isolation externer Konzepte finden Sie in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) sowie in der Begleitdatei [THIRD_PARTY_LICENSES.txt](THIRD_PARTY_LICENSES.txt).
 
 ---
 

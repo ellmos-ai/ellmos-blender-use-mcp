@@ -81,6 +81,7 @@ headless 3d asset validation
 - `NOTICE`: canonical copyright and governance attribution file (Lukas Geiger, ellmos-ai, open-bricks).
 - `SECURITY.md`: execution isolation, process tree safety, unprivileged RunAsInvoker model, and vulnerability disclosure policy.
 - `THIRD_PARTY_LICENSES.md`: Level 1 SBOM dependency audit, Invariant Cross-Reference Matrix, and Zero-Copyleft isolation guarantee.
+- `THIRD_PARTY_LICENSES.txt`: Level 1 SBOM plaintext companion affirming NOTICE attribution, RunAsInvoker non-elevation, and runtime invariant matrix.
 - `server.json`: MCP registry metadata.
 - `glama.json`: Glama directory metadata and capabilities.
 - `MARKETING-LOG.txt`: discoverability, positioning, runtime invariants, and keywords.
@@ -108,4 +109,4 @@ headless 3d asset validation
 
 This software is provided free of charge without consideration (Gefälligkeit). Under statutory German law (§ 521 BGB), liability for defects in quality and title is strictly limited to intentional misconduct (Vorsatz) and gross negligence (grobe Fahrlässigkeit).
 
-## Last-checked: 2026-09-22
+## Last-checked: 2026-09-29

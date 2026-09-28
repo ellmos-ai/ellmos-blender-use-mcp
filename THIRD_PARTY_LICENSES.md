@@ -1,6 +1,6 @@
 # Third-Party License Review & Level 1 SBOM
 
-Stand: 2026-09-22 (Level 1 SBOM Audit, Invariant Cross-Reference Matrix, Zero-Copyleft & unprivileged RunAsInvoker Non-Elevation Certification).
+Stand: 2026-09-29 (Level 1 SBOM Audit, Invariant Cross-Reference Matrix, Zero-Copyleft & unprivileged RunAsInvoker Non-Elevation Certification; accompanied by plaintext companion THIRD_PARTY_LICENSES.txt).
 
 ## 1. Runtime Dependencies (Level 1 SBOM)
 

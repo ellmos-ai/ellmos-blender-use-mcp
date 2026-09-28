@@ -4,6 +4,17 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## [Unreleased]
 
+### Technical Hygiene, CI Lifecycle Workflows, Multi-Host Lock Defense & Level 1 SBOM Companion (Pfad A) (2026-09-29)
+- Deployed automated community and maintenance workflows: `.github/workflows/auto-assign.yml` (actions/github-script@v7, timeout-minutes: 5, cancel-in-progress concurrency) and `.github/workflows/label-sync.yml` (EndBug/label-sync@v2, timeout-minutes: 5, cancel-in-progress concurrency).
+- Added canonical repository label taxonomy in `.github/labels.yml` containing the 11 standard governance labels per GOVERNANCE.md §4.2.
+- Hardened `.github/workflows/stale.yml` with workflow concurrency (`cancel-in-progress: true`) to prevent race conditions during scheduled execution.
+- Hardened `.gitignore` against multi-host synchronization and lock patterns (`Desktop.ini`, `*.swo`, `*_WORKSTATION*`, `*_WORKSTATION-LG*`, `*-WORKSTATION.*`, `*-WORKSTATION-LG.*`, `*-IDEAPAD*`, `uv.lock`, `.pytest_temp/`, `.pytest_tmp*`).
+- Introduced Level 1 SBOM plaintext companion `THIRD_PARTY_LICENSES.txt` affirming canonical NOTICE attribution, unprivileged RunAsInvoker non-elevation (`INV-SEC-03`), 100% zero-copyleft permissive runtime dependencies, and invariant matrix `INV-LOCAL-01` through `INV-SLA-10`.
+- Included `THIRD_PARTY_LICENSES.txt` in `package.json` package files list.
+- Synchronized audit badges in `README.md` and `README_de.md` to `2026-09-29` and refreshed machine-readable `llms.txt`.
+- Strictly maintained version freeze discipline on `0.1.0-alpha.10` per T-20260920-167562623.
+- Expanded automated contract test suite in `test/manifest-parity.test.js` to guard new CI lifecycle workflows, `.github/labels.yml`, `.gitignore` lock patterns, `THIRD_PARTY_LICENSES.txt` packaging, and Level 1 SBOM audit freshness.
+
 ### Security & Dependency Remediation, SLA Contract & Gitignore Hardening (2026-09-26)
 - Remediated 3 moderate supply chain vulnerabilities in transitive dependencies (GHSA-gqvv-2mrq-wpjv, GHSA-g6gw-c38x-mqfc, GHSA-crvj-82cr-hjcx) by pinning `@hono/node-server` to `^2.0.12`, `hono` to `^4.13.8`, `qs` to `^6.16.0`, `vitest` to `^4.1.11`, and `@vitest/mocker` to `^4.1.11` across `package.json` overrides and `package-lock.json` (`npm audit` 100% clean, 0 vulnerabilities).
 - Formalized explicit 30-calendar-day remediation SLA commitment (`INV-SLA-10`) in English and German sections of `SECURITY.md`.
