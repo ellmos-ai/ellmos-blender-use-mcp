@@ -1,7 +1,7 @@
 # Third-Party Licenses & Level 1 SBOM
 
-Last checked: 2026-09-29 against npm metadata & Node.js ecosystem.
-Audited: Stand: 2026-09-29 against Level 1 SBOM and runtime invariants.
+Last checked: 2026-10-01 against npm metadata & Node.js ecosystem.
+Audited: Stand: 2026-10-01 against Level 1 SBOM and runtime invariants.
 
 Scope: direct dependencies declared in `package.json` as well as
 runtime environment and development tooling. This inventory is a
@@ -46,7 +46,7 @@ Copyright (c) 2026 Lukas Geiger, ellmos-ai family under open-bricks umbrella.
 | hono (override) | Node / npm | ^4.13.8 | MIT | Web/API middleware test abstractions |
 | qs (override) | Node / npm | ^6.16.0 | BSD-3-Clause | Query string parsing test utility |
 
-## Level 1 SBOM Invariant Verification (Stand: 2026-09-29)
+## Level 1 SBOM Invariant Verification (Stand: 2026-10-01)
 
 All 10 architectural and runtime governance invariants are confirmed:
 - INV-LOCAL-01: 100% Local-First & Zero-Egress (no outbound connections, telemetry, or cloud dependencies)

@@ -4,6 +4,16 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## [Unreleased]
 
+### Discoverability, Visual Architecture, ASCII 4-View Topology, 18-Point Dual Anchors & Level 1 SBOM Stand 2026-10-01 (Pfad B) (2026-10-01)
+- Established full reciprocal 18-point dual HTML anchors (`<a id="sec-01"></a>` to `<a id="sec-18"></a>`) across `README.md` and `README_de.md` alongside existing descriptive IDs.
+- Added ASCII Four-View Architectural Topology projection in Section 4 of `README.md` (VIEW 1: CALLER RUNTIMES & AGENT CLIENTS, VIEW 2: BLENDER USE MCP CORE ENGINE & DISCOVERY ORCHESTRATOR, VIEW 3: RUNTIME PERSISTENCE, VISUAL ASSET REPORTS & EPHEMERAL SCRIPTS, VIEW 4: AIR-GAP DEFENSE PERIMETER, RUNASINVOKER & ZERO-EGRESS) and `README_de.md` (SICHT 1..SICHT 4).
+- Re-audited Level 1 SBOM to Stand 2026-10-01 in `THIRD_PARTY_LICENSES.md` and plaintext companion `THIRD_PARTY_LICENSES.txt` with full invariant mapping `INV-LOCAL-01` through `INV-SLA-10`.
+- Synchronized documentation badges in `README.md` and `README_de.md` (`Verified: 2026-10-01` / `Geprüft: 2026-10-01`) and refreshed machine-readable `llms.txt`.
+- Strictly maintained version freeze on `0.1.0-alpha.10` per T-20260920-167562623.
+- Appended local `MARKETING-LOG.txt` Pfad B audit entry Stand 2026-10-01.
+- Expanded automated contract test suite in `test/manifest-parity.test.js` to guard `sec-01`..`sec-18` dual anchors, ASCII 4-view topology projection, and Stand 2026-10-01 SBOM recency.
+
+
 ### Technical Hygiene, CI Lifecycle Workflows, Multi-Host Lock Defense & Level 1 SBOM Companion (Pfad A) (2026-09-29)
 - Deployed automated community and maintenance workflows: `.github/workflows/auto-assign.yml` (actions/github-script@v7, timeout-minutes: 5, cancel-in-progress concurrency) and `.github/workflows/label-sync.yml` (EndBug/label-sync@v2, timeout-minutes: 5, cancel-in-progress concurrency).
 - Added canonical repository label taxonomy in `.github/labels.yml` containing the 11 standard governance labels per GOVERNANCE.md §4.2.

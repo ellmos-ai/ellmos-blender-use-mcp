@@ -64,8 +64,8 @@ assert.match(readmeEn, /\| \*\*\[Blender Use\][^\n]+\| \*\*4\*\* \|/, "README.md
 assert.match(readmeDe, /\| \*\*\[Blender Use\][^\n]+\| \*\*4\*\* \|/, "README_de.md Blender Use family tool count mismatch");
 assert.ok(readmeEn.includes("T4 -->"), "README.md architecture does not connect the fourth tool");
 assert.ok(readmeDe.includes("T4 -->"), "README_de.md architecture does not connect the fourth tool");
-assert.match(llmsTxt, /## Last-checked:\s*2026-09-\d{2}/, "llms.txt check date is stale");
-assert.ok(llmsTxt.includes("Last-checked: 2026-09-29"), "llms.txt must reflect Last-checked: 2026-09-29");
+assert.match(llmsTxt, /## Last-checked:\s*2026-(?:09|10)-\d{2}/, "llms.txt check date is stale");
+assert.ok(llmsTxt.includes("Last-checked: 2026-10-01"), "llms.txt must reflect Last-checked: 2026-10-01");
 
 const capabilityTerms = ["executable discovery", "background script", "structural FBX reimport", "four-view visual"];
 for (const [manifestName, description] of [
@@ -161,6 +161,26 @@ for (const [enAnchor, deAnchor] of expectedNavAnchors) {
   );
 }
 
+for (let i = 1; i <= 18; i++) {
+  const sec = `sec-${String(i).padStart(2, "0")}`;
+  assert.ok(readmeEn.includes(`id="${sec}"`), `README.md missing anchor ${sec}`);
+  assert.ok(readmeDe.includes(`id="${sec}"`), `README_de.md missing anchor ${sec}`);
+}
+
+// 8b. ASCII Four-View Architectural Topology projection
+assert.ok(readmeEn.includes("ASCII Four-View Architectural Topology"), "README.md missing ASCII 4-view topology heading");
+assert.ok(readmeEn.includes("[VIEW 1: CALLER RUNTIMES & AGENT CLIENTS]"), "README.md missing VIEW 1 in topology");
+assert.ok(readmeEn.includes("[VIEW 2: BLENDER USE MCP CORE ENGINE & DISCOVERY ORCHESTRATOR]"), "README.md missing VIEW 2 in topology");
+assert.ok(readmeEn.includes("[VIEW 3: RUNTIME PERSISTENCE, VISUAL ASSET REPORTS & EPHEMERAL SCRIPTS]"), "README.md missing VIEW 3 in topology");
+assert.ok(readmeEn.includes("[VIEW 4: AIR-GAP DEFENSE PERIMETER, RUNASINVOKER & ZERO-EGRESS]"), "README.md missing VIEW 4 in topology");
+
+assert.ok(readmeDe.includes("ASCII Vier-Sichten Architektur-Topologie"), "README_de.md missing ASCII 4-view topology heading");
+assert.ok(readmeDe.includes("[SICHT 1: AUFRUFER-LAUFZEITEN & AGENTEN-CLIENTS]"), "README_de.md missing SICHT 1 in topology");
+assert.ok(readmeDe.includes("[SICHT 2: BLENDER-USE-MCP KERN-ENGINE & DISCOVERY-ORCHESTRIERUNG]"), "README_de.md missing SICHT 2 in topology");
+assert.ok(readmeDe.includes("[SICHT 3: LAUFZEIT-PERSISTENZ, VISUELLE ASSET-BERICHTE & EPHEMERE SKRIPTE]"), "README_de.md missing SICHT 3 in topology");
+assert.ok(readmeDe.includes("[SICHT 4: AIR-GAP-SCHUTZZONE, RUNASINVOKER & ZERO-EGRESS]"), "README_de.md missing SICHT 4 in topology");
+
+
 // 9. Target Personas ([PERSONA-01] to [PERSONA-04])
 const personas = ["[PERSONA-01]", "[PERSONA-02]", "[PERSONA-03]", "[PERSONA-04]"];
 for (const p of personas) {
@@ -233,7 +253,7 @@ for (const label of expectedLabels) {
 // 12. Third-party licenses inventory parity & Level 1 SBOM Invariant Matrix
 const thirdPartyLicenses = readFileSync(path.join(root, "THIRD_PARTY_LICENSES.md"), "utf8");
 assert.ok(existsSync(path.join(root, "THIRD_PARTY_LICENSES.md")), "THIRD_PARTY_LICENSES.md must exist");
-assert.ok(thirdPartyLicenses.includes("Stand: 2026-09-29"), "THIRD_PARTY_LICENSES.md must reflect Stand 2026-09-29 audit date");
+assert.ok(thirdPartyLicenses.includes("Stand: 2026-10-01"), "THIRD_PARTY_LICENSES.md must reflect Stand 2026-10-01 audit date");
 assert.ok(thirdPartyLicenses.includes("RunAsInvoker"), "THIRD_PARTY_LICENSES.md missing RunAsInvoker certification");
 assert.ok(thirdPartyLicenses.includes("Zero-Copyleft"), "THIRD_PARTY_LICENSES.md missing Zero-Copyleft certification");
 for (const dep of Object.keys(pkg.dependencies || {})) {
@@ -245,7 +265,7 @@ for (const dep of Object.keys(pkg.dependencies || {})) {
 
 const thirdPartyLicensesTxt = readFileSync(path.join(root, "THIRD_PARTY_LICENSES.txt"), "utf8");
 assert.ok(existsSync(path.join(root, "THIRD_PARTY_LICENSES.txt")), "THIRD_PARTY_LICENSES.txt must exist");
-assert.ok(thirdPartyLicensesTxt.includes("Stand: 2026-09-29"), "THIRD_PARTY_LICENSES.txt must reflect Stand 2026-09-29 audit date");
+assert.ok(thirdPartyLicensesTxt.includes("Stand: 2026-10-01"), "THIRD_PARTY_LICENSES.txt must reflect Stand 2026-10-01 audit date");
 assert.ok(thirdPartyLicensesTxt.includes("RunAsInvoker"), "THIRD_PARTY_LICENSES.txt missing RunAsInvoker");
 assert.ok(thirdPartyLicensesTxt.includes("Zero-Copyleft"), "THIRD_PARTY_LICENSES.txt missing Zero-Copyleft");
 assert.ok(thirdPartyLicensesTxt.includes("NOTICE"), "THIRD_PARTY_LICENSES.txt missing NOTICE attribution");
@@ -296,6 +316,7 @@ const marketingLog = readFileSync(marketingLogPath, "utf8");
 assert.ok(marketingLog.includes("0.1.0-alpha.10"), "MARKETING-LOG.txt missing version 0.1.0-alpha.10");
 assert.ok(marketingLog.includes("2026-09-22"), "MARKETING-LOG.txt missing 2026-09-22 audit date");
 assert.ok(marketingLog.includes("2026-09-29"), "MARKETING-LOG.txt missing 2026-09-29 audit date");
+assert.ok(marketingLog.includes("2026-10-01"), "MARKETING-LOG.txt missing 2026-10-01 audit date");
 
 const invariants = [
   "INV-LOCAL-01", "INV-HEADLESS-02", "INV-SEC-03", "INV-BOUND-04", "INV-INTEG-05",
@@ -318,6 +339,7 @@ const changelog = readFileSync(path.join(root, "CHANGELOG.md"), "utf8");
 assert.ok(changelog.includes("0.1.0-alpha.10"), "CHANGELOG.md missing 0.1.0-alpha.10 entry");
 assert.ok(changelog.includes("2026-09-22"), "CHANGELOG.md missing 2026-09-22 timestamp");
 assert.ok(changelog.includes("2026-09-29"), "CHANGELOG.md missing 2026-09-29 timestamp");
+assert.ok(changelog.includes("2026-10-01"), "CHANGELOG.md missing 2026-10-01 timestamp");
 assert.ok(changelog.includes("Pfad A"), "CHANGELOG.md missing Pfad A entry");
 assert.ok(changelog.includes("Pfad B"), "CHANGELOG.md missing Pfad B entry");
 

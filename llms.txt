@@ -109,4 +109,4 @@ headless 3d asset validation
 
 This software is provided free of charge without consideration (Gefälligkeit). Under statutory German law (§ 521 BGB), liability for defects in quality and title is strictly limited to intentional misconduct (Vorsatz) and gross negligence (grobe Fahrlässigkeit).
 
-## Last-checked: 2026-09-29
+## Last-checked: 2026-10-01

@@ -24,7 +24,8 @@
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
-[![Zuletzt geprüft](https://img.shields.io/badge/Zuletzt%20gepr%C3%BCft-2026--09--29-informational.svg)](llms.txt)
+[![Geprüft](https://img.shields.io/badge/Gepr%C3%BCft-2026--10--01-blue.svg)](test/)
+[![Zuletzt geprüft](https://img.shields.io/badge/Zuletzt%20gepr%C3%BCft-2026--10--01-informational.svg)](llms.txt)
 
 ---
 
@@ -32,10 +33,30 @@
 
 > **Sprache / Language:** 🇩🇪 **Deutsch** | 🇬🇧 **[English](README.md)**
 
-[1. Kernfähigkeiten](#kernfaehigkeiten) • [2. Zielgruppen & Auffindbarkeit](#zielgruppen--auffindbarkeit) • [3. Vergleichsmatrix](#vergleichsmatrix-gegenueber-alternativen) • [4. Architektur & Topologie](#architektur--workflow) • [5. Verifikations-Lebenszyklus](#headless-verifikations-lebenszyklus) • [6. Werkzeugpalette](#werkzeuge) • [7. FBX-Verifikation im Detail](#blender_verify_fbx_reimport-de) • [8. Visuelle Prüfung im Detail](#blender_verify_visual-de) • [9. Basis-Werkzeuge](#allgemeine-basis-werkzeuge) • [10. CI/CD-Integration](#cicd-pipeline-integration-de) • [11. Governance-Invarianten](#governance--laufzeit-invarianten) • [12. Sicherheitsrichtlinie](SECURITY.md) • [13. Installation](#installation-de) • [14. Konfiguration](#konfiguration-de) • [15. Level 1 SBOM](THIRD_PARTY_LICENSES.md) • [16. Ökosystem](#ellmos-ai-oekosystem) • [17. LLM-Kontext](llms.txt) • [18. Lizenz & Haftungsausschluss](#lizenz--haftungsausschluss)
+| # | Abschnitt (DE) | Section (EN) | Anker |
+|---|---|---|---|
+| 01 | [Kernfähigkeiten](#sec-01) | [Key Capabilities](#sec-01) | [`#sec-01`](#sec-01) |
+| 02 | [Zielgruppen & Auffindbarkeit](#sec-02) | [Target Personas & Discoverability](#sec-02) | [`#sec-02`](#sec-02) |
+| 03 | [Vergleichsmatrix gegenüber Alternativen](#sec-03) | [Comparative Matrix vs. Alternatives](#sec-03) | [`#sec-03`](#sec-03) |
+| 04 | [Architektur & Komponenten-Topologie](#sec-04) | [Architecture & Component Topology](#sec-04) | [`#sec-04`](#sec-04) |
+| 05 | [Headless Verifikations-Lebenszyklus](#sec-05) | [Headless Verification Lifecycle](#sec-05) | [`#sec-05`](#sec-05) |
+| 06 | [Werkzeugpalette & Verifikations-Matrix](#sec-06) | [Tool Suite & Verification Matrix](#sec-06) | [`#sec-06`](#sec-06) |
+| 07 | [FBX-Reimport im Detail & Schema](#sec-07) | [FBX Reimport Deep Dive & Schema](#sec-07) | [`#sec-07`](#sec-07) |
+| 08 | [Visuelle Prüfung im Detail & 4-Ansichten-Geometrie](#sec-08) | [Visual Verification Deep Dive & Schema](#sec-08) | [`#sec-08`](#sec-08) |
+| 09 | [Allgemeine Basis-Werkzeuge](#sec-09) | [General-Purpose Primitives](#sec-09) | [`#sec-09`](#sec-09) |
+| 10 | [CI/CD-Pipeline-Integration](#sec-10) | [CI/CD Pipeline Integration](#sec-10) | [`#sec-10`](#sec-10) |
+| 11 | [Governance & Laufzeit-Invarianten](#sec-11) | [Governance & Runtime Invariants](#sec-11) | [`#sec-11`](#sec-11) |
+| 12 | [Sicherheitsrichtlinie & Prozessisolation](#sec-12) | [Security Policy & Execution Isolation](#sec-12) | [`#sec-12`](#sec-12) |
+| 13 | [Installation & Erste Schritte](#sec-13) | [Installation & Getting Started](#sec-13) | [`#sec-13`](#sec-13) |
+| 14 | [Konfiguration & Umgebungsvariablen](#sec-14) | [Configuration & Environment Variables](#sec-14) | [`#sec-14`](#sec-14) |
+| 15 | [Drittanbieter-Lizenzen & Level 1 SBOM](#sec-15) | [Third-Party Licenses & Level 1 SBOM](#sec-15) | [`#sec-15`](#sec-15) |
+| 16 | [Geschwisterprojekte & ellmos-ai Ökosystem](#sec-16) | [ellmos-ai Ecosystem & Integration](#sec-16) | [`#sec-16`](#sec-16) |
+| 17 | [LLM-Kontextindex & Maschinen-Prompts](#sec-17) | [LLM Context Index & Machine Prompts](#sec-17) | [`#sec-17`](#sec-17) |
+| 18 | [Lizenz & Haftungsausschluss (§ 521 BGB)](#sec-18) | [License & Statutory Disclaimer (§ 521 BGB)](#sec-18) | [`#sec-18`](#sec-18) |
 
 ---
 
+<a id="sec-01"></a>
 <a id="key-capabilities"></a>
 <a id="kernfaehigkeiten"></a>
 ## 1. Kernfähigkeiten
@@ -54,6 +75,7 @@ Ein Asset-QA-Werkzeug für Game- und 3D-Asset-Pipelines: prüft, ob eine exporti
 
 ---
 
+<a id="sec-02"></a>
 <a id="target-personas--discoverability"></a>
 <a id="zielgruppen--auffindbarkeit"></a>
 ## 2. Zielgruppen & Auffindbarkeit
@@ -84,6 +106,7 @@ Ein Asset-QA-Werkzeug für Game- und 3D-Asset-Pipelines: prüft, ob eine exporti
 
 ---
 
+<a id="sec-03"></a>
 <a id="comparative-matrix-vs-alternatives"></a>
 <a id="vergleichsmatrix-gegenueber-alternativen"></a>
 ## 3. 10-Dimensionen-Vergleichsmatrix gegenüber Alternativen
@@ -103,9 +126,54 @@ Ein Asset-QA-Werkzeug für Game- und 3D-Asset-Pipelines: prüft, ob eine exporti
 
 ---
 
+<a id="sec-04"></a>
 <a id="architecture--workflow"></a>
 <a id="architektur--workflow"></a>
 ## 4. Architektur & Komponenten-Topologie
+
+### ASCII Vier-Sichten Architektur-Topologie
+
+```text
++--------------------------------------------------------------------------------------------------+
+|                           ELLMOS-BLENDER-USE-MCP ARCHITEKTUR-TOPOLOGIE                           |
++--------------------------------------------------------------------------------------------------+
+| [SICHT 1: AUFRUFER-LAUFZEITEN & AGENTEN-CLIENTS]                                                 |
+|   * Autonome Agenten    : Claude Code, OpenAI Codex, Antigravity / Gemini, Kimi, Cursor          |
+|   * Transportprotokolle : Model Context Protocol (MCP stdio), JSON-RPC 2.0 Framing               |
+|   * Automationszugänge  : npx -y ellmos-blender-use-mcp, CI/CD-Runner, lokale Entwickler-Shells  |
+|   * Werkzeug-Oberfläche : blender_verify_fbx_reimport, blender_verify_visual,                      |
+|                           blender_run_script, blender_locate                                     |
++--------------------------------------------------------------------------------------------------+
+|                                                |                                                 |
+|                                                v                                                 |
++--------------------------------------------------------------------------------------------------+
+| [SICHT 2: BLENDER-USE-MCP KERN-ENGINE & DISCOVERY-ORCHESTRIERUNG]                                |
+|   * Protokoll-Router    : ESM stdio-Router mit Zod-Schema-Validierung & Parameterprüfung         |
+|   * Pfad-Auflösung      : Windows-Registry / BLENDER_EXE / Program Files / PATH Auto-Discovery   |
+|   * Bounded Supervision : 8 KB Standard-Tail-Puffer, 50 KB Maximum, harter Kindprozess-Kill-Tree |
+|   * Skript-Synthese     : Dynamische ephemere Python-Prüfskripte mit Fail-Closed-Bereinigung     |
++--------------------------------------------------------------------------------------------------+
+|                                                |                                                 |
+|                                                v                                                 |
++--------------------------------------------------------------------------------------------------+
+| [SICHT 3: LAUFZEIT-PERSISTENZ, VISUELLE ASSET-BERICHTE & EPHEMERE SKRIPTE]                       |
+|   * Strukturelle QA     : Headless FBX-Import, Mesh-/Empty-Zählung, Material-Slot-Prüfung        |
+|   * Visuelle 4-Sichten  : Orthogonale Front-, Seiten-, Draufsicht- & Perspektiv-Rendering-Pipe   |
+|   * Anomalie-Detektoren : Nicht angewandte Rotation, schwebende Meshes, verschobener Pivot       |
+|   * Determinismus       : Strukturierte JSON-Prüfbelege mit Kennzahlen, Pass/Fail & Zähler       |
++--------------------------------------------------------------------------------------------------+
+|                                                |                                                 |
+|                                                v                                                 |
++--------------------------------------------------------------------------------------------------+
+| [SICHT 4: AIR-GAP-SCHUTZZONE, RUNASINVOKER & ZERO-EGRESS]                                        |
+|   * Sicherheitsmodell   : RunAsInvoker unprivilegierte Ausführung (Null Administratorrechte)     |
+|   * Netzwerk-Isolation  : 100% Zero-Egress, keine Telemetrie, vollständig Offline- & Air-Gap    |
+|   * Lebenszyklus-Schutz : Zustandslose Ausführung (kein Daemon, keine Add-on-Mutation, kein TCP)  |
+|   * Lieferkette         : Level 1 SBOM, 100% permissive Lizenzen (MIT/BSD), 48h Sicherheits-SLA  |
++--------------------------------------------------------------------------------------------------+
+```
+
+### Komponenten-Ablaufdiagramm
 
 ```mermaid
 graph TD
@@ -151,6 +219,7 @@ graph TD
 
 ---
 
+<a id="sec-05"></a>
 <a id="headless-verification-lifecycle"></a>
 <a id="headless-verifikations-lebenszyklus"></a>
 ## 5. Headless Verifikations-Lebenszyklus
@@ -182,6 +251,7 @@ sequenceDiagram
 
 ---
 
+<a id="sec-06"></a>
 <a id="tools"></a>
 <a id="werkzeuge"></a>
 ## 6. Werkzeugpalette & Verifikations-Matrix
@@ -195,6 +265,7 @@ sequenceDiagram
 
 ---
 
+<a id="sec-07"></a>
 <a id="blender_verify_fbx_reimport"></a>
 <a id="blender_verify_fbx_reimport-de"></a>
 ## 7. `blender_verify_fbx_reimport` im Detail & Schema
@@ -250,6 +321,7 @@ Importiert eine FBX-Datei in headless Blender und verifiziert Mesh-Zahl, Empties
 
 ---
 
+<a id="sec-08"></a>
 <a id="blender_verify_visual"></a>
 <a id="blender_verify_visual-de"></a>
 ## 8. Visuelle Prüfung im Detail & 4-Ansichten-Geometrie
@@ -316,6 +388,7 @@ Erkannte Fehlerklassen: nicht angewendete Rotationen, abgetrennte Teilobjekte in
 
 ---
 
+<a id="sec-09"></a>
 <a id="general-purpose-primitives"></a>
 <a id="allgemeine-basis-werkzeuge"></a>
 ## 9. Allgemeine Basis-Werkzeuge (`blender_locate` & `blender_run_script`)
@@ -325,6 +398,7 @@ Erkannte Fehlerklassen: nicht angewendete Rotationen, abgetrennte Teilobjekte in
 
 ---
 
+<a id="sec-10"></a>
 <a id="cicd-pipeline-integration"></a>
 <a id="cicd-pipeline-integration-de"></a>
 ## 10. CI/CD-Pipeline-Integration (GitHub Actions)
@@ -363,6 +437,7 @@ jobs:
 
 ---
 
+<a id="sec-11"></a>
 <a id="governance--runtime-invariants"></a>
 <a id="governance--laufzeit-invarianten"></a>
 ## 11. Governance & Laufzeit-Invarianten
@@ -384,6 +459,7 @@ Der Server setzt 10 Architektur- und Laufzeit-Invarianten durch:
 
 ---
 
+<a id="sec-12"></a>
 <a id="security-policy"></a>
 <a id="sicherheitsrichtlinie"></a>
 ## 12. Sicherheitsrichtlinie & RunAsInvoker
@@ -396,6 +472,7 @@ Der Server setzt 10 Architektur- und Laufzeit-Invarianten durch:
 
 ---
 
+<a id="sec-13"></a>
 <a id="installation"></a>
 <a id="installation-de"></a>
 ## 13. Installation & Erste Schritte
@@ -438,6 +515,7 @@ Für eine lokale Einbindung verweisen Sie in der Konfiguration direkt auf die ge
 
 ---
 
+<a id="sec-14"></a>
 <a id="configuration"></a>
 <a id="konfiguration-de"></a>
 ## 14. Konfiguration & Umgebungsvariablen
@@ -448,6 +526,7 @@ Für eine lokale Einbindung verweisen Sie in der Konfiguration direkt auf die ge
 
 ---
 
+<a id="sec-15"></a>
 <a id="third-party-licenses--level-1-sbom"></a>
 <a id="drittanbieter-lizenzen--level-1-sbom"></a>
 ## 15. Drittanbieter-Lizenzen & Level 1 SBOM
@@ -461,6 +540,7 @@ Eine vollständige Übersicht inklusive Invarianten-Matrix und Isolation externe
 
 ---
 
+<a id="sec-16"></a>
 <a id="ellmos-ai-ecosystem"></a>
 <a id="ellmos-ai-oekosystem"></a>
 ## 16. Geschwisterprojekte & ellmos-ai Ökosystem
@@ -519,6 +599,7 @@ Unsere Partner-Organisation **[open-bricks](https://github.com/open-bricks)** b�
 
 ---
 
+<a id="sec-17"></a>
 <a id="llm-context-index"></a>
 <a id="llm-kontextindex"></a>
 ## 17. LLM-Kontextindex (`llms.txt`)
@@ -527,6 +608,7 @@ Für KI-Assistenten und Automations-Agenten bietet [llms.txt](llms.txt) maschine
 
 ---
 
+<a id="sec-18"></a>
 <a id="license--statutory-disclaimer"></a>
 <a id="lizenz--haftungsausschluss"></a>
 ## 18. Lizenz & Haftungsausschluss (§ 521 BGB)
