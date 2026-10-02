@@ -24,8 +24,10 @@
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
-[![Verified](https://img.shields.io/badge/Verified-2026--10--01-blue.svg)](test/)
-[![Last-checked](https://img.shields.io/badge/Last--checked-2026--10--01-informational.svg)](llms.txt)
+[![Verified](https://img.shields.io/badge/Verified-2026--10--02-blue.svg)](test/)
+[![Last-checked](https://img.shields.io/badge/Last--checked-2026--10--02-informational.svg)](llms.txt)
+[![Contributing: Guide](https://img.shields.io/badge/Contributing-Guide-blue.svg)](CONTRIBUTING.md)
+[![Level 1 SBOM](https://img.shields.io/badge/Level%201%20SBOM-Plain--Text%20Audited-brightgreen.svg)](THIRD_PARTY_LICENSES.txt)
 
 ---
 

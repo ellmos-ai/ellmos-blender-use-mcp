@@ -4,6 +4,17 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## [Unreleased]
 
+### Technical Hygiene, Bilingual CONTRIBUTING Guidelines, Level 1 SBOM Re-Audit & Multi-Host Lock Defense (Pfad A) (2026-10-02)
+- Added comprehensive bilingual contribution guidelines in `CONTRIBUTING.md` (English & Deutsch) covering Plan D Local Development Workflow, 10 Invariants (`INV-LOCAL-01` to `INV-SLA-10`), unprivileged RunAsInvoker non-elevation mode, statutory disclaimer (§ 521 BGB Gefälligkeitsrecht), 48h Security Response SLA (`security@ellmos.ai`, `security@open-bricks.org`, `support@lukasgeiger.com`), and pre-commit quality gates.
+- Re-audited Level 1 SBOM to Stand 2026-10-02 in `THIRD_PARTY_LICENSES.md` and plaintext companion `THIRD_PARTY_LICENSES.txt` with confirmation of all 10 invariants, zero-copyleft permissive stack, unprivileged RunAsInvoker non-elevation, § 521 BGB disclaimer, and 48h SLA.
+- Hardened `.gitignore` against multi-host sync and lock patterns: `*-IDEAPAD-GEI*`, `*-IDEAPAD-GEI.*`, `ehthumbs.db`, `TASKPLAN_*.md`, `*-TASKPLAN*`, `LOCK.dev.*`, `LOCK.antigravity.*`, `LOCK.bugsearch.*`.
+- Added `CONTRIBUTING.md` to `package.json` package `files` list.
+- Synchronized documentation badges in `README.md` and `README_de.md` (`Verified: 2026-10-02` / `Geprüft: 2026-10-02`, `Contributing: Guide` / `Mitwirken: Leitfaden`, `Level 1 SBOM: Plain-Text Audited`).
+- Updated machine-readable context in `llms.txt` with audit timestamp `2026-10-02`, link to `CONTRIBUTING.md`, and Level 1 SBOM companion references.
+- Strictly maintained version freeze on `0.1.0-alpha.10` per T-20260920-167562623.
+- Appended local `MARKETING-LOG.txt` Pfad A audit entry Stand 2026-10-02.
+- Expanded automated contract test suite in `test/manifest-parity.test.js` to verify bilingual `CONTRIBUTING.md`, Level 1 SBOM currency Stand 2026-10-02, statutory disclaimer, SLA commitments, `.gitignore` defenses, and packaging integrity.
+
 ### Discoverability, Visual Architecture, ASCII 4-View Topology, 18-Point Dual Anchors & Level 1 SBOM Stand 2026-10-01 (Pfad B) (2026-10-01)
 - Established full reciprocal 18-point dual HTML anchors (`<a id="sec-01"></a>` to `<a id="sec-18"></a>`) across `README.md` and `README_de.md` alongside existing descriptive IDs.
 - Added ASCII Four-View Architectural Topology projection in Section 4 of `README.md` (VIEW 1: CALLER RUNTIMES & AGENT CLIENTS, VIEW 2: BLENDER USE MCP CORE ENGINE & DISCOVERY ORCHESTRATOR, VIEW 3: RUNTIME PERSISTENCE, VISUAL ASSET REPORTS & EPHEMERAL SCRIPTS, VIEW 4: AIR-GAP DEFENSE PERIMETER, RUNASINVOKER & ZERO-EGRESS) and `README_de.md` (SICHT 1..SICHT 4).

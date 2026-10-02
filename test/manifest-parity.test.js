@@ -38,12 +38,25 @@ assert.ok(pkg.files.includes("SECURITY.md"), "SECURITY.md must be included in pa
 assert.ok(pkg.files.includes("THIRD_PARTY_LICENSES.md"), "THIRD_PARTY_LICENSES.md must be included in package.json files");
 assert.ok(pkg.files.includes("THIRD_PARTY_LICENSES.txt"), "THIRD_PARTY_LICENSES.txt must be included in package.json files");
 assert.ok(existsSync(path.join(root, "THIRD_PARTY_LICENSES.txt")), "Canonical root THIRD_PARTY_LICENSES.txt file must exist");
+assert.ok(pkg.files.includes("CONTRIBUTING.md"), "CONTRIBUTING.md must be included in package.json files");
+assert.ok(existsSync(path.join(root, "CONTRIBUTING.md")), "Canonical root CONTRIBUTING.md file must exist");
 assert.ok(pkg.files.includes("scripts/verify_asset_visual.py"), "scripts/verify_asset_visual.py must be specifically included in package.json files");
 assert.ok(!pkg.files.includes("scripts/"), "package.json files must not wildcard package scripts/ to avoid pycache leaks");
 for (const relPath of pkg.files) {
   const target = path.join(root, relPath);
   assert.ok(existsSync(target), `Packaged file or directory missing: ${relPath}`);
 }
+
+// 4b. CONTRIBUTING.md bilingual parity & governance invariants
+const contributing = readFileSync(path.join(root, "CONTRIBUTING.md"), "utf8");
+assert.ok(contributing.includes("## English"), "CONTRIBUTING.md missing English section");
+assert.ok(contributing.includes("## Deutsch"), "CONTRIBUTING.md missing Deutsch section");
+assert.ok(contributing.includes("INV-LOCAL-01"), "CONTRIBUTING.md missing INV-LOCAL-01");
+assert.ok(contributing.includes("INV-SLA-10"), "CONTRIBUTING.md missing INV-SLA-10");
+assert.ok(contributing.includes("RunAsInvoker"), "CONTRIBUTING.md missing RunAsInvoker");
+assert.ok(contributing.includes("§ 521 BGB"), "CONTRIBUTING.md missing § 521 BGB disclaimer");
+assert.ok(contributing.includes("Plan D"), "CONTRIBUTING.md missing Plan D workflow");
+assert.ok(contributing.includes("T-20260920-167562623"), "CONTRIBUTING.md missing version freeze discipline reference");
 
 // 5. Tool count consistency in glama.json and llms.txt
 const indexSrc = readFileSync(path.join(root, "src", "index.js"), "utf8");
@@ -65,7 +78,7 @@ assert.match(readmeDe, /\| \*\*\[Blender Use\][^\n]+\| \*\*4\*\* \|/, "README_de
 assert.ok(readmeEn.includes("T4 -->"), "README.md architecture does not connect the fourth tool");
 assert.ok(readmeDe.includes("T4 -->"), "README_de.md architecture does not connect the fourth tool");
 assert.match(llmsTxt, /## Last-checked:\s*2026-(?:09|10)-\d{2}/, "llms.txt check date is stale");
-assert.ok(llmsTxt.includes("Last-checked: 2026-10-01"), "llms.txt must reflect Last-checked: 2026-10-01");
+assert.ok(llmsTxt.includes("Last-checked: 2026-10-02"), "llms.txt must reflect Last-checked: 2026-10-02");
 
 const capabilityTerms = ["executable discovery", "background script", "structural FBX reimport", "four-view visual"];
 for (const [manifestName, description] of [
@@ -253,9 +266,10 @@ for (const label of expectedLabels) {
 // 12. Third-party licenses inventory parity & Level 1 SBOM Invariant Matrix
 const thirdPartyLicenses = readFileSync(path.join(root, "THIRD_PARTY_LICENSES.md"), "utf8");
 assert.ok(existsSync(path.join(root, "THIRD_PARTY_LICENSES.md")), "THIRD_PARTY_LICENSES.md must exist");
-assert.ok(thirdPartyLicenses.includes("Stand: 2026-10-01"), "THIRD_PARTY_LICENSES.md must reflect Stand 2026-10-01 audit date");
+assert.ok(thirdPartyLicenses.includes("Stand: 2026-10-02"), "THIRD_PARTY_LICENSES.md must reflect Stand 2026-10-02 audit date");
 assert.ok(thirdPartyLicenses.includes("RunAsInvoker"), "THIRD_PARTY_LICENSES.md missing RunAsInvoker certification");
 assert.ok(thirdPartyLicenses.includes("Zero-Copyleft"), "THIRD_PARTY_LICENSES.md missing Zero-Copyleft certification");
+assert.ok(thirdPartyLicenses.includes("§ 521 BGB"), "THIRD_PARTY_LICENSES.md missing § 521 BGB disclaimer");
 for (const dep of Object.keys(pkg.dependencies || {})) {
   assert.ok(
     thirdPartyLicenses.includes(`\`${dep}\``),
@@ -265,10 +279,11 @@ for (const dep of Object.keys(pkg.dependencies || {})) {
 
 const thirdPartyLicensesTxt = readFileSync(path.join(root, "THIRD_PARTY_LICENSES.txt"), "utf8");
 assert.ok(existsSync(path.join(root, "THIRD_PARTY_LICENSES.txt")), "THIRD_PARTY_LICENSES.txt must exist");
-assert.ok(thirdPartyLicensesTxt.includes("Stand: 2026-10-01"), "THIRD_PARTY_LICENSES.txt must reflect Stand 2026-10-01 audit date");
+assert.ok(thirdPartyLicensesTxt.includes("Stand: 2026-10-02"), "THIRD_PARTY_LICENSES.txt must reflect Stand 2026-10-02 audit date");
 assert.ok(thirdPartyLicensesTxt.includes("RunAsInvoker"), "THIRD_PARTY_LICENSES.txt missing RunAsInvoker");
 assert.ok(thirdPartyLicensesTxt.includes("Zero-Copyleft"), "THIRD_PARTY_LICENSES.txt missing Zero-Copyleft");
 assert.ok(thirdPartyLicensesTxt.includes("NOTICE"), "THIRD_PARTY_LICENSES.txt missing NOTICE attribution");
+assert.ok(thirdPartyLicensesTxt.includes("§ 521 BGB"), "THIRD_PARTY_LICENSES.txt missing § 521 BGB disclaimer");
 
 // 13. Gitignore security & sync-conflict protection rules
 const gitignore = readFileSync(path.join(root, ".gitignore"), "utf8");
@@ -286,11 +301,16 @@ assert.ok(gitignore.includes("*-WORKSTATION-LG*"), ".gitignore must ignore *-WOR
 assert.ok(gitignore.includes("*-LAPTOP*"), ".gitignore must ignore *-LAPTOP* sync conflicts");
 assert.ok(gitignore.includes("*-ASUS*"), ".gitignore must ignore *-ASUS* sync conflicts");
 assert.ok(gitignore.includes("*-ASUS-GEI*"), ".gitignore must ignore *-ASUS-GEI* sync conflicts");
+assert.ok(gitignore.includes("*-IDEAPAD-GEI*"), ".gitignore must ignore *-IDEAPAD-GEI* sync conflicts");
 assert.ok(gitignore.includes("*.sync-conflict-*"), ".gitignore must ignore *.sync-conflict-*");
 assert.ok(gitignore.includes("*-CONFLIT-*"), ".gitignore must ignore *-CONFLIT-*");
 assert.ok(gitignore.includes("*.conflict"), ".gitignore must ignore *.conflict");
 assert.ok(gitignore.includes("LOCK*.txt"), ".gitignore must ignore LOCK*.txt");
 assert.ok(gitignore.includes("LOCK.user.*"), ".gitignore must ignore LOCK.user.* canonical lock defense");
+assert.ok(gitignore.includes("LOCK.dev.*"), ".gitignore must ignore LOCK.dev.* canonical lock defense");
+assert.ok(gitignore.includes("LOCK.antigravity.*"), ".gitignore must ignore LOCK.antigravity.* canonical lock defense");
+assert.ok(gitignore.includes("LOCK.bugsearch.*"), ".gitignore must ignore LOCK.bugsearch.* canonical lock defense");
+assert.ok(gitignore.includes("TASKPLAN_*.md"), ".gitignore must ignore TASKPLAN_*.md taskplan artifacts");
 assert.ok(gitignore.includes(".automation-lock"), ".gitignore must ignore .automation-lock");
 assert.ok(gitignore.includes("*conflicted copy*"), ".gitignore must ignore *conflicted copy* conflict copies");
 assert.ok(gitignore.includes("* (Kopie)*"), ".gitignore must ignore * (Kopie)* conflict copies");
@@ -300,6 +320,7 @@ assert.ok(gitignore.includes("*.rej"), ".gitignore must ignore *.rej patch rejec
 assert.ok(gitignore.includes(".nyc_output/"), ".gitignore must ignore .nyc_output/ coverage artifacts");
 assert.ok(gitignore.includes(".hypothesis/"), ".gitignore must ignore .hypothesis/ test artifacts");
 assert.ok(gitignore.includes("Desktop.ini"), ".gitignore must ignore Desktop.ini");
+assert.ok(gitignore.includes("ehthumbs.db"), ".gitignore must ignore ehthumbs.db");
 assert.ok(gitignore.includes("*.swo"), ".gitignore must ignore *.swo");
 assert.ok(gitignore.includes("*_WORKSTATION*"), ".gitignore must ignore *_WORKSTATION*");
 assert.ok(gitignore.includes("*_WORKSTATION-LG*"), ".gitignore must ignore *_WORKSTATION-LG*");
@@ -317,6 +338,7 @@ assert.ok(marketingLog.includes("0.1.0-alpha.10"), "MARKETING-LOG.txt missing ve
 assert.ok(marketingLog.includes("2026-09-22"), "MARKETING-LOG.txt missing 2026-09-22 audit date");
 assert.ok(marketingLog.includes("2026-09-29"), "MARKETING-LOG.txt missing 2026-09-29 audit date");
 assert.ok(marketingLog.includes("2026-10-01"), "MARKETING-LOG.txt missing 2026-10-01 audit date");
+assert.ok(marketingLog.includes("2026-10-02"), "MARKETING-LOG.txt missing 2026-10-02 audit date");
 
 const invariants = [
   "INV-LOCAL-01", "INV-HEADLESS-02", "INV-SEC-03", "INV-BOUND-04", "INV-INTEG-05",
@@ -340,6 +362,7 @@ assert.ok(changelog.includes("0.1.0-alpha.10"), "CHANGELOG.md missing 0.1.0-alph
 assert.ok(changelog.includes("2026-09-22"), "CHANGELOG.md missing 2026-09-22 timestamp");
 assert.ok(changelog.includes("2026-09-29"), "CHANGELOG.md missing 2026-09-29 timestamp");
 assert.ok(changelog.includes("2026-10-01"), "CHANGELOG.md missing 2026-10-01 timestamp");
+assert.ok(changelog.includes("2026-10-02"), "CHANGELOG.md missing 2026-10-02 timestamp");
 assert.ok(changelog.includes("Pfad A"), "CHANGELOG.md missing Pfad A entry");
 assert.ok(changelog.includes("Pfad B"), "CHANGELOG.md missing Pfad B entry");
 

@@ -1,6 +1,6 @@
 # Third-Party License Review & Level 1 SBOM
 
-Stand: 2026-10-01 (Level 1 SBOM Audit, Invariant Cross-Reference Matrix, Zero-Copyleft & unprivileged RunAsInvoker Non-Elevation Certification; accompanied by plaintext companion THIRD_PARTY_LICENSES.txt).
+Stand: 2026-10-02 (Level 1 SBOM Audit, Invariant Cross-Reference Matrix, Zero-Copyleft & unprivileged RunAsInvoker Non-Elevation Certification; accompanied by plaintext companion THIRD_PARTY_LICENSES.txt).
 
 ## 1. Runtime Dependencies (Level 1 SBOM)
 
@@ -63,3 +63,7 @@ The package enforces 10 governance and architectural invariants verified during 
 1. **Permissive Runtime**: All runtime production dependencies (`@modelcontextprotocol/sdk`, `update-notifier`, `zod`) are distributed under permissive open-source licenses (MIT and BSD-2-Clause).
 2. **Zero Copyleft Contamination**: No GPL, LGPL, AGPL, or SSPL code is bundled or statically linked into the published distribution.
 3. **Canonical Attribution**: See the root [NOTICE](NOTICE) file for project copyright and governance attribution (Lukas Geiger, ellmos-ai, open-bricks).
+
+## 7. Statutory Disclaimer & Security SLA
+
+This software is provided free of charge under the MIT License. In accordance with statutory German law (§ 521 BGB Gefälligkeitsrecht), liability for defects in quality and title is strictly limited to intentional misconduct (*Vorsatz*) and gross negligence (*grobe Fahrlässigkeit*). Security inquiries and vulnerability disclosures are managed under a binding 48-hour response SLA (`security@ellmos.ai`, `security@open-bricks.org`, `support@lukasgeiger.com`).
