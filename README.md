@@ -24,7 +24,7 @@
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
-[![Verified](https://img.shields.io/badge/Verified-2026--10--02-blue.svg)](test/)
+[![Verified](https://img.shields.io/badge/Verified-2026--10--31-blue.svg)](test/)
 [![Last-checked](https://img.shields.io/badge/Last--checked-2026--10--02-informational.svg)](llms.txt)
 [![Contributing: Guide](https://img.shields.io/badge/Contributing-Guide-blue.svg)](CONTRIBUTING.md)
 [![Level 1 SBOM](https://img.shields.io/badge/Level%201%20SBOM-Plain--Text%20Audited-brightgreen.svg)](THIRD_PARTY_LICENSES.txt)
@@ -334,6 +334,35 @@ Renders four views of an FBX and checks geometry that a **structural** reimport 
 
 ```json
 { "fbxPath": "kit.fbx", "outDir": "verify_visual", "expectHeight": "2.5,3.5" }
+```
+
+### Visual Verification Lifecycle (`blender_verify_visual`)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client as AI Assistant / CI Pipeline
+    participant Server as ellmos Blender Use MCP
+    participant Resolver as Blender Resolver
+    participant Process as Headless Subprocess
+    participant Python as Blender Python Engine
+    participant FS as Local Filesystem (FBX & PNGs)
+
+    Client->>Server: Call blender_verify_visual(fbxPath, outDir, expectHeight)
+    Server->>Resolver: Resolve Blender Executable Path
+    Resolver-->>Server: Return Validated Binary Path
+    Server->>FS: Ensure Output Directory & Staging Environment
+    Server->>Process: Spawn blender --background --factory-startup --python verify_asset_visual.py
+    Process->>Python: Execute verify_asset_visual.py script
+    Python->>FS: bpy.ops.import_scene.fbx(filepath=fbxPath)
+    FS-->>Python: Load Meshes, Bounding Box & Hierarchy
+    Python->>Python: Compute Dimensions, Center, Pivot & Rotation Alignment
+    Python->>Python: Configure Orthogonal (Front, Side, Top) & Isometric Perspective Cameras
+    Python->>FS: Render view_front.png, view_side.png, view_top.png, view_perspective.png
+    Python->>FS: Write Structured Metrics & Verification Result JSON
+    Process-->>Server: Process Exit (Exit Code 0 / Bounded Tail Buffer)
+    Server->>FS: Validate PNG Artifacts & Parse Metrics JSON
+    Server-->>Client: Deterministic JSON Result (renders, metrics, fails, warns, ok)
 ```
 
 ### Four-View Orthogonal Projection & Failure Detection

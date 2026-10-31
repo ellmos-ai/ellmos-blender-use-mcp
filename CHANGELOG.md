@@ -4,6 +4,12 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## [Unreleased]
 
+### Discoverability, Visual Verification Sequence Diagram Parity & Documentation Currency (Pfad B) (2026-10-31)
+- Added dedicated Mermaid sequence diagram for the four-view visual verification lifecycle (`blender_verify_visual`) in Section 8 of `README.md` and `README_de.md` (`Visueller Verifikations-Lebenszyklus`), detailing parameter ingestion, headless Blender subprocess dispatch, orthogonal & perspective camera orchestration, 4-view render capture, and deterministic metrics JSON output.
+- Synchronized documentation badges in `README.md` (`Verified: 2026-10-31`) and `README_de.md` (`Geprüft: 2026-10-31`).
+- Strictly maintained version freeze on `0.1.0-alpha.10` per T-20260920-167562623.
+- Expanded automated contract test suite in `test/manifest-parity.test.js` to guard the visual verification lifecycle sequence diagram and recency timestamp.
+
 ### Technical Hygiene, Bilingual CONTRIBUTING Guidelines, Level 1 SBOM Re-Audit & Multi-Host Lock Defense (Pfad A) (2026-10-02)
 - Added comprehensive bilingual contribution guidelines in `CONTRIBUTING.md` (English & Deutsch) covering Plan D Local Development Workflow, 10 Invariants (`INV-LOCAL-01` to `INV-SLA-10`), unprivileged RunAsInvoker non-elevation mode, statutory disclaimer (§ 521 BGB Gefälligkeitsrecht), 48h Security Response SLA (`security@ellmos.ai`, `security@open-bricks.org`, `support@lukasgeiger.com`), and pre-commit quality gates.
 - Re-audited Level 1 SBOM to Stand 2026-10-02 in `THIRD_PARTY_LICENSES.md` and plaintext companion `THIRD_PARTY_LICENSES.txt` with confirmation of all 10 invariants, zero-copyleft permissive stack, unprivileged RunAsInvoker non-elevation, § 521 BGB disclaimer, and 48h SLA.

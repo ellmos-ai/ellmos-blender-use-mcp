@@ -110,6 +110,10 @@ assert.ok(readmeEn.includes("ellmos-blender-use-mcp"), "README.md missing packag
 assert.ok(readmeDe.includes("ellmos-blender-use-mcp"), "README_de.md missing package name");
 assert.ok(readmeEn.includes("sequenceDiagram"), "README.md missing sequenceDiagram");
 assert.ok(readmeDe.includes("sequenceDiagram"), "README_de.md missing sequenceDiagram");
+assert.ok(readmeEn.includes("Visual Verification Lifecycle"), "README.md missing Visual Verification Lifecycle");
+assert.ok(readmeDe.includes("Visueller Verifikations-Lebenszyklus"), "README_de.md missing Visueller Verifikations-Lebenszyklus");
+assert.ok(readmeEn.includes("blender_verify_visual(fbxPath"), "README.md missing blender_verify_visual sequence diagram");
+assert.ok(readmeDe.includes("blender_verify_visual(fbxPath"), "README_de.md missing blender_verify_visual sequence diagram");
 assert.ok(readmeEn.includes("Platform"), "README.md missing Platform badge");
 assert.ok(readmeDe.includes("Plattform"), "README_de.md missing Plattform badge");
 assert.ok(readmeEn.includes("Privacy"), "README.md missing Privacy badge");
@@ -363,6 +367,7 @@ assert.ok(changelog.includes("2026-09-22"), "CHANGELOG.md missing 2026-09-22 tim
 assert.ok(changelog.includes("2026-09-29"), "CHANGELOG.md missing 2026-09-29 timestamp");
 assert.ok(changelog.includes("2026-10-01"), "CHANGELOG.md missing 2026-10-01 timestamp");
 assert.ok(changelog.includes("2026-10-02"), "CHANGELOG.md missing 2026-10-02 timestamp");
+assert.ok(changelog.includes("2026-10-31"), "CHANGELOG.md missing 2026-10-31 timestamp");
 assert.ok(changelog.includes("Pfad A"), "CHANGELOG.md missing Pfad A entry");
 assert.ok(changelog.includes("Pfad B"), "CHANGELOG.md missing Pfad B entry");
 
