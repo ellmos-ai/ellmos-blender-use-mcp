@@ -24,7 +24,7 @@
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
-[![Geprüft](https://img.shields.io/badge/Gepr%C3%BCft-2026--10--02-blue.svg)](test/)
+[![Geprüft](https://img.shields.io/badge/Gepr%C3%BCft-2026--10--31-blue.svg)](test/)
 [![Zuletzt geprüft](https://img.shields.io/badge/Zuletzt%20gepr%C3%BCft-2026--10--02-informational.svg)](llms.txt)
 [![Mitwirken: Leitfaden](https://img.shields.io/badge/Mitwirken-Leitfaden-blue.svg)](CONTRIBUTING.md)
 [![Level 1 SBOM](https://img.shields.io/badge/Level%201%20SBOM-Plain--Text%20gepr%C3%BCft-brightgreen.svg)](THIRD_PARTY_LICENSES.txt)
@@ -334,6 +334,35 @@ Rendert vier Ansichten einer FBX-Datei und erkennt geometrische Fehler, die eine
 
 ```json
 { "fbxPath": "kit.fbx", "outDir": "verify_visual", "expectHeight": "2.5,3.5" }
+```
+
+### Visueller Verifikations-Lebenszyklus (`blender_verify_visual`)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client as KI-Assistent / CI-Pipeline
+    participant Server as ellmos Blender Use MCP
+    participant Resolver as Blender Resolver
+    participant Process as Headless-Subprozess
+    participant Python as Blender Python-Engine
+    participant FS as Lokales Dateisystem (FBX & PNGs)
+
+    Client->>Server: Aufruf blender_verify_visual(fbxPath, outDir, expectHeight)
+    Server->>Resolver: Blender-Pfad auflösen
+    Resolver-->>Server: Validiere Pfad der Binärdatei
+    Server->>FS: Ausgabeverzeichnis & Staging sicherstellen
+    Server->>Process: Starte blender --background --factory-startup --python verify_asset_visual.py
+    Process->>Python: Führe verify_asset_visual.py aus
+    Python->>FS: bpy.ops.import_scene.fbx(filepath=fbxPath)
+    FS-->>Python: Lade Meshes, Bounding-Box & Hierarchie
+    Python->>Python: Berechne Dimensionen, Zentrum, Drehpunkt & Rotationsausrichtung
+    Python->>Python: Konfiguriere orthogonale Kameras (Front, Seite, Oben) & isometrische Perspektive
+    Python->>FS: Rendere view_front.png, view_side.png, view_top.png, view_perspective.png
+    Python->>FS: Schreibe strukturierte Metriken & Verifikationsergebnis als JSON
+    Process-->>Server: Subprozess-Ende (Exit Code 0 / Bounded Tail Buffer)
+    Server->>FS: Validiere PNG-Artefakte & Parse Metriken-JSON
+    Server-->>Client: Deterministisches JSON-Ergebnis (renders, metrics, fails, warns, ok)
 ```
 
 ### Orthogonale 4-Ansichten-Projektion & Fehlererkennung
