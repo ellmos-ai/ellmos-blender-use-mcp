@@ -1,7 +1,7 @@
 # Third-Party Licenses & Level 1 SBOM
 
-Last checked: 2026-10-02 against npm metadata & Node.js ecosystem.
-Audited: Stand: 2026-10-02 against Level 1 SBOM and runtime invariants.
+Last checked: 2026-11-03 against npm metadata & Node.js ecosystem (historical Stand: 2026-10-02 preserved).
+Audited: Stand: 2026-11-03 against Level 1 SBOM, zero-vulnerability supply-chain overrides and runtime invariants (historical Stand: 2026-10-02 preserved).
 
 Scope: direct dependencies declared in `package.json` as well as
 runtime environment and development tooling. This inventory is a
@@ -32,19 +32,25 @@ Copyright (c) 2026 Lukas Geiger, ellmos-ai family under open-bricks umbrella.
 
 | Package | Ecosystem | Version / Range | License | Role & Purpose |
 |---|---|---:|---|---|
-| @modelcontextprotocol/sdk | Node / npm | ^1.0.0 | MIT | Model Context Protocol SDK protocol transport & stdio API |
+| @modelcontextprotocol/sdk | Node / npm | ^1.32.2 | MIT | Model Context Protocol SDK protocol transport & stdio API |
 | update-notifier | Node / npm | ^7.3.1 | BSD-2-Clause | Non-intrusive interactive CLI update notification |
-| zod | Node / npm | ^3.23.8 | MIT | Tool input schema validation & TypeScript type inference |
+| zod | Node / npm | ^4.6.7 | MIT | Tool input schema validation & TypeScript type inference |
 
-## Development & Build Tooling
+## Development & Build Tooling & Supply-Chain Overrides
 
 | Package / Tool | Ecosystem | Version / Range | License | Role & Purpose |
 |---|---|---:|---|---|
 | node | JavaScript Runtime | >=18.0.0 | MIT / Node.js | Core execution runtime |
-| vitest (override) | Node / npm | ^4.1.11 | MIT | Unit, privacy, and contract test runner |
-| @hono/node-server (override) | Node / npm | ^2.0.12 | MIT | Local development test server utilities |
-| hono (override) | Node / npm | ^4.13.8 | MIT | Web/API middleware test abstractions |
-| qs (override) | Node / npm | ^6.16.0 | BSD-3-Clause | Query string parsing test utility |
+| vitest (override) | Node / npm | ^4.1.12 | MIT | Unit, privacy, and contract test runner |
+| @vitest/mocker (override) | Node / npm | ^4.1.12 | MIT | Test mock framework |
+| @hono/node-server (override) | Node / npm | ^2.1.5 | MIT | Local development test server utilities |
+| hono (override) | Node / npm | ^4.13.13 | MIT | Web/API middleware test abstractions |
+| qs (override) | Node / npm | ^6.17.1 | BSD-3-Clause | Query string parsing test utility |
+| fast-uri (override) | Node / npm | ^3.1.9 | BSD-3-Clause | URI parsing and validation |
+| ip-address (override) | Node / npm | ^10.7.5 | MIT | IP address parsing and validation |
+| proxy-addr (override) | Node / npm | ^2.0.8 | MIT | Proxy address trust determination |
+| body-parser (override) | Node / npm | ^2.4.0 | MIT | Request body parsing middleware |
+| source-map-js (override) | Node / npm | ^1.2.2 | BSD-3-Clause | Source map generation and parsing |
 
 ## Level 1 SBOM Invariant Verification (Stand: 2026-10-02)
 

@@ -371,4 +371,27 @@ assert.ok(changelog.includes("2026-10-31"), "CHANGELOG.md missing 2026-10-31 tim
 assert.ok(changelog.includes("Pfad A"), "CHANGELOG.md missing Pfad A entry");
 assert.ok(changelog.includes("Pfad B"), "CHANGELOG.md missing Pfad B entry");
 
+// 15. Supply-chain security overrides, zero vulnerabilities & TASKPLAN register parity
+assert.ok(existsSync(path.join(root, "TODO.md")), "TODO.md TASKPLAN register must exist");
+const todoContent = readFileSync(path.join(root, "TODO.md"), "utf8");
+assert.ok(todoContent.includes("BLENDER-SECURITY-001"), "TODO.md missing BLENDER-SECURITY-001");
+assert.ok(todoContent.includes("TASKPLAN #2201"), "TODO.md missing TASKPLAN #2201");
+assert.ok(todoContent.includes("ERLEDIGT"), "TODO.md missing ERLEDIGT status");
+
+assert.ok(changelog.includes("2026-11-03"), "CHANGELOG.md missing 2026-11-03 timestamp");
+assert.ok(marketingLog.includes("2026-11-03"), "MARKETING-LOG.txt missing 2026-11-03 audit date");
+assert.ok(thirdPartyLicenses.includes("Stand: 2026-11-03"), "THIRD_PARTY_LICENSES.md missing Stand: 2026-11-03");
+assert.ok(thirdPartyLicensesTxt.includes("Stand: 2026-11-03"), "THIRD_PARTY_LICENSES.txt missing Stand: 2026-11-03");
+
+// Verify pinned security overrides in package.json eliminating all 9 vulnerabilities
+const requiredOverrides = [
+  "hono", "@hono/node-server", "fast-uri", "ip-address", "qs",
+  "vitest", "@vitest/mocker", "proxy-addr", "source-map-js", "body-parser"
+];
+for (const ov of requiredOverrides) {
+  assert.ok(pkg.overrides && pkg.overrides[ov], `package.json missing required override: ${ov}`);
+}
+assert.ok(pkg.dependencies["@modelcontextprotocol/sdk"].includes("1.32"), "SDK must be pinned to hardened 1.32+");
+assert.ok(pkg.dependencies["zod"].includes("4.6"), "zod must be pinned to hardened 4.6+");
+
 console.log("All manifest-parity and metadata contract tests passed successfully.");
