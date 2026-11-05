@@ -22,6 +22,9 @@
     "glama.json",
     "smithery.yaml",
     "llms.txt",
+    "llm.txt",
+    "SKILL.md",
+    "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.md",
     "CHANGELOG.md"
   ],

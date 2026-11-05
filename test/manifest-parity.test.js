@@ -58,6 +58,37 @@ assert.ok(contributing.includes("§ 521 BGB"), "CONTRIBUTING.md missing § 521 B
 assert.ok(contributing.includes("Plan D"), "CONTRIBUTING.md missing Plan D workflow");
 assert.ok(contributing.includes("T-20260920-167562623"), "CONTRIBUTING.md missing version freeze discipline reference");
 
+// 4c. CODE_OF_CONDUCT.md bilingual community parity
+assert.ok(pkg.files.includes("CODE_OF_CONDUCT.md"), "CODE_OF_CONDUCT.md must be included in package.json files");
+assert.ok(existsSync(path.join(root, "CODE_OF_CONDUCT.md")), "Canonical root CODE_OF_CONDUCT.md must exist");
+const conduct = readFileSync(path.join(root, "CODE_OF_CONDUCT.md"), "utf8");
+assert.ok(conduct.includes("## English"), "CODE_OF_CONDUCT.md missing English section");
+assert.ok(conduct.includes("## Deutsch"), "CODE_OF_CONDUCT.md missing Deutsch section");
+assert.ok(conduct.includes("Contributor Covenant v2.1"), "CODE_OF_CONDUCT.md missing Contributor Covenant v2.1");
+assert.ok(conduct.includes("support@lukasgeiger.com"), "CODE_OF_CONDUCT.md missing support contact");
+
+// 4d. llm.txt and SKILL.md agent guidance parity (P-022)
+assert.ok(pkg.files.includes("llm.txt"), "llm.txt must be included in package.json files");
+assert.ok(existsSync(path.join(root, "llm.txt")), "Canonical root llm.txt must exist");
+const llmTxt = readFileSync(path.join(root, "llm.txt"), "utf8");
+assert.ok(llmTxt.includes("llms.txt"), "llm.txt must point to llms.txt");
+assert.ok(llmTxt.includes("SKILL.md"), "llm.txt must point to SKILL.md");
+
+assert.ok(pkg.files.includes("SKILL.md"), "SKILL.md must be included in package.json files");
+assert.ok(existsSync(path.join(root, "SKILL.md")), "Canonical root SKILL.md must exist");
+const skillMd = readFileSync(path.join(root, "SKILL.md"), "utf8");
+assert.ok(skillMd.includes("name: ellmos-blender-use-mcp"), "SKILL.md missing skill name");
+assert.ok(skillMd.includes("INV-LOCAL-01"), "SKILL.md missing INV-LOCAL-01");
+assert.ok(skillMd.includes("blender_verify_fbx_reimport"), "SKILL.md missing blender_verify_fbx_reimport");
+assert.ok(skillMd.includes("blender_verify_visual"), "SKILL.md missing blender_verify_visual");
+
+// 4e. Community templates & funding parity
+assert.ok(existsSync(path.join(root, ".github", "ISSUE_TEMPLATE", "bug_report.md")), "bug_report.md must exist");
+assert.ok(existsSync(path.join(root, ".github", "ISSUE_TEMPLATE", "feature_request.md")), "feature_request.md must exist");
+assert.ok(existsSync(path.join(root, ".github", "FUNDING.yml")), "FUNDING.yml must exist");
+const fundingYml = readFileSync(path.join(root, ".github", "FUNDING.yml"), "utf8");
+assert.ok(fundingYml.includes("github: lukisch"), "FUNDING.yml missing github: lukisch");
+
 // 5. Tool count consistency in glama.json and llms.txt
 const indexSrc = readFileSync(path.join(root, "src", "index.js"), "utf8");
 const registeredTools = [...indexSrc.matchAll(/server\.tool\(\s*["'`]([a-z0-9_]+)["'`]/gi)].map((m) => m[1]);
@@ -379,6 +410,7 @@ assert.ok(todoContent.includes("TASKPLAN #2201"), "TODO.md missing TASKPLAN #220
 assert.ok(todoContent.includes("ERLEDIGT"), "TODO.md missing ERLEDIGT status");
 
 assert.ok(changelog.includes("2026-11-03"), "CHANGELOG.md missing 2026-11-03 timestamp");
+assert.ok(changelog.includes("2026-11-05"), "CHANGELOG.md missing 2026-11-05 timestamp");
 assert.ok(marketingLog.includes("2026-11-03"), "MARKETING-LOG.txt missing 2026-11-03 audit date");
 assert.ok(thirdPartyLicenses.includes("Stand: 2026-11-03"), "THIRD_PARTY_LICENSES.md missing Stand: 2026-11-03");
 assert.ok(thirdPartyLicensesTxt.includes("Stand: 2026-11-03"), "THIRD_PARTY_LICENSES.txt missing Stand: 2026-11-03");

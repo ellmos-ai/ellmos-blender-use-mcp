@@ -4,6 +4,16 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## [Unreleased]
 
+### Technical Hygiene, Community Guidelines, Agent Skill & Issue Templates (Pfad A) (2026-11-05)
+- Added canonical bilingual `CODE_OF_CONDUCT.md` (Deutsch & English) based on Contributor Covenant v2.1 with clear reporting channels (`conduct@ellmos.ai`, `support@lukasgeiger.com`).
+- Introduced compatibility pointer `llm.txt` directing autonomous LLM callers to canonical `llms.txt` and software-specific `SKILL.md` per GITHUB-POLICY §1 (P-022).
+- Added dedicated software product `SKILL.md` detailing tool signatures (`blender_verify_fbx_reimport`, `blender_verify_visual`, `blender_run_script`, `blender_locate`), runtime invariants (`INV-LOCAL-01` to `INV-SLA-10`), and client configuration examples.
+- Added structured GitHub community issue templates (`.github/ISSUE_TEMPLATE/bug_report.md`, `.github/ISSUE_TEMPLATE/feature_request.md`) and funding configuration (`.github/FUNDING.yml`).
+- Added `CODE_OF_CONDUCT.md`, `llm.txt`, and `SKILL.md` to `package.json` package `files` distribution manifest.
+- Maintained strict version freeze on `0.1.0-alpha.10` per T-20260920-167562623.
+- Expanded automated contract test suite in `test/manifest-parity.test.js` to guard `CODE_OF_CONDUCT.md`, `llm.txt`, `SKILL.md`, `.github/ISSUE_TEMPLATE/`, and funding parity.
+
+
 ### Security & Supply-Chain Hardening, Level 1 SBOM Stand 2026-11-03 & TASKPLAN Register (2026-11-03)
 - Remediated 9 supply chain vulnerabilities across direct and transitive dependencies (1 critical `proxy-addr` GHSA-jqcg-44mw-7w3h, 3 high `@modelcontextprotocol/sdk` [6 advisories GHSA-6qxp-vccf-f47h, GHSA-22jm-h49p-29qw, GHSA-6prh-2h8m-c8cw, GHSA-46jr-4wx8-v453, GHSA-rvq5-wwqv-78pq, GHSA-f897-62hf-6gxq], `body-parser` GHSA-27r3-jxmh-p828, `zod` GHSA-mrhx-c7xc-m3w5, and 5 moderate `@hono/node-server` GHSA-rmxm-3fg6-px4f, `hono` GHSA-5r4p-p66f-jhc7, `fast-uri` [5 advisories GHSA-hrr3-gc8f-f4qj et al.], `ip-address` [5 advisories GHSA-rpw4-54j3-4h4q et al.], `qs` GHSA-6pq8-jhm2-2vcw) by upgrading `@modelcontextprotocol/sdk` to `^1.32.2`, `zod` to `^4.6.7`, and establishing pinned `package.json` overrides (`npm audit` reports 0 vulnerabilities across 150 packages).
 - Re-audited Level 1 SBOM to Stand 2026-11-03 in `THIRD_PARTY_LICENSES.md` and plaintext companion `THIRD_PARTY_LICENSES.txt` with confirmation of all 10 invariants (`INV-LOCAL-01` through `INV-SLA-10`), unprivileged RunAsInvoker non-elevation certification, and zero-copyleft permissive stack.
