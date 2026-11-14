@@ -110,3 +110,14 @@ htmlcov/
 build/
 .tox/
 .mypy_cache/
+
+# Marketing ledger & local lock artifacts (never commit/push per GITHUB-POLICY / LOCK-SYSTEM)
+MARKETING-LOG.txt
+*MARKETING-LOG.txt
+LOCK-CACHE.*
+LOCK.orchestrator.*
+LOCK.operator.*
+LOCK.worker.*
+LOCK.thinker.*
+LOCK.reviewer.*
+*.prof

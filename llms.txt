@@ -85,7 +85,8 @@ headless 3d asset validation
 - `THIRD_PARTY_LICENSES.txt`: Level 1 SBOM plaintext companion affirming NOTICE attribution, RunAsInvoker non-elevation, and runtime invariant matrix.
 - `server.json`: MCP registry metadata.
 - `glama.json`: Glama directory metadata and capabilities.
-- `MARKETING-LOG.txt`: discoverability, positioning, runtime invariants, and keywords.
+- `llm.txt`: compact top-level pointer to `llms.txt` and `SKILL.md`.
+- `SKILL.md`: agent skill definition with preflight checklist, tool matrix, and runtime invariants.
 - `src/index.js`: MCP server entrypoint and tool definitions.
 - `test/privacy-hygiene.test.js`: regression test guarding against leaked local user-profile paths and hardcoded private workspace roots.
 - `test/runtime-safety.test.js`: regression test guarding output buffer tail limits.
@@ -110,4 +111,8 @@ headless 3d asset validation
 
 This software is provided free of charge without consideration (Gefälligkeit). Under statutory German law (§ 521 BGB), liability for defects in quality and title is strictly limited to intentional misconduct (Vorsatz) and gross negligence (grobe Fahrlässigkeit).
 
-## Last-checked: 2026-10-02
+## Install with your LLM
+Paste into Claude Desktop, Cursor, or any MCP-capable assistant:
+> Read `llms.txt` and `SKILL.md` for `ellmos-blender-use-mcp` (`npx -y ellmos-blender-use-mcp`), configure the `blender-use` MCP server, and verify Blender discovery with `blender_locate`.
+
+## Last-checked: 2026-11-14

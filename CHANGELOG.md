@@ -4,6 +4,11 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## [Unreleased]
 
+### Discoverability, Visual Pipeline Preview, LLM Onboarding & Policy Alignment (Pfad B) (2026-11-14)
+- **LLM Onboarding & Skill Cross-Links (P-022):** Added copyable `Install with your LLM` / `Mit deinem LLM installieren` prompt blocks in Section 13 of `README.md` and `README_de.md`, linked `SKILL.md` and `llm.txt` in Section 17 (`LLM Context Index`) and `llms.txt`, and refreshed verification timestamps (`2026-11-14`).
+- **4-View Pipeline Preview Asset (`assets/four-view-preview.svg`):** Added a dark-mode vector diagram illustrating the Front, Side, Top, and Perspective inspection passes alongside JSON telemetry and runtime guardrails, embedded in Section 8 of both `README.md` and `README_de.md` (with full German parity for the 4-view rationale).
+- **Repository Hygiene (`MARKETING-LOG.txt`):** Removed `MARKETING-LOG.txt` from git index tracking, added `*MARKETING-LOG.txt` and lock-artifact rules to `.gitignore`, and aligned `test/manifest-parity.test.js` to enforce gitignore/untracked compliance while keeping the `0.1.0-alpha.10` version untouched.
+
 ### Technical Hygiene, Community Guidelines, Agent Skill & Issue Templates (Pfad A) (2026-11-05)
 - Added canonical bilingual `CODE_OF_CONDUCT.md` (Deutsch & English) based on Contributor Covenant v2.1 with clear reporting channels (`conduct@ellmos.ai`, `support@lukasgeiger.com`).
 - Introduced compatibility pointer `llm.txt` directing autonomous LLM callers to canonical `llms.txt` and software-specific `SKILL.md` per GITHUB-POLICY §1 (P-022).
