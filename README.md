@@ -24,8 +24,8 @@
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
-[![Verified](https://img.shields.io/badge/Verified-2026--10--31-blue.svg)](test/)
-[![Last-checked](https://img.shields.io/badge/Last--checked-2026--10--02-informational.svg)](llms.txt)
+[![Verified](https://img.shields.io/badge/Verified-2026--11--14-blue.svg)](test/)
+[![Last-checked](https://img.shields.io/badge/Last--checked-2026--11--14-informational.svg)](llms.txt)
 [![Contributing: Guide](https://img.shields.io/badge/Contributing-Guide-blue.svg)](CONTRIBUTING.md)
 [![Level 1 SBOM](https://img.shields.io/badge/Level%201%20SBOM-Plain--Text%20Audited-brightgreen.svg)](THIRD_PARTY_LICENSES.txt)
 
@@ -419,6 +419,10 @@ Detected failure classes: unapplied rotation, floating parts in multi-part asset
 
 **Why four views and not one:** a single front shot hides depth errors — floating-vs-resting, behind-vs-in-front. A real case: chain links looked correctly attached from the front and were not attached at all when seen from the side.
 
+<p align="center">
+  <img src="assets/four-view-preview.svg" alt="ellmos-blender-use-mcp 4-view orthogonal and isometric verification workflow with JSON telemetry" width="880" />
+</p>
+
 Like every tool here it is a one-shot headless run: no add-on, no daemon, no socket.
 
 ---
@@ -548,6 +552,15 @@ For a local checkout, point `command`/`args` at the cloned `src/index.js` instea
 }
 ```
 
+### Install with your LLM
+
+Copy this prompt into your AI coding assistant (Claude Desktop, Cursor, Claude Code, Codex, or Antigravity) to configure and verify `ellmos-blender-use-mcp` automatically:
+
+```text
+Inspect https://raw.githubusercontent.com/ellmos-ai/ellmos-blender-use-mcp/main/llms.txt and SKILL.md (index: llm.txt).
+Configure the "blender-use" MCP server using `npx -y ellmos-blender-use-mcp` (or set BLENDER_PATH if needed) and verify discovery by calling `blender_locate`.
+```
+
 ---
 
 <a id="sec-14"></a>
@@ -639,7 +652,7 @@ Our partner organization **[open-bricks](https://github.com/open-bricks)** bundl
 <a id="llm-kontextindex"></a>
 ## 17. LLM Context Index (`llms.txt`)
 
-For AI assistants and LLM tooling, [llms.txt](llms.txt) provides machine-readable architecture documentation, tool descriptions, search phrases, and runtime invariants.
+For AI assistants and LLM tooling, [llms.txt](llms.txt) provides machine-readable architecture documentation, tool descriptions, search phrases, and runtime invariants. Use [llm.txt](llm.txt) as the compact root pointer and [SKILL.md](SKILL.md) for the preflight checklist, tool matrix, and `INV-LOCAL-01`–`INV-SLA-10` verification workflow.
 
 ---
 
