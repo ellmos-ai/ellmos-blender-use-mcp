@@ -24,8 +24,8 @@
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
-[![Geprüft](https://img.shields.io/badge/Gepr%C3%BCft-2026--10--31-blue.svg)](test/)
-[![Zuletzt geprüft](https://img.shields.io/badge/Zuletzt%20gepr%C3%BCft-2026--10--02-informational.svg)](llms.txt)
+[![Geprüft](https://img.shields.io/badge/Gepr%C3%BCft-2026--11--14-blue.svg)](test/)
+[![Zuletzt geprüft](https://img.shields.io/badge/Zuletzt%20gepr%C3%BCft-2026--11--14-informational.svg)](llms.txt)
 [![Mitwirken: Leitfaden](https://img.shields.io/badge/Mitwirken-Leitfaden-blue.svg)](CONTRIBUTING.md)
 [![Level 1 SBOM](https://img.shields.io/badge/Level%201%20SBOM-Plain--Text%20gepr%C3%BCft-brightgreen.svg)](THIRD_PARTY_LICENSES.txt)
 
@@ -417,6 +417,14 @@ Erkannte Fehlerklassen: nicht angewendete Rotationen, abgetrennte Teilobjekte in
 }
 ```
 
+**Warum vier Ansichten statt einer:** Eine einzelne Frontalansicht verbirgt Tiefenfehler — schwebende statt aufliegende Bauteile oder falsch gestaffelte Ebenen. Ein reales Praxisbeispiel: Kettenglieder wirkten frontal korrekt verbunden, hingen in der Seitenansicht jedoch frei im Raum.
+
+<p align="center">
+  <img src="assets/four-view-preview.svg" alt="ellmos-blender-use-mcp 4-Ansichten-Visual-Verification-Pipeline mit JSON-Telemetrie" width="880" />
+</p>
+
+Wie jedes Werkzeug in diesem Server läuft auch dieses als einmaliger Headless-Prozess: ohne Add-on, ohne Daemon und ohne offenen Socket.
+
 ---
 
 <a id="sec-09"></a>
@@ -544,6 +552,15 @@ Für eine lokale Einbindung verweisen Sie in der Konfiguration direkt auf die ge
 }
 ```
 
+### Mit deinem LLM installieren
+
+Kopiere diesen Prompt in deinen KI-Assistenten (Claude Desktop, Cursor, Claude Code, Codex oder Antigravity), um `ellmos-blender-use-mcp` automatisch einzurichten und zu prüfen:
+
+```text
+Lies https://raw.githubusercontent.com/ellmos-ai/ellmos-blender-use-mcp/main/llms.txt und SKILL.md (Einstieg: llm.txt).
+Richte den MCP-Server "blender-use" mit `npx -y ellmos-blender-use-mcp` ein (setze bei Bedarf BLENDER_PATH) und prüfe die Erkennung mit `blender_locate`.
+```
+
 ---
 
 <a id="sec-14"></a>
@@ -635,7 +652,7 @@ Unsere Partner-Organisation **[open-bricks](https://github.com/open-bricks)** b�
 <a id="llm-kontextindex"></a>
 ## 17. LLM-Kontextindex (`llms.txt`)
 
-Für KI-Assistenten und Automations-Agenten bietet [llms.txt](llms.txt) maschinenlesbare Architekturdetails, Werkzeugbeschreibungen und Suchbegriffe.
+Für KI-Assistenten und Automations-Agenten bietet [llms.txt](llms.txt) maschinenlesbare Architekturdetails, Werkzeugbeschreibungen und Suchbegriffe. Nutze [llm.txt](llm.txt) als kompakten Einstiegszeiger sowie [SKILL.md](SKILL.md) für die Preflight-Checkliste, die Werkzeug-Matrix und den Verifikationsablauf gemäß `INV-LOCAL-01`–`INV-SLA-10`.
 
 ---
 

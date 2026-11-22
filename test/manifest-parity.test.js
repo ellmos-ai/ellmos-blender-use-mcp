@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -108,8 +109,8 @@ assert.match(readmeEn, /\| \*\*\[Blender Use\][^\n]+\| \*\*4\*\* \|/, "README.md
 assert.match(readmeDe, /\| \*\*\[Blender Use\][^\n]+\| \*\*4\*\* \|/, "README_de.md Blender Use family tool count mismatch");
 assert.ok(readmeEn.includes("T4 -->"), "README.md architecture does not connect the fourth tool");
 assert.ok(readmeDe.includes("T4 -->"), "README_de.md architecture does not connect the fourth tool");
-assert.match(llmsTxt, /## Last-checked:\s*2026-(?:09|10)-\d{2}/, "llms.txt check date is stale");
-assert.ok(llmsTxt.includes("Last-checked: 2026-10-02"), "llms.txt must reflect Last-checked: 2026-10-02");
+assert.match(llmsTxt, /## Last-checked:\s*2026-(?:09|10|11)-\d{2}/, "llms.txt check date is stale");
+assert.ok(llmsTxt.includes("Last-checked: 2026-11-14"), "llms.txt must reflect Last-checked: 2026-11-14");
 
 const capabilityTerms = ["executable discovery", "background script", "structural FBX reimport", "four-view visual"];
 for (const [manifestName, description] of [
@@ -365,15 +366,34 @@ assert.ok(gitignore.includes("*-IDEAPAD*"), ".gitignore must ignore *-IDEAPAD*")
 assert.ok(gitignore.includes("uv.lock"), ".gitignore must ignore uv.lock");
 assert.ok(gitignore.includes(".pytest_temp/"), ".gitignore must ignore .pytest_temp/");
 
-// 14. Marketing ledger, runtime invariants & discoverability parity
-const marketingLogPath = path.join(root, "MARKETING-LOG.txt");
-assert.ok(existsSync(marketingLogPath), "MARKETING-LOG.txt must exist");
-const marketingLog = readFileSync(marketingLogPath, "utf8");
-assert.ok(marketingLog.includes("0.1.0-alpha.10"), "MARKETING-LOG.txt missing version 0.1.0-alpha.10");
-assert.ok(marketingLog.includes("2026-09-22"), "MARKETING-LOG.txt missing 2026-09-22 audit date");
-assert.ok(marketingLog.includes("2026-09-29"), "MARKETING-LOG.txt missing 2026-09-29 audit date");
-assert.ok(marketingLog.includes("2026-10-01"), "MARKETING-LOG.txt missing 2026-10-01 audit date");
-assert.ok(marketingLog.includes("2026-10-02"), "MARKETING-LOG.txt missing 2026-10-02 audit date");
+// 14. Discoverability, runtime invariants, LLM onboarding & untracked MARKETING-LOG policy
+assert.ok(gitignore.includes("*MARKETING-LOG.txt"), ".gitignore must ignore *MARKETING-LOG.txt");
+assert.ok(gitignore.includes("MARKETING-LOG.txt"), ".gitignore must ignore MARKETING-LOG.txt");
+assert.ok(!llmsTxt.includes("MARKETING-LOG.txt"), "llms.txt must not advertise untracked MARKETING-LOG.txt");
+
+if (existsSync(path.join(root, ".git"))) {
+  const trackedMarketing = execFileSync("git", ["ls-files", "MARKETING-LOG.txt"], {
+    cwd: root,
+    encoding: "utf8",
+  }).trim();
+  assert.equal(trackedMarketing, "", "MARKETING-LOG.txt must not be git-tracked");
+}
+
+assert.ok(readmeEn.includes("### Install with your LLM"), "README.md missing '### Install with your LLM'");
+assert.ok(readmeDe.includes("### Mit deinem LLM installieren"), "README_de.md missing '### Mit deinem LLM installieren'");
+assert.ok(readmeEn.includes("SKILL.md"), "README.md missing link to SKILL.md");
+assert.ok(readmeDe.includes("SKILL.md"), "README_de.md missing link to SKILL.md");
+assert.ok(readmeEn.includes("llm.txt"), "README.md missing link to llm.txt");
+assert.ok(readmeDe.includes("llm.txt"), "README_de.md missing link to llm.txt");
+assert.ok(llmsTxt.includes("SKILL.md"), "llms.txt missing SKILL.md reference");
+assert.ok(llmsTxt.includes("llm.txt"), "llms.txt missing llm.txt reference");
+
+const previewSvgPath = path.join(root, "assets", "four-view-preview.svg");
+assert.ok(existsSync(previewSvgPath), "assets/four-view-preview.svg must exist");
+const previewSvg = readFileSync(previewSvgPath, "utf8");
+assert.ok(previewSvg.includes("<svg") && previewSvg.includes("</svg>"), "assets/four-view-preview.svg must be valid SVG markup");
+assert.ok(readmeEn.includes("assets/four-view-preview.svg"), "README.md must embed assets/four-view-preview.svg");
+assert.ok(readmeDe.includes("assets/four-view-preview.svg"), "README_de.md must embed assets/four-view-preview.svg");
 
 const invariants = [
   "INV-LOCAL-01", "INV-HEADLESS-02", "INV-SEC-03", "INV-BOUND-04", "INV-INTEG-05",
@@ -381,7 +401,6 @@ const invariants = [
 ];
 
 for (const inv of invariants) {
-  assert.ok(marketingLog.includes(inv), `MARKETING-LOG.txt missing invariant ${inv}`);
   assert.ok(readmeEn.includes(inv), `README.md missing invariant ${inv}`);
   assert.ok(readmeDe.includes(inv), `README_de.md missing invariant ${inv}`);
   assert.ok(llmsTxt.includes(inv), `llms.txt missing invariant ${inv}`);
@@ -411,7 +430,9 @@ assert.ok(todoContent.includes("ERLEDIGT"), "TODO.md missing ERLEDIGT status");
 
 assert.ok(changelog.includes("2026-11-03"), "CHANGELOG.md missing 2026-11-03 timestamp");
 assert.ok(changelog.includes("2026-11-05"), "CHANGELOG.md missing 2026-11-05 timestamp");
-assert.ok(marketingLog.includes("2026-11-03"), "MARKETING-LOG.txt missing 2026-11-03 audit date");
+assert.ok(changelog.includes("2026-11-14"), "CHANGELOG.md missing 2026-11-14 timestamp");
+assert.ok(readmeEn.includes("2026--11--14"), "README.md badges missing 2026--11--14 freshness");
+assert.ok(readmeDe.includes("2026--11--14"), "README_de.md badges missing 2026--11--14 freshness");
 assert.ok(thirdPartyLicenses.includes("Stand: 2026-11-03"), "THIRD_PARTY_LICENSES.md missing Stand: 2026-11-03");
 assert.ok(thirdPartyLicensesTxt.includes("Stand: 2026-11-03"), "THIRD_PARTY_LICENSES.txt missing Stand: 2026-11-03");
 
