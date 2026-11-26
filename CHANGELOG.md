@@ -4,6 +4,13 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 
 ## [Unreleased]
 
+### Technical Hygiene, CI Matrix Hardening, CLI Flags, Privacy Gate & Contract Tests (Pfad A) (2026-11-26)
+- **Privacy Gate Remediation (`repo_privacy_gate` Exit 0):** Generalized historical host-scoped device tokens in `CHANGELOG.md` and `test/manifest-parity.test.js` so repository-wide privacy scans pass cleanly while preserving `.gitignore` sync-conflict coverage.
+- **CLI Flag Parity (`src/index.js`):** Added non-blocking `--version` / `-v` and `--help` / `-h` flags before MCP stdio transport initialization so documented CLI smoke commands (`npx -y ellmos-blender-use-mcp --version`) exit cleanly with `0.1.0-alpha.10`.
+- **CI Matrix & Automation Hardening:** Added `workflow_dispatch` and a dedicated `hygiene` job in `.github/workflows/ci.yml` (`node src/index.js --version`/`--help`, `python -m py_compile scripts/verify_asset_visual.py`, `npm audit --omit=dev --audit-level=high`, `git diff --check`), added `.github/dependabot.yml` (`github-actions` and `npm`), and guarded `auto-assign.yml` / `welcome.yml` against `[bot]` accounts.
+- **Documentation, SBOM & Security Alignment:** Fixed `BLENDER_PATH` -> `BLENDER_EXE` in `README.md` and `README_de.md` LLM onboarding prompts, aligned `blender_verify_visual` JSON example schemas with actual `scripts/verify_asset_visual.py` output (`renders` array & `metrics` keys), clarified primary email reporting in `SECURITY.md` while GitHub PVR is disabled, synchronized `THIRD_PARTY_LICENSES.md` / `THIRD_PARTY_LICENSES.txt` with `package.json` dependency and override versions (including `postcss`), and hardened `.gitignore` with Pre-Push Data-Gate patterns (`*.db`, `*.sqlite*`, `TO-DECIDE-USER*`, `.venv/`).
+- **Version Freeze & Contract Tests:** Kept `0.1.0-alpha.10` strictly frozen per `T-20260920-167562623` and extended `test/tool-surface.test.js` and `test/manifest-parity.test.js` with regression tests for CLI flags, CI/Dependabot/bot guards, Data-Gate `.gitignore` rules, SBOM parity, and `BLENDER_EXE` documentation accuracy.
+
 ### Discoverability, Visual Pipeline Preview, LLM Onboarding & Policy Alignment (Pfad B) (2026-11-14)
 - **LLM Onboarding & Skill Cross-Links (P-022):** Added copyable `Install with your LLM` / `Mit deinem LLM installieren` prompt blocks in Section 13 of `README.md` and `README_de.md`, linked `SKILL.md` and `llm.txt` in Section 17 (`LLM Context Index`) and `llms.txt`, and refreshed verification timestamps (`2026-11-14`).
 - **4-View Pipeline Preview Asset (`assets/four-view-preview.svg`):** Added a dark-mode vector diagram illustrating the Front, Side, Top, and Perspective inspection passes alongside JSON telemetry and runtime guardrails, embedded in Section 8 of both `README.md` and `README_de.md` (with full German parity for the 4-view rationale).
@@ -35,7 +42,7 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 ### Technical Hygiene, Bilingual CONTRIBUTING Guidelines, Level 1 SBOM Re-Audit & Multi-Host Lock Defense (Pfad A) (2026-10-02)
 - Added comprehensive bilingual contribution guidelines in `CONTRIBUTING.md` (English & Deutsch) covering Plan D Local Development Workflow, 10 Invariants (`INV-LOCAL-01` to `INV-SLA-10`), unprivileged RunAsInvoker non-elevation mode, statutory disclaimer (§ 521 BGB Gefälligkeitsrecht), 48h Security Response SLA (`security@ellmos.ai`, `security@open-bricks.org`, `support@lukasgeiger.com`), and pre-commit quality gates.
 - Re-audited Level 1 SBOM to Stand 2026-10-02 in `THIRD_PARTY_LICENSES.md` and plaintext companion `THIRD_PARTY_LICENSES.txt` with confirmation of all 10 invariants, zero-copyleft permissive stack, unprivileged RunAsInvoker non-elevation, § 521 BGB disclaimer, and 48h SLA.
-- Hardened `.gitignore` against multi-host sync and lock patterns: `*-IDEAPAD-GEI*`, `*-IDEAPAD-GEI.*`, `ehthumbs.db`, `TASKPLAN_*.md`, `*-TASKPLAN*`, `LOCK.dev.*`, `LOCK.antigravity.*`, `LOCK.bugsearch.*`.
+- Hardened `.gitignore` against multi-host sync and lock patterns: `*-<HOST>*` (per-host sync/conflict tokens), `ehthumbs.db`, `TASKPLAN_*.md`, `*-TASKPLAN*`, `LOCK.dev.*`, `LOCK.antigravity.*`, `LOCK.bugsearch.*`.
 - Added `CONTRIBUTING.md` to `package.json` package `files` list.
 - Synchronized documentation badges in `README.md` and `README_de.md` (`Verified: 2026-10-02` / `Geprüft: 2026-10-02`, `Contributing: Guide` / `Mitwirken: Leitfaden`, `Level 1 SBOM: Plain-Text Audited`).
 - Updated machine-readable context in `llms.txt` with audit timestamp `2026-10-02`, link to `CONTRIBUTING.md`, and Level 1 SBOM companion references.
@@ -57,7 +64,7 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 - Deployed automated community and maintenance workflows: `.github/workflows/auto-assign.yml` (actions/github-script@v7, timeout-minutes: 5, cancel-in-progress concurrency) and `.github/workflows/label-sync.yml` (EndBug/label-sync@v2, timeout-minutes: 5, cancel-in-progress concurrency).
 - Added canonical repository label taxonomy in `.github/labels.yml` containing the 11 standard governance labels per GOVERNANCE.md §4.2.
 - Hardened `.github/workflows/stale.yml` with workflow concurrency (`cancel-in-progress: true`) to prevent race conditions during scheduled execution.
-- Hardened `.gitignore` against multi-host synchronization and lock patterns (`Desktop.ini`, `*.swo`, `*_WORKSTATION*`, `*_WORKSTATION-LG*`, `*-WORKSTATION.*`, `*-WORKSTATION-LG.*`, `*-IDEAPAD*`, `uv.lock`, `.pytest_temp/`, `.pytest_tmp*`).
+- Hardened `.gitignore` against multi-host synchronization and lock patterns (`Desktop.ini`, `*.swo`, host-scoped `*_WORKSTATION*` / `*-WORKSTATION.*` / `*-IDEAPAD*` conflict tokens, `uv.lock`, `.pytest_temp/`, `.pytest_tmp*`).
 - Introduced Level 1 SBOM plaintext companion `THIRD_PARTY_LICENSES.txt` affirming canonical NOTICE attribution, unprivileged RunAsInvoker non-elevation (`INV-SEC-03`), 100% zero-copyleft permissive runtime dependencies, and invariant matrix `INV-LOCAL-01` through `INV-SLA-10`.
 - Included `THIRD_PARTY_LICENSES.txt` in `package.json` package files list.
 - Synchronized audit badges in `README.md` and `README_de.md` to `2026-09-29` and refreshed machine-readable `llms.txt`.
@@ -141,7 +148,7 @@ All notable changes to `ellmos-blender-use-mcp` are tracked here.
 ## 0.1.0-alpha.7 - 2026-07-31
 
 ### Security & Dependency Audit (2026-08-21)
-- Hardened `.gitignore` with explicit exclusion patterns for private keys, certificates (`*.pem`, `*.key`, `*.pfx`, `*.p12`, `*.cert`, `*.crt`), npm credentials (`.npmrc`), plaintext credential JSONs (`*secrets*.json`, `credentials.json`, `*recovery*.txt`), and host synchronization conflict copies (`*-WORKSTATION-LG*`, `*-ASUS-GEI*`, `*.conflict`, `*.sync-conflict-*`).
+- Hardened `.gitignore` with explicit exclusion patterns for private keys, certificates (`*.pem`, `*.key`, `*.pfx`, `*.p12`, `*.cert`, `*.crt`), npm credentials (`.npmrc`), plaintext credential JSONs (`*secrets*.json`, `credentials.json`, `*recovery*.txt`), and host synchronization conflict copies (`*-<HOST>*`, `*.conflict`, `*.sync-conflict-*`).
 - Updated `THIRD_PARTY_LICENSES.md` runtime inventory to comprehensively account for all direct dependencies including `update-notifier` (`7.3.1`, BSD-2-Clause) alongside `@modelcontextprotocol/sdk` and `zod`.
 - Expanded automated contract test suite in `test/manifest-parity.test.js` with validations for third-party license inventory parity and `.gitignore` security exclusion patterns (10/10 contract tests passed).
 - Verified zero OSV/npm vulnerabilities via `npm audit` and 100% test pass across all 5 test suites.

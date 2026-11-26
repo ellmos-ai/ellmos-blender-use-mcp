@@ -24,8 +24,8 @@
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
-[![Geprüft](https://img.shields.io/badge/Gepr%C3%BCft-2026--11--14-blue.svg)](test/)
-[![Zuletzt geprüft](https://img.shields.io/badge/Zuletzt%20gepr%C3%BCft-2026--11--14-informational.svg)](llms.txt)
+[![Geprüft](https://img.shields.io/badge/Gepr%C3%BCft-2026--11--26-blue.svg)](test/)
+[![Zuletzt geprüft](https://img.shields.io/badge/Zuletzt%20gepr%C3%BCft-2026--11--26-informational.svg)](llms.txt)
 [![Mitwirken: Leitfaden](https://img.shields.io/badge/Mitwirken-Leitfaden-blue.svg)](CONTRIBUTING.md)
 [![Level 1 SBOM](https://img.shields.io/badge/Level%201%20SBOM-Plain--Text%20gepr%C3%BCft-brightgreen.svg)](THIRD_PARTY_LICENSES.txt)
 
@@ -248,7 +248,7 @@ sequenceDiagram
     Python->>FS: Schreibe deterministisches JSON-Ergebnis
     Process-->>Server: Prozess beendet (Exit Code 0 / Begrenzter Puffer)
     Server->>FS: Lese Ergebnis & lösche temporäres Skript
-    Server-->>Client: Strukturiertes JSON-Ergebnis (meshCount, materialCount, missingPrefixes, ok)
+    Server-->>Client: Strukturiertes JSON-Ergebnis (mesh_count, material_count, missing_prefixes, ok)
 ```
 
 ---
@@ -399,21 +399,43 @@ Erkannte Fehlerklassen: nicht angewendete Rotationen, abgetrennte Teilobjekte in
   "outputTruncated": false,
   "verification": {
     "ok": true,
+    "fbx": "C:\\projects\\game\\kit.fbx",
     "fails": [],
     "warns": [],
     "metrics": {
-      "dimensions": [2.45, 1.82, 4.10],
-      "center": [0.0, 0.0, 2.05],
-      "pivotAtOrigin": true,
-      "unappliedRotation": false
-    }
+      "mesh_count": 2,
+      "empty_count": 0,
+      "transform_residuals": [],
+      "bbox_min": [-1.225, -0.91, 0.0],
+      "bbox_max": [1.225, 0.91, 4.1],
+      "height": 4.1,
+      "width": 2.45,
+      "depth": 1.82,
+      "ratio_height_width": 1.6735,
+      "ratio_height_depth": 2.2527,
+      "origin": {
+        "pivot": [0.0, 0.0, 0.0],
+        "pivot_source": "SM_Kit",
+        "inside_bbox": true,
+        "offset_from_base_center": 0.0,
+        "offset_from_base_center_normalized": 0.0
+      },
+      "floating_parts": []
+    },
+    "renders": [
+      "view_front.png",
+      "view_side.png",
+      "view_top.png",
+      "view_perspective.png"
+    ],
+    "blender_version": "4.2.0"
   },
-  "renders": {
-    "view_front": "verify_visual/view_front.png",
-    "view_side": "verify_visual/view_side.png",
-    "view_top": "verify_visual/view_top.png",
-    "view_perspective": "verify_visual/view_perspective.png"
-  }
+  "renders": [
+    "view_front.png",
+    "view_side.png",
+    "view_top.png",
+    "view_perspective.png"
+  ]
 }
 ```
 
@@ -558,7 +580,7 @@ Kopiere diesen Prompt in deinen KI-Assistenten (Claude Desktop, Cursor, Claude C
 
 ```text
 Lies https://raw.githubusercontent.com/ellmos-ai/ellmos-blender-use-mcp/main/llms.txt und SKILL.md (Einstieg: llm.txt).
-Richte den MCP-Server "blender-use" mit `npx -y ellmos-blender-use-mcp` ein (setze bei Bedarf BLENDER_PATH) und prüfe die Erkennung mit `blender_locate`.
+Richte den MCP-Server "blender-use" mit `npx -y ellmos-blender-use-mcp` ein (setze bei Bedarf BLENDER_EXE) und prüfe die Erkennung mit `blender_locate` (CLI-Check: `npx -y ellmos-blender-use-mcp --version`).
 ```
 
 ---

@@ -1,7 +1,7 @@
 # Third-Party Licenses & Level 1 SBOM
 
-Last checked: 2026-11-03 against npm metadata & Node.js ecosystem (historical Stand: 2026-10-02 preserved).
-Audited: Stand: 2026-11-03 against Level 1 SBOM, zero-vulnerability supply-chain overrides and runtime invariants (historical Stand: 2026-10-02 preserved).
+Last checked: 2026-11-26 against npm metadata & Node.js ecosystem (historical Stand: 2026-10-02 and Stand: 2026-11-03 preserved).
+Audited: Stand: 2026-11-26 against Level 1 SBOM, zero-vulnerability supply-chain overrides and runtime invariants (historical Stand: 2026-10-02 and Stand: 2026-11-03 preserved).
 
 Scope: direct dependencies declared in `package.json` as well as
 runtime environment and development tooling. This inventory is a
@@ -49,8 +49,12 @@ Copyright (c) 2026 Lukas Geiger, ellmos-ai family under open-bricks umbrella.
 | fast-uri (override) | Node / npm | ^3.1.9 | BSD-3-Clause | URI parsing and validation |
 | ip-address (override) | Node / npm | ^10.7.5 | MIT | IP address parsing and validation |
 | proxy-addr (override) | Node / npm | ^2.0.8 | MIT | Proxy address trust determination |
+| express-rate-limit (override) | Node / npm | ^8.6.2 | MIT | Rate-limit middleware override |
+| nanoid (override) | Node / npm | ^3.3.17 | MIT | Unique ID generation override |
+| fast-xml-builder (override) | Node / npm | ^1.1.7 | MIT | XML parser override |
 | body-parser (override) | Node / npm | ^2.4.0 | MIT | Request body parsing middleware |
 | source-map-js (override) | Node / npm | ^1.2.2 | BSD-3-Clause | Source map generation and parsing |
+| postcss (override) | Node / npm | ^8.5.18 | MIT | CSS AST processor override |
 
 ## Level 1 SBOM Invariant Verification (Stand: 2026-10-02)
 
