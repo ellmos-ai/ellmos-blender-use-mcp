@@ -24,8 +24,8 @@
 [![Glama](https://img.shields.io/badge/Glama-Listing-blue.svg)](https://glama.ai/mcp/servers/@ellmos-ai/ellmos-blender-use-mcp)
 [![Ecosystem](https://img.shields.io/badge/Ecosystem-ellmos--ai-purple.svg)](https://github.com/ellmos-ai)
 [![Umbrella](https://img.shields.io/badge/Umbrella-open--bricks-blue.svg)](https://github.com/open-bricks)
-[![Verified](https://img.shields.io/badge/Verified-2026--11--14-blue.svg)](test/)
-[![Last-checked](https://img.shields.io/badge/Last--checked-2026--11--14-informational.svg)](llms.txt)
+[![Verified](https://img.shields.io/badge/Verified-2026--11--26-blue.svg)](test/)
+[![Last-checked](https://img.shields.io/badge/Last--checked-2026--11--26-informational.svg)](llms.txt)
 [![Contributing: Guide](https://img.shields.io/badge/Contributing-Guide-blue.svg)](CONTRIBUTING.md)
 [![Level 1 SBOM](https://img.shields.io/badge/Level%201%20SBOM-Plain--Text%20Audited-brightgreen.svg)](THIRD_PARTY_LICENSES.txt)
 
@@ -248,7 +248,7 @@ sequenceDiagram
     Python->>FS: Write Output JSON Verification Result
     Process-->>Server: Process Exit (Exit Code 0 / Bounded Tail Buffer)
     Server->>FS: Read Result & Clean Up Temp Verification Script
-    Server-->>Client: Deterministic JSON Result (meshCount, materialCount, missingPrefixes, ok)
+    Server-->>Client: Deterministic JSON Result (mesh_count, material_count, missing_prefixes, ok)
 ```
 
 ---
@@ -399,21 +399,43 @@ Detected failure classes: unapplied rotation, floating parts in multi-part asset
   "outputTruncated": false,
   "verification": {
     "ok": true,
+    "fbx": "C:\\projects\\game\\kit.fbx",
     "fails": [],
     "warns": [],
     "metrics": {
-      "dimensions": [2.45, 1.82, 4.10],
-      "center": [0.0, 0.0, 2.05],
-      "pivotAtOrigin": true,
-      "unappliedRotation": false
-    }
+      "mesh_count": 2,
+      "empty_count": 0,
+      "transform_residuals": [],
+      "bbox_min": [-1.225, -0.91, 0.0],
+      "bbox_max": [1.225, 0.91, 4.1],
+      "height": 4.1,
+      "width": 2.45,
+      "depth": 1.82,
+      "ratio_height_width": 1.6735,
+      "ratio_height_depth": 2.2527,
+      "origin": {
+        "pivot": [0.0, 0.0, 0.0],
+        "pivot_source": "SM_Kit",
+        "inside_bbox": true,
+        "offset_from_base_center": 0.0,
+        "offset_from_base_center_normalized": 0.0
+      },
+      "floating_parts": []
+    },
+    "renders": [
+      "view_front.png",
+      "view_side.png",
+      "view_top.png",
+      "view_perspective.png"
+    ],
+    "blender_version": "4.2.0"
   },
-  "renders": {
-    "view_front": "verify_visual/view_front.png",
-    "view_side": "verify_visual/view_side.png",
-    "view_top": "verify_visual/view_top.png",
-    "view_perspective": "verify_visual/view_perspective.png"
-  }
+  "renders": [
+    "view_front.png",
+    "view_side.png",
+    "view_top.png",
+    "view_perspective.png"
+  ]
 }
 ```
 
@@ -558,7 +580,7 @@ Copy this prompt into your AI coding assistant (Claude Desktop, Cursor, Claude C
 
 ```text
 Inspect https://raw.githubusercontent.com/ellmos-ai/ellmos-blender-use-mcp/main/llms.txt and SKILL.md (index: llm.txt).
-Configure the "blender-use" MCP server using `npx -y ellmos-blender-use-mcp` (or set BLENDER_PATH if needed) and verify discovery by calling `blender_locate`.
+Configure the "blender-use" MCP server using `npx -y ellmos-blender-use-mcp` (or set BLENDER_EXE if needed) and verify discovery by calling `blender_locate` (CLI smoke check: `npx -y ellmos-blender-use-mcp --version`).
 ```
 
 ---

@@ -28,7 +28,8 @@ It is useful for CI-style, one-shot asset verification in an asset pipeline. It 
 ## Install
 
 ```bash
-npx -y ellmos-blender-use-mcp
+npx -y ellmos-blender-use-mcp --version
+npx -y ellmos-blender-use-mcp --help
 ```
 
 or install from source:
@@ -38,7 +39,8 @@ git clone https://github.com/ellmos-ai/ellmos-blender-use-mcp.git
 cd ellmos-blender-use-mcp
 npm install
 npm run build
-node src/index.js
+npm test
+node src/index.js --version
 ```
 
 ## Target Personas
@@ -113,6 +115,6 @@ This software is provided free of charge without consideration (Gefälligkeit). 
 
 ## Install with your LLM
 Paste into Claude Desktop, Cursor, or any MCP-capable assistant:
-> Read `llms.txt` and `SKILL.md` for `ellmos-blender-use-mcp` (`npx -y ellmos-blender-use-mcp`), configure the `blender-use` MCP server, and verify Blender discovery with `blender_locate`.
+> Read `llms.txt` and `SKILL.md` for `ellmos-blender-use-mcp` (`npx -y ellmos-blender-use-mcp`), configure the `blender-use` MCP server (set `BLENDER_EXE` if needed), and verify Blender discovery with `blender_locate` (CLI check: `npx -y ellmos-blender-use-mcp --version`).
 
-## Last-checked: 2026-11-14
+## Last-checked: 2026-11-26

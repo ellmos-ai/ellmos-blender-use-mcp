@@ -5,6 +5,7 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -34,3 +35,28 @@ jobs:
       - run: npm run build
       - run: npm test
       - run: npm pack --dry-run --json
+
+  hygiene:
+    name: Packaging, Python Syntax & Audit Hygiene
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: node src/index.js --version
+      - run: node src/index.js --help
+      - run: python -m py_compile scripts/verify_asset_visual.py
+      - run: npm audit --omit=dev --audit-level=high
+      - run: git diff --check

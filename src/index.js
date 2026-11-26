@@ -333,6 +333,21 @@ server.tool(
 );
 
 async function main() {
+  const cliArgs = process.argv.slice(2);
+  if (cliArgs.includes("--version") || cliArgs.includes("-v")) {
+    console.log(pkg.version);
+    return;
+  }
+  if (cliArgs.includes("--help") || cliArgs.includes("-h")) {
+    console.log(
+      `${pkg.name} v${pkg.version} — Local-first headless Blender MCP server (stdio)\n` +
+        `Usage: ellmos-blender-use [--version | --help]\n` +
+        `Tools: blender_locate, blender_run_script, blender_verify_fbx_reimport, blender_verify_visual\n` +
+        `Env:   BLENDER_EXE (optional path to Blender executable)`
+    );
+    return;
+  }
+
   // Update notice only in an interactive terminal — never during stdio/MCP
   // operation, where stray output would corrupt the protocol stream.
   if (process.stdout.isTTY) {

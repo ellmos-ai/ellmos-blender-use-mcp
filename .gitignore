@@ -121,3 +121,18 @@ LOCK.worker.*
 LOCK.thinker.*
 LOCK.reviewer.*
 *.prof
+
+# Pre-push data-gate & local environment artifacts (never commit/push)
+*.db
+*.sqlite*
+*.bachdb*
+*export*.csv
+*dump*
+inbox_config*
+TO-DECIDE-USER*
+data/temp/
+.venv/
+venv/
+*.egg-info/
+.vscode/
+.claude/

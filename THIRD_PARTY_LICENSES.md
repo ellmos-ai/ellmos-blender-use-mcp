@@ -1,25 +1,36 @@
 # Third-Party License Review & Level 1 SBOM
 
-Stand: 2026-11-03 (Level 1 SBOM Security Re-Audit, Hardened Supply-Chain Overrides, Invariant Cross-Reference Matrix, Zero-Copyleft & unprivileged RunAsInvoker Non-Elevation Certification; accompanied by plaintext companion THIRD_PARTY_LICENSES.txt; historical audit Stand: 2026-10-02 preserved).
+Stand: 2026-11-26 (Level 1 SBOM Security Re-Audit, Hardened Supply-Chain Overrides, Invariant Cross-Reference Matrix, Zero-Copyleft & unprivileged RunAsInvoker Non-Elevation Certification; accompanied by plaintext companion THIRD_PARTY_LICENSES.txt; historical audits Stand: 2026-10-02 and Stand: 2026-11-03 preserved).
 
 ## 1. Runtime Dependencies (Level 1 SBOM)
 
 | Package | Version checked | License | Type | Use & Function |
 |---|---:|---|---|---|
-| `@modelcontextprotocol/sdk` | ^1.0.0 (1.29.0) | MIT | Permissive | MCP server protocol implementation and stdio transport API |
+| `@modelcontextprotocol/sdk` | ^1.32.2 | MIT | Permissive | MCP server protocol implementation and stdio transport API |
 | `update-notifier` | ^7.3.1 | BSD-2-Clause | Permissive | Non-intrusive interactive CLI update notification |
-| `zod` | ^3.23.8 (3.25.76) | MIT | Permissive | Tool input schema validation and TypeScript type inference |
+| `zod` | ^4.6.7 | MIT | Permissive | Tool input schema validation and TypeScript type inference |
 
 The npm package does not vendor these dependencies; they are installed by npm from their respective packages. All runtime dependencies are 100% permissive (MIT, BSD-2-Clause). Zero copyleft (GPL/LGPL/AGPL) dependencies are used at runtime.
 
-## 2. Development & Build Tooling
+## 2. Development, Build & Supply-Chain Overrides
 
 | Package / Tool | Version | License | Use |
 |---|---:|---|---|
 | `node` | >=18.0.0 | MIT / Node.js License | JavaScript runtime environment |
-| `vitest` (override) | ^3.2.6 | MIT | Unit and contract test runner framework |
-| `@hono/node-server` (override) | ^2.0.5 | MIT | Local development test server utilities |
-| `hono` (override) | ^4.12.31 | MIT | Web/API middleware test abstractions |
+| `vitest` (override) | ^4.1.12 | MIT | Unit and contract test runner framework |
+| `@vitest/mocker` (override) | ^4.1.12 | MIT | Test mock framework |
+| `@hono/node-server` (override) | ^2.1.5 | MIT | Local development test server utilities |
+| `hono` (override) | ^4.13.13 | MIT | Web/API middleware test abstractions |
+| `express-rate-limit` (override) | ^8.6.2 | MIT | Rate-limit middleware override |
+| `nanoid` (override) | ^3.3.17 | MIT | Unique ID generation override |
+| `fast-uri` (override) | ^3.1.9 | BSD-3-Clause | URI parsing and validation |
+| `ip-address` (override) | ^10.7.5 | MIT | IP address parsing and validation |
+| `fast-xml-builder` (override) | ^1.1.7 | MIT | XML parser override |
+| `qs` (override) | ^6.17.1 | BSD-3-Clause | Query string parsing test utility |
+| `proxy-addr` (override) | ^2.0.8 | MIT | Proxy address trust determination |
+| `source-map-js` (override) | ^1.2.2 | BSD-3-Clause | Source map generation and parsing |
+| `body-parser` (override) | ^2.4.0 | MIT | Request body parsing middleware |
+| `postcss` (override) | ^8.5.18 | MIT | CSS AST processor override |
 
 ## 3. Reviewed Prior Art & External Implementations (Not Vendored)
 
